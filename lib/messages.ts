@@ -75,7 +75,7 @@ export const messages: Record<Lang, Record<string, string>> = {
       "기업의 디지털 전환부터 크리에이터/콘텐츠 협업, AI 기술 연동까지. Whik과 함께 빠르고 단단한 결과를 만드세요.",
     "p.pills.enterprise": "Enterprise",
     "p.pills.creator": "Creator/Content",
-    "p.pills.tech": "Tech & R&D",
+    "p.pills.tech": "R&D",
     "p.pills.invest": "Investment",
 
     "p.enterprise.title": "기업 파트너십",
@@ -217,7 +217,7 @@ export const messages: Record<Lang, Record<string, string>> = {
       "From enterprise digital transformation to creator/content collaboration and AI integrations—build fast and solid with Whik.",
     "p.pills.enterprise": "Enterprise",
     "p.pills.creator": "Creator/Content",
-    "p.pills.tech": "Tech & R&D",
+    "p.pills.tech": "R&D",
     "p.pills.invest": "Investment",
 
     "p.enterprise.title": "Enterprise Partnerships",
