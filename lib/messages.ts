@@ -128,7 +128,7 @@ export const messages: Record<Lang, Record<string, string>> = {
     "p.cta.secondary": "이메일로 문의",
 
     // Footer
-    "footer.copyright": "© Whik Company 2025",
+    "footer.copyright": "© Whik lnc.",
     "footer.email": "contact@whik.co.kr",
 
     // Contact
@@ -270,7 +270,7 @@ export const messages: Record<Lang, Record<string, string>> = {
     "p.cta.secondary": "Email us",
 
     // Footer
-    "footer.copyright": "© Whik Company 2025",
+    "footer.copyright": "© Whik lnc.",
     "footer.email": "contact@whik.co.kr",
 
     // Contact
