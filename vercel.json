@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "https://www.whik.co.kr/:path*",
+      "destination": "https://whik.co.kr/:path*",
+      "permanent": true
+    }
+  ]
+}
+

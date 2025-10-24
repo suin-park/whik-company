@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: theme(colors.bg);
+  color: theme(colors.fg);
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-4;
+}
+
+.card {
+  @apply bg-card rounded-2xl border border-border shadow-soft;
+}
+
+/* 로고 선명도 개선 */
+img[src*="whik-logo"] {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: none;
+}
+
+/* About/Top Hero gradient background */
+.bg-hero-gradient {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(255,106,0,0.15), transparent 60%),
+    radial-gradient(800px 400px at 90% -20%, rgba(0,212,255,0.12), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 40%);
+}
+
+/* 모바일 터치 타겟 최소 높이 */
+@media (max-width: 640px) {
+  a, button {
+    min-height: 40px;
+  }
+}
+
+/* 부드러운 스크롤 */
+html { scroll-behavior: smooth; }
