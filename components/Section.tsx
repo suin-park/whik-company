@@ -14,3 +14,4 @@ export function Section({ children, className = "" }: { children: React.ReactNod
 export function CTAButton({ href, label }: { href: string; label: string }) {
   return <a href={href} className="inline-block px-5 py-3 rounded-2xl bg-accent text-black">{label}</a>
 }
+

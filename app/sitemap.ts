@@ -12,3 +12,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
   })) as MetadataRoute.Sitemap;
 }
 
+

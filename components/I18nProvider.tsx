@@ -36,3 +36,4 @@ export default function I18nProvider({ children }: { children: React.ReactNode }
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
+
