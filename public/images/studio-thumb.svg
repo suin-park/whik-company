@@ -1,0 +1,10 @@
+<!-- Studio 썸네일 placeholder -->
+<svg width="1000" height="600" viewBox="0 0 1000 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1000" height="600" fill="#14161a"/>
+  <rect x="50" y="50" width="900" height="500" rx="20" fill="#ff6a00" opacity="0.1"/>
+  <text x="500" y="280" text-anchor="middle" fill="#ff6a00" font-family="Arial, sans-serif" font-size="48" font-weight="bold">Whik Studio</text>
+  <text x="500" y="340" text-anchor="middle" fill="#9aa0a6" font-family="Arial, sans-serif" font-size="24">AI Storytelling Tool</text>
+  <circle cx="200" cy="150" r="30" fill="#ff6a00" opacity="0.3"/>
+  <circle cx="800" cy="450" r="40" fill="#00d4ff" opacity="0.3"/>
+  <rect x="300" y="400" width="200" height="100" rx="10" fill="#ff6a00" opacity="0.2"/>
+</svg>
