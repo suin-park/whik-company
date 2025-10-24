@@ -129,7 +129,7 @@ export const messages: Record<Lang, Record<string, string>> = {
 
     // Footer
     "footer.copyright": "© Whik Company 2025",
-    "footer.email": "contact@whik.company",
+    "footer.email": "contact@whik.co.kr",
 
     // Contact
     "contact.title": "Contact",
@@ -271,7 +271,7 @@ export const messages: Record<Lang, Record<string, string>> = {
 
     // Footer
     "footer.copyright": "© Whik Company 2025",
-    "footer.email": "contact@whik.company",
+    "footer.email": "contact@whik.co.kr",
 
     // Contact
     "contact.title": "Contact",
