@@ -62,7 +62,7 @@ function MobileMenu({
                 return (
                   <li key={l.href}>
                     <a
-                      href="http://localhost:3300"
+                      href="https://ai.whik.co.kr"
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={onClose}
@@ -137,7 +137,7 @@ export default function TopNav() {
               return (
                 <a
                   key={l.href}
-                  href="http://localhost:3300"
+                  href="https://ai.whik.co.kr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-subtle hover:text-fg"
