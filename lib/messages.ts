@@ -119,7 +119,7 @@ export const messages: Record<Lang, Record<string, string>> = {
     "p.process.04.desc": "운영/고도화 · 성과확장",
 
     "p.invest.title": "투자 문의",
-    "p.invest.desc": "Whik의 성장에 함께하세요 · 시리즈 B 라운드 준비 중",
+    "p.invest.desc": "Whik의 성장에 함께하세요!",
     "p.invest.cta": "투자 담당자 연락",
 
     "p.cta.title": "파트너십 문의",
