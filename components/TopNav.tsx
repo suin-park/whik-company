@@ -39,7 +39,7 @@ function MobileMenu({
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="/whik-logo.svg" alt="Whik" className="h-6" />
+            <img src="/logo.svg" alt="Whik" className="h-6" />
             <span className="sr-only">Menu</span>
           </div>
           <button
@@ -126,7 +126,7 @@ export default function TopNav() {
       <div className="container h-14 md:h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <img src="/whik-logo.svg" alt="Whik" className="h-6 md:h-8" />
+          <img src="/logo.svg" alt="Whik" className="h-6 md:h-8" />
         </Link>
 
         {/* Desktop nav */}
