@@ -134,7 +134,7 @@ export default function PartnershipPage() {
               <div className="text-subtle text-sm">{t("p.invest.desc")}</div>
             </div>
           </div>
-          <Link href="/contact" className="px-5 py-3 rounded-2xl bg-accent text-black text-center mt-6 md:mt-0">{t("p.invest.cta")}</Link>
+          <Link href="/contact" className="px-5 py-3 rounded-2xl bg-accent text-black text-center mt-8 md:mt-0 w-full md:w-auto">{t("p.invest.cta")}</Link>
         </Card>
       </Section>
 
