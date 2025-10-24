@@ -12,8 +12,8 @@ export const messages: Record<Lang, Record<string, string>> = {
     "nav.partnerCta": "Partner with us",
 
     // Home
-    "home.hero.title.1": "Create Faster, ",
-    "home.hero.title.2": "Move Whik.",
+    "home.hero.title.1": "Create Faster. ",
+    "home.hero.title.2": "Move with Whik.",
     "home.hero.subtitle":
       "AI로 창작의 경계를 허뭅니다. Whik Ecosystem은 스토리 제작부터 3D·AR, B2B AI PoC까지 하나로 연결합니다.",
     "home.hero.viewProducts": "제품 둘러보기",
@@ -42,7 +42,7 @@ export const messages: Record<Lang, Record<string, string>> = {
     "about.vision": "Vision",
     "about.vision.title": "모든 창작자가 AI의 힘을 쉽게 활용할 수 있는 세상",
     "about.vision.desc":
-      "Create Faster, Move Whik. 접근 가능한 인터페이스와 지능형 도구를 통해 아이디어가 곧 결과물이 되는 미래를 지향합니다.",
+      "Create Faster. Move with Whik. 접근 가능한 인터페이스와 지능형 도구를 통해 아이디어가 곧 결과물이 되는 미래를 지향합니다.",
     "about.mission": "Mission",
     "about.mission.desc":
       "스토리텔링부터 3D·AR, B2B AI까지 연결된 워크플로우를 제공하여 창작과 비즈니스의 간극을 줄입니다.",
@@ -154,8 +154,8 @@ export const messages: Record<Lang, Record<string, string>> = {
     "nav.partnerCta": "Partner with us",
 
     // Home
-    "home.hero.title.1": "Create Faster, ",
-    "home.hero.title.2": "Move Whik.",
+    "home.hero.title.1": "Create Faster. ",
+    "home.hero.title.2": "Move with Whik.",
     "home.hero.subtitle":
       "We remove the boundaries of creation with AI. The Whik ecosystem connects storytelling to 3D/AR and B2B AI PoC—all in one.",
     "home.hero.viewProducts": "View products",
@@ -184,7 +184,7 @@ export const messages: Record<Lang, Record<string, string>> = {
     "about.vision": "Vision",
     "about.vision.title": "A world where every creator can easily use AI",
     "about.vision.desc":
-      "Create Faster, Move Whik. With accessible interfaces and intelligent tools, ideas become outcomes instantly.",
+      "Create Faster. Move with Whik. With accessible interfaces and intelligent tools, ideas become outcomes instantly.",
     "about.mission": "Mission",
     "about.mission.desc":
       "We provide a connected workflow from storytelling to 3D/AR and B2B AI, narrowing the gap between creation and business.",
