@@ -126,15 +126,15 @@ export default function PartnershipPage() {
 
       {/* Investment */}
       <Section className="py-4">
-        <Card className="md:flex md:items-center md:justify-between gap-6">
-          <div className="flex items-center gap-3 mb-4 md:mb-0">
+        <Card className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="flex items-center gap-3">
             <Rocket className="text-accent" size={18}/>
             <div>
               <div className="text-base">{t("p.invest.title")}</div>
               <div className="text-subtle text-sm">{t("p.invest.desc")}</div>
             </div>
           </div>
-          <Link href="/contact" className="px-5 py-3 rounded-2xl bg-accent text-black">{t("p.invest.cta")}</Link>
+          <Link href="/contact" className="px-5 py-3 rounded-2xl bg-accent text-black text-center mt-6 md:mt-0">{t("p.invest.cta")}</Link>
         </Card>
       </Section>
 
