@@ -5,7 +5,7 @@ import { messages, type Lang } from "@/lib/messages";
 type Ctx = {
   lang: Lang;
   setLang: (l: Lang) => void;
-  t: (key: string) => string;
+  t: (key: string) => any;
 };
 
 const I18nContext = createContext<Ctx | null>(null);
@@ -29,12 +29,21 @@ export default function I18nProvider({ children }: { children: React.ReactNode }
   };
 
   const t = useMemo(() => {
-    return (key: string) => messages[lang][key] ?? key;
+    return (key: string) => {
+      const value = messages[lang][key];
+      // 값이 없으면 키를 반환
+      return value !== undefined ? value : key;
+    };
   }, [lang]);
 
   const value = useMemo(() => ({ lang, setLang, t }), [lang, t]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
+
+
+
+
+
 
 
