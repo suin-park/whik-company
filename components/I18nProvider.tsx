@@ -30,8 +30,26 @@ export default function I18nProvider({ children }: { children: React.ReactNode }
 
   const t = useMemo(() => {
     return (key: string) => {
-      const value = messages[lang][key];
-      // 값이 없으면 키를 반환
+      const dict = messages[lang];
+      
+      // 1. flat 키로 먼저 시도 (예: "nav.home")
+      if (key in dict) {
+        return dict[key];
+      }
+      
+      // 2. dot notation으로 중첩 객체 탐색 (예: "home.ecosystem.title")
+      const keys = key.split(".");
+      let value: any = dict;
+      
+      for (const k of keys) {
+        if (value && typeof value === "object" && k in value) {
+          value = value[k];
+        } else {
+          // 키를 찾을 수 없으면 원래 키 반환
+          return key;
+        }
+      }
+      
       return value !== undefined ? value : key;
     };
   }, [lang]);

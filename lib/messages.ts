@@ -6,6 +6,13 @@ type Messages = { [key: string]: MessageValue };
 
 export const messages: Record<Lang, Messages> = {
   ko: {
+    // Common
+    common: {
+      cta: {
+        more: "자세히 보기 →",
+      },
+    },
+
     // Nav
     "nav.home": "Home",
     "nav.products": "Products",
@@ -16,21 +23,73 @@ export const messages: Record<Lang, Messages> = {
     "nav.partnerCta": "Partner with us",
 
     // Home
-    "home.hero.title.1": "Create Faster. ",
-    "home.hero.title.2": "Move with Whik.",
-    "home.hero.subtitle":
-      "AI로 창작의 경계를 허뭅니다. Whik Ecosystem은 스토리 제작부터 3D·AR, B2B AI PoC까지 하나로 연결합니다.",
-    "home.hero.viewProducts": "제품 둘러보기",
-    "home.hero.partnerInquiry": "파트너 문의",
-
-    // Home cards
-    "home.card.studio.title": "Whik Studio",
-    "home.card.studio.desc": "AI 기반 모션웹툰·스토리 제작",
-    "home.card.3d.title": "Whik 3D Converter",
-    "home.card.3d.desc": "이미지 1장으로 3D·AR 생성",
-    "home.card.lab.title": "Whik AI Lab",
-    "home.card.lab.desc": "B2B AI PoC 및 컨설팅",
-    "home.card.more": "자세히 보기 →",
+    home: {
+      hero: {
+        title: {
+          "1": "Create Faster.",
+          "2": "Move with Whik.",
+        },
+        subtitle: "AI로 창작의 경계를 허뭅니다. Whik Ecosystem은 스토리 제작부터 3D·AR, B2B AI PoC까지 하나로 연결합니다.",
+        cta: {
+          primary: "제품 둘러보기",
+          secondary: "파트너 문의",
+        },
+      },
+      ecosystem: {
+        title: "Whik Ecosystem",
+        subtitle: "하나의 허브에서 Create · Convert · Connect가 유기적으로 연결됩니다.",
+        hub: "Whik",
+        hubTagline: "Create · Convert · Connect",
+        nodes: {
+          studio: {
+            title: "Whik Studio",
+            desc: "AI 기반 웹툰 제작",
+          },
+          conv3d: {
+            title: "Whik 3D",
+            desc: "이미지 1장 → 3D·AR",
+          },
+          works: {
+            title: "Whik Works",
+            desc: "프로젝트 진행 포털",
+          },
+          lab: {
+            title: "Whik AI Lab",
+            desc: "B2B AI PoC/컨설팅",
+          },
+        },
+      },
+      why: {
+        title: "Why Whik?",
+        create: {
+          title: "더 빠른 창작",
+          desc: "다양한 AI 기능으로 창작자의 속도를 높입니다. 이를 통해 빠르게 아이디어를 실현할 수 있습니다.",
+        },
+        convert: {
+          title: "이미지→3D·AR",
+          desc: "한 장의 사진으로 깊이를 예측해 3D로 전환합니다. 이미지 한 장이 새로운 공간을 만듭니다.",
+        },
+        connect: {
+          title: "원활한 업무를 위한 연결",
+          desc: "AI가 반복 업무를 자동화하고, 협업을 더 투명하게 연결합니다.",
+        },
+      },
+      card: {
+        studio: {
+          title: "Whik Studio",
+          desc: "AI 기반 모션웹툰·스토리 제작",
+        },
+        "3d": {
+          title: "Whik 3D Converter",
+          desc: "이미지 1장으로 3D·AR 생성",
+        },
+        lab: {
+          title: "Whik AI Lab",
+          desc: "B2B AI PoC 및 컨설팅",
+        },
+        more: "자세히 보기 →",
+      },
+    },
 
     // Products page
     products: {
@@ -137,13 +196,10 @@ export const messages: Record<Lang, Messages> = {
     "p.why.li3": "PoC→프로덕션까지 이어지는 실행 중심 협업",
 
     "p.effects.title": "도입 효과",
-    "p.effects.speed.value": "↑3x",
     "p.effects.speed.label": "콘텐츠 제작 속도",
-    "p.effects.cost.value": "↓40%",
     "p.effects.cost.label": "PoC 비용",
-    "p.effects.acc.value": "↑92%",
-    "p.effects.acc.label": "3D 변환 정확도(예시)",
-    "p.effects.prod.value": "→Prod.",
+    "p.effects.approval.label": "승인 리드타임 단축",
+    "p.effects.approval.note": "기획→검토→승인 평균시간 기준",
     "p.effects.prod.label": "프로덕션 연계",
 
     "p.process.title": "협업 프로세스",
@@ -182,6 +238,13 @@ export const messages: Record<Lang, Messages> = {
   },
 
   en: {
+    // Common
+    common: {
+      cta: {
+        more: "Learn more →",
+      },
+    },
+
     // Nav
     "nav.home": "Home",
     "nav.products": "Products",
@@ -192,21 +255,73 @@ export const messages: Record<Lang, Messages> = {
     "nav.partnerCta": "Partner with us",
 
     // Home
-    "home.hero.title.1": "Create Faster. ",
-    "home.hero.title.2": "Move with Whik.",
-    "home.hero.subtitle":
-      "We remove the boundaries of creation with AI. The Whik ecosystem connects storytelling to 3D/AR and B2B AI PoC—all in one.",
-    "home.hero.viewProducts": "View products",
-    "home.hero.partnerInquiry": "Partner inquiry",
-
-    // Home cards
-    "home.card.studio.title": "Whik Studio & Toon",
-    "home.card.studio.desc": "AI-powered motion webtoon & storytelling",
-    "home.card.3d.title": "Whik 3D",
-    "home.card.3d.desc": "Generate 3D & AR from a single image",
-    "home.card.lab.title": "Whik AI Lab",
-    "home.card.lab.desc": "B2B AI PoC & consulting",
-    "home.card.more": "Learn more →",
+    home: {
+      hero: {
+        title: {
+          "1": "Create Faster.",
+          "2": "Move with Whik.",
+        },
+        subtitle: "Create · Convert · Connect in one hub—from story tools to 3D/AR and B2B AI PoC.",
+        cta: {
+          primary: "Explore products",
+          secondary: "Contact sales",
+        },
+      },
+      ecosystem: {
+        title: "Whik Ecosystem",
+        subtitle: "Create · Convert · Connect—seamlessly connected in one hub.",
+        hub: "Whik",
+        hubTagline: "Create · Convert · Connect",
+        nodes: {
+          studio: {
+            title: "Whik Studio",
+            desc: "AI-powered webtoon creation",
+          },
+          conv3d: {
+            title: "Whik 3D",
+            desc: "One image → 3D & AR",
+          },
+          works: {
+            title: "Whik Works",
+            desc: "Project management portal",
+          },
+          lab: {
+            title: "Whik AI Lab",
+            desc: "B2B AI PoC & consulting",
+          },
+        },
+      },
+      why: {
+        title: "Why Whik?",
+        create: {
+          title: "Create Faster",
+          desc: "A variety of AI features accelerate creators. Anyone can turn ideas into outcomes quickly.",
+        },
+        convert: {
+          title: "Image → 3D & AR",
+          desc: "We infer depth from a single photo and convert it into 3D. One image, new spaces.",
+        },
+        connect: {
+          title: "Smoother Workflows",
+          desc: "Automate repetitive tasks with AI and keep everything transparent from contract to delivery.",
+        },
+      },
+      card: {
+        studio: {
+          title: "Whik Studio & Toon",
+          desc: "AI-powered motion webtoon & storytelling",
+        },
+        "3d": {
+          title: "Whik 3D",
+          desc: "Generate 3D & AR from a single image",
+        },
+        lab: {
+          title: "Whik AI Lab",
+          desc: "B2B AI PoC & consulting",
+        },
+        more: "Learn more →",
+      },
+    },
 
     // Products page
     products: {
@@ -313,13 +428,10 @@ export const messages: Record<Lang, Messages> = {
     "p.why.li3": "Execution-focused collaboration from PoC to production",
 
     "p.effects.title": "Business Impact",
-    "p.effects.speed.value": "↑3x",
     "p.effects.speed.label": "Content production speed",
-    "p.effects.cost.value": "↓40%",
     "p.effects.cost.label": "PoC cost",
-    "p.effects.acc.value": "↑92%",
-    "p.effects.acc.label": "3D conversion accuracy (sample)",
-    "p.effects.prod.value": "→Prod.",
+    "p.effects.approval.label": "Approval lead time ↓",
+    "p.effects.approval.note": "Avg. time from plan → review → approval",
     "p.effects.prod.label": "Production handoff",
 
     "p.process.title": "Collaboration Process",
