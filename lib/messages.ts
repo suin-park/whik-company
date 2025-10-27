@@ -1,6 +1,10 @@
 export type Lang = "ko" | "en";
 
-export const messages: Record<Lang, Record<string, string>> = {
+// 중첩된 객체 및 배열 지원을 위한 타입 정의
+type MessageValue = string | string[] | { [key: string]: MessageValue };
+type Messages = { [key: string]: MessageValue };
+
+export const messages: Record<Lang, Messages> = {
   ko: {
     // Nav
     "nav.home": "Home",
@@ -29,10 +33,44 @@ export const messages: Record<Lang, Record<string, string>> = {
     "home.card.more": "자세히 보기 →",
 
     // Products page
-    "products.header.title": "Whik Products",
-    "products.header.subtitle": "AI 기반 창작을 가속하는 두 가지 핵심 도구",
-    "products.studio.more": "데모 문의 →",
-    "products.3d.more": "도입 상담 →",
+    products: {
+      header: {
+        title: "Whik 제품",
+        subtitle: "AI 기반 창작을 가속하는 세 가지 핵심 도구",
+      },
+      studio: {
+        title: "Whik Studio & Toon",
+        desc: "AI 기반 모션 웹툰·스토리텔링 툴",
+        features: [
+          "AI 스토리 가이드",
+          "PSD 레이어 파싱",
+          "AI 모션 팔레트",
+          "경로 애니메이션 / 핀 디포머",
+        ],
+        cta: "데모 문의 →",
+      },
+      converter: {
+        title: "Whik 3D",
+        desc: "사진 한 장으로 고품질 3D 오브젝트 생성 및 AR 미리보기",
+        features: [
+          "이미지 분석 및 예측 / 3D 모델 생성",
+          "AR 미리보기",
+          "기업 맞춤형 제품/전시 시각화",
+        ],
+        cta: "도입 문의 →",
+      },
+      works: {
+        title: "Whik Works",
+        desc: "클라이언트와 팀을 하나의 투명한 포털로 연결하는 계약·프로젝트 허브",
+        features: [
+          "기업 맞춤형 관리자&클라이언트 대시보드",
+          "견적·계약·송장 AI 스마트 관리",
+          "프로젝트 진행 사항 실시간 확인",
+          "AI 도우미 및 메시지 박스",
+        ],
+        cta: "도입 문의 →",
+      },
+    },
 
     // About
     "about.kicker": "About Whik",
@@ -57,7 +95,7 @@ export const messages: Record<Lang, Record<string, string>> = {
     "about.ms.1.desc": "B2B PoC/컨설팅 허브 오픈",
 
     "about.ms.2.year": "2026 상반기",
-    "about.ms.2.title": "Whik Studio · 3D 오픈베타",
+    "about.ms.2.title": "Whik Studio & Toon · 3D 오픈베타",
     "about.ms.2.desc": "크리에이터 사용자 테스트",
 
     "about.ms.3.year": "2027+",
@@ -162,19 +200,53 @@ export const messages: Record<Lang, Record<string, string>> = {
     "home.hero.partnerInquiry": "Partner inquiry",
 
     // Home cards
-    "home.card.studio.title": "Whik Studio",
+    "home.card.studio.title": "Whik Studio & Toon",
     "home.card.studio.desc": "AI-powered motion webtoon & storytelling",
-    "home.card.3d.title": "Whik 3D Converter",
+    "home.card.3d.title": "Whik 3D",
     "home.card.3d.desc": "Generate 3D & AR from a single image",
     "home.card.lab.title": "Whik AI Lab",
     "home.card.lab.desc": "B2B AI PoC & consulting",
     "home.card.more": "Learn more →",
 
     // Products page
-    "products.header.title": "Whik Products",
-    "products.header.subtitle": "Two core tools that accelerate AI-driven creation",
-    "products.studio.more": "Request a demo →",
-    "products.3d.more": "Talk to sales →",
+    products: {
+      header: {
+        title: "Whik Products",
+        subtitle: "Three core tools that accelerate AI-driven creation",
+      },
+      studio: {
+        title: "Whik Studio & Toon",
+        desc: "AI-powered motion webtoon & storytelling",
+        features: [
+          "AI Story Guide",
+          "PSD Layer Parsing",
+          "AI Motion Palette",
+          "Path Animation / Pin Deformer",
+        ],
+        cta: "Request a demo →",
+      },
+      converter: {
+        title: "Whik 3D",
+        desc: "Generate high-quality 3D objects from a single image, preview in AR.",
+        features: [
+          "Depth-based 3D Reconstruction",
+          "AR preview",
+          "Product/Exhibition visualization",
+        ],
+        cta: "Talk to sales →",
+      },
+      works: {
+        title: "Whik Works",
+        desc: "Contract & project hub that connects clients and teams in one transparent portal.",
+        features: [
+          "Client portal dashboard",
+          "Inbox Estimates management",
+          "Contracts / Invoices / Projects pages",
+          "AI assistant & message box",
+        ],
+        cta: "Talk to sales →",
+      },
+    },
 
     // About
     "about.kicker": "About Whik",
@@ -199,7 +271,7 @@ export const messages: Record<Lang, Record<string, string>> = {
     "about.ms.1.desc": "B2B PoC/consulting hub opens",
 
     "about.ms.2.year": "2026 H1",
-    "about.ms.2.title": "Whik Studio · 3D open beta",
+    "about.ms.2.title": "Whik Studio & Toon / 3D open beta",
     "about.ms.2.desc": "Creator user testing",
 
     "about.ms.3.year": "2027+",
