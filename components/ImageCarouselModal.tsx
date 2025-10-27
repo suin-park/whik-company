@@ -78,7 +78,7 @@ export default function ImageCarouselModal({ open, onClose, images, startIndex =
             onClose();
           }}
           aria-label="닫기"
-          className="fixed left-3 top-[max(env(safe-area-inset-top),12px)] md:left-auto md:right-6 md:top-6
+          className="fixed right-3 top-[max(env(safe-area-inset-top),12px)] md:right-6 md:top-6
                      rounded-full bg-black/60 backdrop-blur border border-white/25 px-4 py-2
                      text-sm text-white shadow-lg active:scale-[0.98] z-[60]"
         >

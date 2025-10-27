@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -6,17 +7,50 @@ import VideoModal from "@/components/VideoModal";
 import { useI18n } from "@/components/I18nProvider";
 import ImageCarouselModal from "@/components/ImageCarouselModal";
 
+// 추가
+import { motion } from "framer-motion";
+import {
+  staggerContainer,
+  fadeUp,
+  fadeUpSlow,
+  hoverLift,
+} from "@/components/motionPresets";
+
 function PageHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
-    <div className="container py-12">
-      <h1 className="text-3xl md:text-4xl">{title}</h1>
-      {subtitle ? <p className="text-subtle mt-3 max-w-2xl">{subtitle}</p> : null}
-    </div>
+    <motion.div
+      className="container py-12"
+      variants={staggerContainer(0.05, 0.08)}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.6 }}
+    >
+      <motion.h1 variants={fadeUp} className="text-3xl md:text-4xl">
+        {title}
+      </motion.h1>
+      {subtitle ? (
+        <motion.p
+          variants={fadeUpSlow}
+          className="text-subtle mt-3 max-w-2xl"
+        >
+          {subtitle}
+        </motion.p>
+      ) : null}
+    </motion.div>
   );
 }
 
+// Card에 모션/호버 적용
 function Card({ children }: { children: React.ReactNode }) {
-  return <div className="card p-8 space-y-4 flex flex-col h-full">{children}</div>;
+  return (
+    <motion.div
+      variants={fadeUp}
+      {...hoverLift}
+      className="card p-8 space-y-4 flex flex-col h-full"
+    >
+      {children}
+    </motion.div>
+  );
 }
 
 export default function ProductsPage() {
@@ -35,24 +69,32 @@ export default function ProductsPage() {
     { src: "/images/work_5.png", alt: "Whik Works 5" },
   ];
 
-  // 다국어 데이터 가져오기
+  // 다국어 데이터
   const products = t("products") as any;
 
   return (
     <>
-      <PageHeader 
-        title={products.header.title} 
-        subtitle={products.header.subtitle} 
+      <PageHeader
+        title={products.header.title}
+        subtitle={products.header.subtitle}
       />
 
-      {/* 2열→3열 반응형 */}
-      <div className="container pb-14 grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-        {/* Whik Works – 캐러셀 모달 적용 */}
+      {/* 그리드 컨테이너에 stagger */}
+      <motion.div
+        className="container pb-14 grid md:grid-cols-2 xl:grid-cols-3 gap-8"
+        variants={staggerContainer(0.05, 0.08)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.35 }}
+      >
+        {/* Whik Works – 캐러셀 모달 */}
         <Card>
-          <button
+          <motion.button
             onClick={() => setWorksOpen(true)}
             className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group"
             aria-label="Open Whik Works gallery"
+            variants={fadeUp}
+            {...hoverLift}
           >
             <Image
               src="/images/works-thumb.png"
@@ -62,26 +104,41 @@ export default function ProductsPage() {
               className="object-cover transition-transform group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-          </button>
+          </motion.button>
 
-          <h2 className="text-2xl">{products.works.title}</h2>
-          <p className="text-subtle">{products.works.desc}</p>
-          <ul className="text-subtle list-disc list-inside space-y-1">
+          <motion.h2 variants={fadeUp} className="text-2xl">
+            {products.works.title}
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-subtle">
+            {products.works.desc}
+          </motion.p>
+          <motion.ul
+            variants={staggerContainer(0.02, 0.05)}
+            className="text-subtle list-disc list-inside space-y-1"
+          >
             {products.works.features.map((f: string, i: number) => (
-              <li key={i}>{f}</li>
+              <motion.li key={i} variants={fadeUp}>
+                {f}
+              </motion.li>
             ))}
-          </ul>
-          <div className="pt-2 mt-auto">
-            <Link href="/contact" className="text-accent">{products.works.cta}</Link>
-          </div>
+          </motion.ul>
+          <motion.div variants={fadeUp} className="pt-2 mt-auto">
+            <Link href="/contact" className="text-accent">
+              {products.works.cta}
+            </Link>
+          </motion.div>
         </Card>
 
         {/* Whik 3D Converter */}
         <Card>
-          <button
+          <motion.button
             className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group"
-            onClick={() => setVideo({ id: "03eeHR_qX5E", title: "Whik 3D Converter Demo" })}
+            onClick={() =>
+              setVideo({ id: "03eeHR_qX5E", title: "Whik 3D Converter Demo" })
+            }
             aria-label="Play Whik 3D Converter demo video"
+            variants={fadeUp}
+            {...hoverLift}
           >
             <Image
               src="/images/3d-thumb.png"
@@ -91,26 +148,41 @@ export default function ProductsPage() {
               className="object-cover transition-transform group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-          </button>
+          </motion.button>
 
-          <h2 className="text-2xl">{products.converter.title}</h2>
-          <p className="text-subtle">{products.converter.desc}</p>
-          <ul className="text-subtle list-disc list-inside space-y-1">
+          <motion.h2 variants={fadeUp} className="text-2xl">
+            {products.converter.title}
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-subtle">
+            {products.converter.desc}
+          </motion.p>
+          <motion.ul
+            variants={staggerContainer(0.02, 0.05)}
+            className="text-subtle list-disc list-inside space-y-1"
+          >
             {products.converter.features.map((f: string, i: number) => (
-              <li key={i}>{f}</li>
+              <motion.li key={i} variants={fadeUp}>
+                {f}
+              </motion.li>
             ))}
-          </ul>
-          <div className="pt-2 mt-auto">
-            <Link href="/contact" className="text-accent">{products.converter.cta}</Link>
-          </div>
+          </motion.ul>
+          <motion.div variants={fadeUp} className="pt-2 mt-auto">
+            <Link href="/contact" className="text-accent">
+              {products.converter.cta}
+            </Link>
+          </motion.div>
         </Card>
 
         {/* Whik Studio */}
         <Card>
-          <button
+          <motion.button
             className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group"
-            onClick={() => setVideo({ id: "6rCVn3087DM", title: "Whik Studio Demo" })}
+            onClick={() =>
+              setVideo({ id: "6rCVn3087DM", title: "Whik Studio Demo" })
+            }
             aria-label="Play Whik Studio demo video"
+            variants={fadeUp}
+            {...hoverLift}
           >
             <Image
               src="/images/studio-thumb.png"
@@ -120,20 +192,31 @@ export default function ProductsPage() {
               className="object-cover transition-transform group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-          </button>
+          </motion.button>
 
-          <h2 className="text-2xl">{products.studio.title}</h2>
-          <p className="text-subtle">{products.studio.desc}</p>
-          <ul className="text-subtle list-disc list-inside space-y-1">
+          <motion.h2 variants={fadeUp} className="text-2xl">
+            {products.studio.title}
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-subtle">
+            {products.studio.desc}
+          </motion.p>
+          <motion.ul
+            variants={staggerContainer(0.02, 0.05)}
+            className="text-subtle list-disc list-inside space-y-1"
+          >
             {products.studio.features.map((f: string, i: number) => (
-              <li key={i}>{f}</li>
+              <motion.li key={i} variants={fadeUp}>
+                {f}
+              </motion.li>
             ))}
-          </ul>
-          <div className="pt-2 mt-auto">
-            <Link href="/contact" className="text-accent">{products.studio.cta}</Link>
-          </div>
+          </motion.ul>
+          <motion.div variants={fadeUp} className="pt-2 mt-auto">
+            <Link href="/contact" className="text-accent">
+              {products.studio.cta}
+            </Link>
+          </motion.div>
         </Card>
-      </div>
+      </motion.div>
 
       {/* Video modal (Studio/3D 전용) */}
       <VideoModal
