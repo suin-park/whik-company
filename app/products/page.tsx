@@ -131,24 +131,24 @@ export default function ProductsPage() {
 
         {/* Whik 3D Converter */}
         <Card>
-          <motion.button
-            className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group"
-            onClick={() =>
-              setVideo({ id: "03eeHR_qX5E", title: "Whik 3D Converter Demo" })
-            }
-            aria-label="Play Whik 3D Converter demo video"
+          <motion.a
+            href="https://www.3d-locker.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group block"
+            aria-label="Go to 3D Locker"
             variants={fadeUp}
             {...hoverLift}
           >
             <Image
-              src="/images/3d-thumb.png"
+              src="/images/3d-thumb2.png"
               alt={products.converter.title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-          </motion.button>
+          </motion.a>
 
           <motion.h2 variants={fadeUp} className="text-2xl">
             {products.converter.title}
@@ -167,9 +167,14 @@ export default function ProductsPage() {
             ))}
           </motion.ul>
           <motion.div variants={fadeUp} className="pt-2 mt-auto">
-            <Link href="/contact" className="text-accent">
+            <a
+              href="https://www.3d-locker.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent"
+            >
               {products.converter.cta}
-            </Link>
+            </a>
           </motion.div>
         </Card>
 

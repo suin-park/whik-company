@@ -16,7 +16,7 @@ export const messages: Record<Lang, Messages> = {
     // Nav
     "nav.home": "Home",
     "nav.products": "Products",
-    "nav.ailab": "AI Lab",
+    "nav.ailab": "Consulting",
     "nav.about": "About",
     "nav.partnership": "Partnership",
     "nav.contact": "Contact",
@@ -29,7 +29,7 @@ export const messages: Record<Lang, Messages> = {
           "1": "Create Faster.",
           "2": "Move with Whik.",
         },
-        subtitle: "AI로 창작의 경계를 허뭅니다. Whik Ecosystem은 스토리 제작부터 3D·AR, B2B AI PoC까지 하나로 연결합니다.",
+        subtitle: "AI로 창작의 경계를 허뭅니다. Whik Ecosystem은 스토리 제작부터 3D-AR-프린팅, B2B AI PoC까지 하나로 연결합니다.",
         cta: {
           primary: "제품 둘러보기",
           secondary: "파트너 문의",
@@ -37,7 +37,7 @@ export const messages: Record<Lang, Messages> = {
       },
       ecosystem: {
         title: "Whik Ecosystem",
-        subtitle: "하나의 허브에서 Create · Convert · Connect가 유기적으로 연결됩니다.",
+        subtitle: "하나의 허브에서 Create-Convert-Connect가 유기적으로 연결됩니다.",
         hub: "Whik",
         hubTagline: "Create · Convert · Connect",
         nodes: {
@@ -46,7 +46,7 @@ export const messages: Record<Lang, Messages> = {
             desc: "AI 기반 웹툰 제작",
           },
           conv3d: {
-            title: "Whik 3D",
+            title: "3D Locker",
             desc: "이미지 1장 → 3D·AR",
           },
           works: {
@@ -66,7 +66,7 @@ export const messages: Record<Lang, Messages> = {
           desc: "다양한 AI 기능으로 창작자의 속도를 높입니다. 이를 통해 빠르게 아이디어를 실현할 수 있습니다.",
         },
         convert: {
-          title: "이미지→3D·AR",
+          title: "이미지→3D/AR/프린팅",
           desc: "한 장의 사진으로 깊이를 예측해 3D로 전환합니다. 이미지 한 장이 새로운 공간을 만듭니다.",
         },
         connect: {
@@ -109,14 +109,14 @@ export const messages: Record<Lang, Messages> = {
         cta: "데모 문의 →",
       },
       converter: {
-        title: "Whik 3D",
+        title: "3D Locker",
         desc: "사진 한 장으로 고품질 3D 오브젝트 생성 및 AR 미리보기",
         features: [
           "이미지 분석 및 예측 / 3D 모델 생성",
           "AR 미리보기",
           "기업 맞춤형 제품/전시 시각화",
         ],
-        cta: "도입 문의 →",
+        cta: "이동하기 →",
       },
       works: {
         title: "Whik Works",
@@ -149,12 +149,12 @@ export const messages: Record<Lang, Messages> = {
     "about.values.integrated": "Studio–3D–AI가 하나의 생태계로 동작",
     "about.milestones": "Milestones",
 
-    "about.ms.1.year": "2025.11",
-    "about.ms.1.title": "Whik AI Lab 론칭",
-    "about.ms.1.desc": "B2B PoC/컨설팅 허브 오픈",
+    "about.ms.1.year": "2025.12",
+    "about.ms.1.title": "3D Locker 론칭",
+    "about.ms.1.desc": "AI 기반 3D 통합 워크플로우",
 
     "about.ms.2.year": "2026 상반기",
-    "about.ms.2.title": "Whik Studio & Toon · 3D 오픈베타",
+    "about.ms.2.title": "Whik Studio & Toon 오픈 베타",
     "about.ms.2.desc": "크리에이터 사용자 테스트",
 
     "about.ms.3.year": "2027+",
@@ -222,8 +222,20 @@ export const messages: Record<Lang, Messages> = {
     "p.cta.secondary": "이메일로 문의",
 
     // Footer
-    "footer.copyright": "© Whik lnc.",
-    "footer.email": "contact@whik.co.kr",
+    "footer.copyright": "© Whik Lab lnc.",
+    "footer.company_name_full": "휙 랩(Whik Lab)",
+    "footer.representative": "대표자",
+    "footer.representative_name": "심수진, 박수인",
+    "footer.business_reg_no": "사업자등록번호",
+    "footer.business_reg_number": "883-29-01818",
+    "footer.online_sales_reg_no": "통신판매업 신고번호",
+    "footer.online_sales_reg_number": "제2025-서울강남-06533호",
+    "footer.address_label": "주소",
+    "footer.address": "서울특별시 강남구 강남대로112길 47, 2층 466A호(논현동)",
+    "footer.phone_label": "대표번호",
+    "footer.phone": "0502-1939-7891",
+    "footer.customer_service": "고객센터",
+    "footer.customer_service_email": "support@whiklab.com",
 
     // Contact
     "contact.title": "Contact",
@@ -248,7 +260,7 @@ export const messages: Record<Lang, Messages> = {
     // Nav
     "nav.home": "Home",
     "nav.products": "Products",
-    "nav.ailab": "AI Lab",
+    "nav.ailab": "Consulting",
     "nav.about": "About",
     "nav.partnership": "Partnership",
     "nav.contact": "Contact",
@@ -278,7 +290,7 @@ export const messages: Record<Lang, Messages> = {
             desc: "AI-powered webtoon creation",
           },
           conv3d: {
-            title: "Whik 3D",
+            title: "3D Locker",
             desc: "One image → 3D & AR",
           },
           works: {
@@ -341,14 +353,14 @@ export const messages: Record<Lang, Messages> = {
         cta: "Request a demo →",
       },
       converter: {
-        title: "Whik 3D",
+        title: "3D Locker",
         desc: "Generate high-quality 3D objects from a single image, preview in AR.",
         features: [
           "Depth-based 3D Reconstruction",
           "AR preview",
           "Product/Exhibition visualization",
         ],
-        cta: "Talk to sales →",
+        cta: "Go to site →",
       },
       works: {
         title: "Whik Works",
@@ -381,12 +393,12 @@ export const messages: Record<Lang, Messages> = {
     "about.values.integrated": "Studio–3D–AI working as one ecosystem",
     "about.milestones": "Milestones",
 
-    "about.ms.1.year": "2025.11",
-    "about.ms.1.title": "Whik AI Lab launch",
-    "about.ms.1.desc": "B2B PoC/consulting hub opens",
+    "about.ms.1.year": "2025.12",
+    "about.ms.1.title": "3D Locker launch",
+    "about.ms.1.desc": "AI-based integrated 3D workflow",
 
     "about.ms.2.year": "2026 H1",
-    "about.ms.2.title": "Whik Studio & Toon / 3D open beta",
+    "about.ms.2.title": "Whik Studio & Toon open beta",
     "about.ms.2.desc": "Creator user testing",
 
     "about.ms.3.year": "2027+",
@@ -454,8 +466,20 @@ export const messages: Record<Lang, Messages> = {
     "p.cta.secondary": "Email us",
 
     // Footer
-    "footer.copyright": "© Whik lnc.",
-    "footer.email": "contact@whik.co.kr",
+    "footer.copyright": "© Whik Lab lnc.",
+    "footer.company_name_full": "Whik Lab",
+    "footer.representative": "Representative",
+    "footer.representative_name": "Claire Shim, Suin Park",
+    "footer.business_reg_no": "Business Registration No.",
+    "footer.business_reg_number": "883-29-01818",
+    "footer.online_sales_reg_no": "Online Sales Business Report No.",
+    "footer.online_sales_reg_number": "2025-Seoul-Gangnam-06533",
+    "footer.address_label": "Address",
+    "footer.address": "466A, 2F, 47 Gangnam-daero 112-gil, Gangnam-gu, Seoul, South Korea (Nonhyeon-dong)",
+    "footer.phone_label": "Phone",
+    "footer.phone": "0502-1939-7891",
+    "footer.customer_service": "Customer Service",
+    "footer.customer_service_email": "support@whiklab.com",
 
     // Contact
     "contact.title": "Contact",
