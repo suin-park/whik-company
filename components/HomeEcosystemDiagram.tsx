@@ -26,15 +26,15 @@ export default function HomeEcosystemDiagram() {
       title: t("home.ecosystem.nodes.studio.title"),
       desc: t("home.ecosystem.nodes.studio.desc"),
       href: "/products",
-      icon: <Box className="w-5 h-5" />,
+      icon: <Atom className="w-5 h-5" />,
       angle: -20,
     },
     {
       key: "conv3d",
       title: t("home.ecosystem.nodes.conv3d.title"),
       desc: t("home.ecosystem.nodes.conv3d.desc"),
-      href: "/products",
-      icon: <Atom className="w-5 h-5" />,
+      href: "https://www.3d-locker.com/",
+      icon: <Box className="w-5 h-5" />,
       angle: 35,
     },
     {
