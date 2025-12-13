@@ -34,12 +34,12 @@ export default function HomePage() {
             </motion.p>
             <div className="flex gap-2 sm:gap-3">
               <motion.div variants={fadeUp} {...hoverLift}>
-                <Link href="/products" className="inline-block px-4 py-2 sm:px-5 sm:py-3 rounded-2xl bg-accent text-black text-sm sm:text-base">
+                <Link href="/products" className="inline-flex items-center justify-center px-4 py-2 sm:px-5 sm:py-3 rounded-2xl bg-accent text-black text-sm sm:text-base">
                   {t("home.hero.cta.primary")}
                 </Link>
               </motion.div>
               <motion.div variants={fadeUp} {...hoverLift}>
-                <Link href="/partnership" className="inline-block px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border border-border text-sm sm:text-base">
+                <Link href="/partnership" className="inline-flex items-center justify-center px-4 py-2 sm:px-5 sm:py-3 rounded-2xl border border-border text-sm sm:text-base">
                   {t("home.hero.cta.secondary")}
                 </Link>
               </motion.div>
@@ -65,7 +65,7 @@ export default function HomePage() {
                 src="/images/3d-thumb2.png"
                 alt="3D Locker"
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                className="object-cover object-left-top transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 priority
               />
