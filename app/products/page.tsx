@@ -87,6 +87,99 @@ export default function ProductsPage() {
         whileInView="show"
         viewport={{ once: true, amount: 0.35 }}
       >
+        {/* 3D Locker */}
+        <Card>
+          <motion.a
+            href="https://www.3d-locker.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group block"
+            aria-label="Go to 3D Locker"
+            variants={fadeUp}
+            {...hoverLift}
+          >
+            <Image
+              src="/images/3d-thumb2.png"
+              alt={products.converter.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-left-top transition-transform group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+          </motion.a>
+
+          <motion.h2 variants={fadeUp} className="text-2xl">
+            {products.converter.title}
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-subtle">
+            {products.converter.desc}
+          </motion.p>
+          <motion.ul
+            variants={staggerContainer(0.02, 0.05)}
+            className="text-subtle list-disc list-inside space-y-1"
+          >
+            {products.converter.features.map((f: string, i: number) => (
+              <motion.li key={i} variants={fadeUp}>
+                {f}
+              </motion.li>
+            ))}
+          </motion.ul>
+          <motion.div variants={fadeUp} className="pt-2 mt-auto">
+            <a
+              href="https://www.3d-locker.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent"
+            >
+              {products.converter.cta}
+            </a>
+          </motion.div>
+        </Card>
+
+        {/* Whik Studio & Toon */}
+        <Card>
+          <motion.button
+            className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group"
+            onClick={() =>
+              setVideo({ id: "6rCVn3087DM", title: "Whik Studio Demo" })
+            }
+            aria-label="Play Whik Studio demo video"
+            variants={fadeUp}
+            {...hoverLift}
+          >
+            <Image
+              src="/images/studio-thumb.png"
+              alt={products.studio.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-left-top transition-transform group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+          </motion.button>
+
+          <motion.h2 variants={fadeUp} className="text-2xl">
+            {products.studio.title}
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-subtle">
+            {products.studio.desc}
+          </motion.p>
+          <motion.ul
+            variants={staggerContainer(0.02, 0.05)}
+            className="text-subtle list-disc list-inside space-y-1"
+          >
+            {products.studio.features.map((f: string, i: number) => (
+              <motion.li key={i} variants={fadeUp}>
+                {f}
+              </motion.li>
+            ))}
+          </motion.ul>
+          <motion.div variants={fadeUp} className="pt-2 mt-auto">
+            <Link href="/contact" className="text-accent">
+              {products.studio.cta}
+            </Link>
+          </motion.div>
+        </Card>
+
         {/* Whik Works – 캐러셀 모달 */}
         <Card>
           <motion.button
@@ -125,99 +218,6 @@ export default function ProductsPage() {
           <motion.div variants={fadeUp} className="pt-2 mt-auto">
             <Link href="/contact" className="text-accent">
               {products.works.cta}
-            </Link>
-          </motion.div>
-        </Card>
-
-        {/* Whik 3D Converter */}
-        <Card>
-          <motion.a
-            href="https://www.3d-locker.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group block"
-            aria-label="Go to 3D Locker"
-            variants={fadeUp}
-            {...hoverLift}
-          >
-            <Image
-              src="/images/3d-thumb2.png"
-              alt={products.converter.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover transition-transform group-hover:scale-[1.02]"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-          </motion.a>
-
-          <motion.h2 variants={fadeUp} className="text-2xl">
-            {products.converter.title}
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-subtle">
-            {products.converter.desc}
-          </motion.p>
-          <motion.ul
-            variants={staggerContainer(0.02, 0.05)}
-            className="text-subtle list-disc list-inside space-y-1"
-          >
-            {products.converter.features.map((f: string, i: number) => (
-              <motion.li key={i} variants={fadeUp}>
-                {f}
-              </motion.li>
-            ))}
-          </motion.ul>
-          <motion.div variants={fadeUp} className="pt-2 mt-auto">
-            <a
-              href="https://www.3d-locker.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent"
-            >
-              {products.converter.cta}
-            </a>
-          </motion.div>
-        </Card>
-
-        {/* Whik Studio */}
-        <Card>
-          <motion.button
-            className="relative w-full aspect-[5/3] rounded-xl overflow-hidden group"
-            onClick={() =>
-              setVideo({ id: "6rCVn3087DM", title: "Whik Studio Demo" })
-            }
-            aria-label="Play Whik Studio demo video"
-            variants={fadeUp}
-            {...hoverLift}
-          >
-            <Image
-              src="/images/studio-thumb.png"
-              alt={products.studio.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover transition-transform group-hover:scale-[1.02]"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-          </motion.button>
-
-          <motion.h2 variants={fadeUp} className="text-2xl">
-            {products.studio.title}
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-subtle">
-            {products.studio.desc}
-          </motion.p>
-          <motion.ul
-            variants={staggerContainer(0.02, 0.05)}
-            className="text-subtle list-disc list-inside space-y-1"
-          >
-            {products.studio.features.map((f: string, i: number) => (
-              <motion.li key={i} variants={fadeUp}>
-                {f}
-              </motion.li>
-            ))}
-          </motion.ul>
-          <motion.div variants={fadeUp} className="pt-2 mt-auto">
-            <Link href="/contact" className="text-accent">
-              {products.studio.cta}
             </Link>
           </motion.div>
         </Card>
