@@ -7,19 +7,60 @@ import { Menu, X } from "lucide-react";
 import LanguageSwitch from "./LanguageSwitch";
 import { useI18n } from "./I18nProvider";
 
+const WHIK_AI_LAB_URL = "https://ai.whik.co.kr/";
+
+type SimpleLink = { href: string; label: string; external?: boolean };
+
 function MobileMenu({
-  open, onClose, links, activePath,
+  open,
+  onClose,
+  linksBeforeServices,
+  linksAfterServices,
+  activePath,
+  servicesLabel,
+  serviceItems,
 }: {
   open: boolean;
   onClose: () => void;
-  links: { href: string; label: string }[];
+  linksBeforeServices: SimpleLink[];
+  linksAfterServices: SimpleLink[];
   activePath: string;
+  servicesLabel: string;
+  serviceItems: SimpleLink[];
 }) {
   // 스크롤 잠금
   useEffect(() => {
     if (open) document.body.classList.add("overflow-hidden");
     return () => document.body.classList.remove("overflow-hidden");
   }, [open]);
+
+  const linkClass = (active: boolean) =>
+    `block px-4 py-3 rounded-xl text-lg font-medium
+     focus:outline-none focus:ring-2 focus:ring-accent/60
+     ${active ? "bg-accent/20 text-accent" : "text-fg hover:bg-muted/40"}`;
+
+  const renderLink = (l: SimpleLink) => {
+    const active = !l.external && activePath === l.href;
+    if (l.external) {
+      return (
+        <a
+          key={l.label}
+          href={l.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onClose}
+          className={`${linkClass(false)} font-medium`}
+        >
+          {l.label}
+        </a>
+      );
+    }
+    return (
+      <Link key={l.href} href={l.href} onClick={onClose} className={linkClass(active)}>
+        {l.label}
+      </Link>
+    );
+  };
 
   return (
     <div className="md:hidden fixed inset-0 z-50">
@@ -54,44 +95,30 @@ function MobileMenu({
         {/* 내비 항목 */}
         <nav className="mt-3 overflow-auto">
           <ul className="space-y-1">
-            {links.map((l) => {
-              const active = activePath === l.href;
-              
-              // AI Lab은 새 탭으로 열기
-              if (l.href === "/ai-lab") {
-                return (
-                  <li key={l.href}>
-                    <a
-                      href="https://ai.whik.co.kr"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={onClose}
-                      className="block px-4 py-3 rounded-xl text-lg font-medium
-                                 focus:outline-none focus:ring-2 focus:ring-accent/60
-                                 text-fg hover:bg-muted/40"
-                    >
-                      {l.label}
-                    </a>
-                  </li>
-                );
-              }
-              
-              return (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    onClick={onClose}
-                    className={`block px-4 py-3 rounded-xl text-lg font-medium
-                                focus:outline-none focus:ring-2 focus:ring-accent/60
-                                ${active
-                                  ? "bg-accent/20 text-accent"
-                                  : "text-fg hover:bg-muted/40"}`}
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              );
-            })}
+            {linksBeforeServices.map((l) => (
+              <li key={l.href}>{renderLink(l)}</li>
+            ))}
+
+            <li>
+              <a
+                href={WHIK_AI_LAB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onClose}
+                className={`${linkClass(false)} font-medium`}
+              >
+                {servicesLabel}
+              </a>
+              <ul className="mt-1 space-y-0.5 border-l border-border ml-4 pl-3">
+                {serviceItems.map((item) => (
+                  <li key={item.label}>{renderLink(item)}</li>
+                ))}
+              </ul>
+            </li>
+
+            {linksAfterServices.map((l) => (
+              <li key={l.href}>{renderLink(l)}</li>
+            ))}
           </ul>
 
           {/* 구분선 */}
@@ -112,11 +139,18 @@ export default function TopNav() {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
 
-  const links = [
+  const serviceItems: SimpleLink[] = [
+    { href: WHIK_AI_LAB_URL, label: t("nav.aiSolutions"), external: true },
+    { href: "https://ai.whik.co.kr/sales", label: t("nav.salesSupport"), external: true },
+  ];
+
+  const linksBeforeServices: SimpleLink[] = [
     { href: "/", label: t("nav.home") },
     { href: "/about", label: t("nav.about") },
     { href: "/products", label: t("nav.products") },
-    { href: "/ai-lab", label: t("nav.ailab") },
+  ];
+
+  const linksAfterServices: SimpleLink[] = [
     { href: "/partnership", label: t("nav.partnership") },
     { href: "/contact", label: t("nav.contact") },
   ];
@@ -131,31 +165,72 @@ export default function TopNav() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6">
-          {links.map((l) => {
-            // AI Lab은 새 탭으로 열기
-            if (l.href === "/ai-lab") {
-              return (
-                <a
-                  key={l.href}
-                  href="https://ai.whik.co.kr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-subtle hover:text-fg"
-                >
-                  {l.label}
-                </a>
-              );
-            }
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`text-sm ${pathname === l.href ? "text-accent" : "text-subtle hover:text-fg"}`}
+          {linksBeforeServices.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={`text-sm ${pathname === l.href ? "text-accent" : "text-subtle hover:text-fg"}`}
+            >
+              {l.label}
+            </Link>
+          ))}
+
+          <div className="relative group">
+            <a
+              href={WHIK_AI_LAB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-subtle hover:text-fg inline-flex items-center gap-1"
+            >
+              {t("nav.services")}
+            </a>
+            <div
+              className="absolute left-0 top-full pt-2 opacity-0 invisible pointer-events-none
+                         group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto
+                         group-focus-within:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto
+                         transition-opacity duration-150 z-50"
+            >
+              <div
+                className="min-w-[11rem] rounded-lg border border-border bg-bg py-1 shadow-lg"
+                role="menu"
+                aria-label={t("nav.services")}
               >
-                {l.label}
-              </Link>
-            );
-          })}
+                {serviceItems.map((item) =>
+                  item.external ? (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-3 py-2 text-sm text-fg hover:bg-muted/50"
+                      role="menuitem"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="block px-3 py-2 text-sm text-fg hover:bg-muted/50"
+                      role="menuitem"
+                    >
+                      {item.label}
+                    </Link>
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
+
+          {linksAfterServices.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={`text-sm ${pathname === l.href ? "text-accent" : "text-subtle hover:text-fg"}`}
+            >
+              {l.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Right area */}
@@ -178,7 +253,15 @@ export default function TopNav() {
 
       {/* Mobile sheet */}
       {open && (
-        <MobileMenu open={open} onClose={() => setOpen(false)} links={links} activePath={pathname} />
+        <MobileMenu
+          open={open}
+          onClose={() => setOpen(false)}
+          linksBeforeServices={linksBeforeServices}
+          linksAfterServices={linksAfterServices}
+          activePath={pathname}
+          servicesLabel={t("nav.services")}
+          serviceItems={serviceItems}
+        />
       )}
     </header>
   );

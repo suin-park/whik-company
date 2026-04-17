@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   const host = process.env.NEXT_PUBLIC_SITE_URL ?? "https://whik.co.kr";
   const now = new Date();
-  const urls = ["/", "/about", "/products", "/ai-lab", "/partnership", "/contact"];
+  const urls = ["/", "/about", "/products", "/partnership", "/contact"];
   return urls.map((path) => ({
     url: `${host}${path}`,
     lastModified: now,
