@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
-import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { z } from "zod";
 
 export const runtime = "nodejs";
@@ -15,51 +13,49 @@ const Body = z.object({
   messages: z.array(Msg),
 });
 
-function getOpenAI() {
-  const k = process.env.OPENAI_API_KEY;
-  if (!k) throw new Error("OPENAI_API_KEY not set");
-  return new OpenAI({ apiKey: k });
+function countUserMessages(messages: { role: string }[]) {
+  return messages.filter((m) => m.role === "user").length;
 }
 
 export async function POST(req: NextRequest) {
-  const client = getOpenAI();
   try {
     const body = Body.parse(await req.json());
     const { messages } = body;
+    const userTurns = countUserMessages(messages);
 
-    const systemContent = [
-      "너는 B2B AI PoC 견적 상담 도우미야.",
-      "대화는 4~6 턴 안에서 끝내고,",
-      "1) 목표, 2) 기간(2주/4주/8주), 3) 예산대(200~1000만원), 4) 기술 요소를 물어봐.",
-      "마지막 답변엔 '예상 범위'를 숫자 구간으로 제시하고,",
-      "상담 연결을 위한 다음 단계(문의 폼/미팅 예약)를 한 줄로 안내해.",
-    ].join(" ");
+    if (userTurns < 1) {
+      return NextResponse.json(
+        { ok: false, error: "메시지가 비어 있습니다." },
+        { status: 400 }
+      );
+    }
 
-    const history = messages.map((m) => ({
-      role: m.role === "ai" ? ("assistant" as const) : ("user" as const),
-      name: m.role,
-      content: m.text,
-    }));
+    let reply: string;
 
-    const apiMessages: ChatCompletionMessageParam[] = [
-      { role: "system", name: "system", content: systemContent },
-      ...history,
-    ];
+    if (userTurns === 1) {
+      reply = [
+        "감사합니다. 견적 범위를 좁히려면 아래를 알려주세요.",
+        "1) 희망 일정: 대략 2주 / 1개월 / 2개월 중 어디에 가까우신가요?",
+        "2) 예산 감각: PoC 단계에서 생각하시는 대략의 예산대(예: 200~500만 원, 500~1,000만 원 등)",
+        "3) 인프라·데이터: 사내 데이터 연동, 외부 API, 보안·규제 요구가 있으면 짧게 적어 주세요.",
+      ].join("\n");
+    } else if (userTurns === 2) {
+      reply = [
+        "보내주신 내용을 바탕으로, 일반적인 AI PoC·프로토타입 범위는 대략 300만 원~900만 원 전후로 잡는 경우가 많습니다.",
+        "데이터 준비·연동 범위가 크거나 3D·실시간 성능이 필요하면 구간이 올라갈 수 있습니다.",
+        "더 정확한 견적은 내부 검토가 필요합니다. 화면 아래 문의 폼에 프로젝트 링크나 자료가 있으면 함께 보내 주시면, 담당자가 검토 후 연락드리겠습니다.",
+      ].join("\n");
+    } else {
+      reply = [
+        "추가로 궁금하신 점이 있으면 이어서 질문해 주세요.",
+        "확정 일정·예산 논의는 이메일 또는 미팅이 가장 빠릅니다. 문의 폼에서 희망 일시를 남겨 주시면 일정 조율을 도와드립니다.",
+      ].join("\n");
+    }
 
-    const rsp = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: apiMessages,
-      temperature: 0.5,
-    });
-
-    const reply = rsp.choices[0]?.message?.content ?? "잠시 후 다시 시도해 주세요.";
     return NextResponse.json({ reply });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("quote api error", err);
-    return NextResponse.json(
-      { ok: false, error: err?.message ?? "unknown error" },
-      { status: 400 }
-    );
+    const message = err instanceof Error ? err.message : "unknown error";
+    return NextResponse.json({ ok: false, error: message }, { status: 400 });
   }
 }
-
