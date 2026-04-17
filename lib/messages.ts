@@ -16,7 +16,9 @@ export const messages: Record<Lang, Messages> = {
     // Nav
     "nav.home": "Home",
     "nav.products": "Products",
-    "nav.ailab": "Consulting",
+    "nav.services": "Services",
+    "nav.aiSolutions": "AI Solutions",
+    "nav.salesSupport": "Sales Support",
     "nav.about": "About",
     "nav.partnership": "Partnership",
     "nav.contact": "Contact",
@@ -260,7 +262,9 @@ export const messages: Record<Lang, Messages> = {
     // Nav
     "nav.home": "Home",
     "nav.products": "Products",
-    "nav.ailab": "Consulting",
+    "nav.services": "Services",
+    "nav.aiSolutions": "AI Solutions",
+    "nav.salesSupport": "Sales Support",
     "nav.about": "About",
     "nav.partnership": "Partnership",
     "nav.contact": "Contact",
