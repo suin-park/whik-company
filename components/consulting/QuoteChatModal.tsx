@@ -69,8 +69,12 @@ export default function QuoteChatModal({ open, onClose }: Props) {
       }),
     });
     const data = await res.json();
+    const replyText =
+      typeof data.reply === "string" && data.reply.trim()
+        ? data.reply
+        : "일시적으로 응답을 가져오지 못했습니다. 아래 문의 폼으로 연락 부탁드립니다.";
 
-    setMessages((prev) => [...prev, { role: "ai" as const, text: data.reply }]);
+    setMessages((prev) => [...prev, { role: "ai" as const, text: replyText }]);
   }
 
   return (
@@ -82,7 +86,7 @@ export default function QuoteChatModal({ open, onClose }: Props) {
     >
       <div className="card w-full max-w-2xl p-0 overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <div className="font-semibold">AI 견적 상담</div>
+          <div className="font-semibold">견적 상담</div>
           <button
             onClick={onClose}
             className="inline-flex items-center justify-center rounded-xl px-3 py-1 border border-border hover:border-accent text-sm"
