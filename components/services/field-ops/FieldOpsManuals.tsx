@@ -36,9 +36,6 @@ export default function FieldOpsManuals() {
           <motion.p variants={fadeUp} className="mt-3 text-subtle leading-relaxed">
             {c.desc}
           </motion.p>
-          <motion.p variants={fadeUp} className="mt-3 text-sm text-subtle/80 leading-relaxed">
-            {c.note}
-          </motion.p>
         </div>
 
         {/* 우측 — 매뉴얼 패널 */}
@@ -46,19 +43,13 @@ export default function FieldOpsManuals() {
           {c.items.map((item) => {
             const Icon = ICONS[item.icon] ?? Video;
             return (
-              <div key={item.title} className="flex gap-4 p-5 md:p-6">
+              <div key={item.title} className="flex items-center gap-3.5 p-4 md:p-5">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent/12 text-accent">
                   <Icon className="h-5 w-5" aria-hidden />
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-fg">{item.title}</p>
-                  <ul className="mt-2 space-y-1">
-                    {item.lines.map((line) => (
-                      <li key={line} className="text-xs text-subtle leading-relaxed">
-                        {line}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="mt-0.5 text-xs text-subtle">{item.desc}</p>
                 </div>
               </div>
             );

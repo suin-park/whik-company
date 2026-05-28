@@ -6,6 +6,7 @@ import FieldOpsApproach from "@/components/services/field-ops/FieldOpsApproach";
 import FieldOpsIndustries from "@/components/services/field-ops/FieldOpsIndustries";
 import FieldOpsCase from "@/components/services/field-ops/FieldOpsCase";
 import FieldOpsManuals from "@/components/services/field-ops/FieldOpsManuals";
+import FieldOpsOutcome from "@/components/services/field-ops/FieldOpsOutcome";
 import FieldOpsFAQ from "@/components/services/field-ops/FieldOpsFAQ";
 
 export const metadata: Metadata = {
@@ -48,6 +49,9 @@ export default function FieldOpsPage() {
 
       {/* 도입 후 사용 안내 자료 */}
       <FieldOpsManuals />
+
+      {/* 도입 효과 예시 */}
+      <FieldOpsOutcome />
 
       {/* FAQ + 하단 CTA(우측 상담 카드) */}
       <div className="field-ops-section-muted">

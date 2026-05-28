@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { staggerContainer, fadeUp, fadeUpSlow } from "../../motionPresets";
 import { fieldOpsContent } from "./fieldOpsContent";
-import FieldOpsImagePlaceholder from "./FieldOpsImagePlaceholder";
+import FieldOpsHeroVideo from "./FieldOpsHeroVideo";
 
 export default function FieldOpsHero() {
   const c = fieldOpsContent.hero;
@@ -73,9 +73,12 @@ export default function FieldOpsHero() {
         </motion.ul>
       </div>
 
-      {/* 우측 비주얼 — 실제 운영 화면 이미지가 들어갈 자리 */}
+      {/* 우측 비주얼 — 서비스 소개 영상 */}
       <motion.div variants={fadeUpSlow}>
-        <FieldOpsImagePlaceholder label={c.imageLabel} ratio="aspect-[16/10]" />
+        <FieldOpsHeroVideo
+          src="https://www.youtube.com/embed/x3atbF0Ah4s"
+          title="Whik Lab 업무 시스템 소개 영상"
+        />
       </motion.div>
     </motion.section>
   );
