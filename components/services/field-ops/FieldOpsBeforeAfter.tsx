@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Check, Minus } from "lucide-react";
 import { staggerContainer, fadeUp } from "../../motionPresets";
@@ -56,6 +57,19 @@ export default function FieldOpsBeforeAfter() {
           </div>
         </motion.div>
       </div>
+
+      <motion.div
+        variants={fadeUp}
+        className="card relative mt-4 aspect-[16/9] overflow-hidden"
+      >
+        <Image
+          src="/images/process.png"
+          alt="흩어진 업무가 하나의 운영 시스템으로 정리되는 흐름"
+          fill
+          sizes="(min-width: 1024px) 1024px, 100vw"
+          className="object-cover"
+        />
+      </motion.div>
     </motion.section>
   );
 }

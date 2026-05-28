@@ -2,31 +2,31 @@
 
 import { motion } from "framer-motion";
 import {
-  Blinds,
-  Grid3x3,
-  Wind,
-  Sparkles,
-  Sofa,
-  Bath,
-  Wrench,
-  PaintRoller,
+  Calendar,
+  ClipboardList,
+  Camera,
+  Wallet,
+  Users,
+  Shuffle,
+  Inbox,
+  ListChecks,
   type LucideIcon,
 } from "lucide-react";
 import { staggerContainer, fadeUp } from "../../motionPresets";
 import { fieldOpsContent } from "./fieldOpsContent";
 
 const ICONS: Record<string, LucideIcon> = {
-  wallpaper: PaintRoller,
-  blinds: Blinds,
-  grid: Grid3x3,
-  wind: Wind,
-  sparkles: Sparkles,
-  sofa: Sofa,
-  bath: Bath,
-  wrench: Wrench,
+  calendar: Calendar,
+  clipboard: ClipboardList,
+  camera: Camera,
+  wallet: Wallet,
+  users: Users,
+  shuffle: Shuffle,
+  inbox: Inbox,
+  list: ListChecks,
 };
 
-/** 적용 업종 — 아이콘 타일로 텍스트 박스 느낌 줄임. */
+/** 잘 맞는 업무 구조 — 아이콘 타일로 텍스트 박스 느낌 줄임. */
 export default function FieldOpsIndustries() {
   const c = fieldOpsContent.industries;
   return (
@@ -47,7 +47,7 @@ export default function FieldOpsIndustries() {
 
       <div className="mt-8 grid gap-3 grid-cols-2 sm:grid-cols-4">
         {c.items.map((item) => {
-          const Icon = ICONS[item.icon] ?? Wrench;
+          const Icon = ICONS[item.icon] ?? ListChecks;
           return (
             <motion.div
               key={item.label}

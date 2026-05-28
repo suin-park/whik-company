@@ -73,12 +73,6 @@ img[src*="whik-logo"] {
   mask-image: radial-gradient(125% 95% at 50% 0%, #000 30%, transparent 76%);
 }
 
-/* CTA 글로우 — 페이지 마무리에 무게. 카드 뒤쪽에 은은하게 */
-.field-ops-cta-bg {
-  background-image:
-    radial-gradient(620px 320px at 50% 52%, rgba(255, 106, 0, 0.10), transparent 62%),
-    radial-gradient(540px 280px at 72% 60%, rgba(0, 212, 255, 0.08), transparent 60%);
-}
 
 /* 모바일 터치 타겟 최소 높이 */
 @media (max-width: 640px) {

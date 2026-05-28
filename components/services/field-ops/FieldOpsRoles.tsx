@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { staggerContainer, fadeUp } from "../../motionPresets";
 import { fieldOpsContent } from "./fieldOpsContent";
 
-/** 역할별 카드 — 설명 1줄 + 미니 화면 프리뷰(리스트 줄 + 상태칩). */
+/** 역할별 화면 — 한 장의 구조 이미지로 대표, 운영팀, 현장 담당자, AI 에이전트 화면을 함께 보여줌. */
 export default function FieldOpsRoles() {
   const c = fieldOpsContent.roles;
   return (
@@ -18,34 +19,20 @@ export default function FieldOpsRoles() {
       <motion.h2 variants={fadeUp} className="text-2xl md:text-3xl font-semibold text-fg">
         {c.title}
       </motion.h2>
+      <motion.p variants={fadeUp} className="mt-3 max-w-3xl text-subtle leading-relaxed">
+        {c.desc}
+      </motion.p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {c.cards.map((card) => (
-          <motion.div key={card.role} variants={fadeUp} className="card p-5 flex flex-col gap-3">
-            <div className="flex items-center justify-between border-b border-border pb-2.5">
-              <span className="text-sm font-semibold text-fg">{card.role}</span>
-              <span className="flex gap-1" aria-hidden>
-                <span className="h-2 w-2 rounded-full bg-fg/15" />
-                <span className="h-2 w-2 rounded-full bg-accent/40" />
-              </span>
-            </div>
-            <p className="text-xs text-subtle leading-relaxed">{card.desc}</p>
-            <div className="space-y-1.5">
-              {card.preview.map((row) => (
-                <div
-                  key={row.text}
-                  className="flex items-center justify-between gap-2 rounded-lg border border-border bg-fg/[0.03] px-2.5 py-1.5"
-                >
-                  <span className="text-[12px] text-fg/85 truncate">{row.text}</span>
-                  <span className="shrink-0 rounded-full bg-accent/[0.12] px-1.5 py-0.5 text-[10px] font-medium text-accent">
-                    {row.tag}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
+      <motion.div variants={fadeUp} className="mt-8">
+        <Image
+          src="/images/process2.png"
+          alt="대표, 운영팀, 현장 담당자, AI 에이전트가 각자 다른 화면으로 같은 업무 흐름을 보는 운영 시스템 구조"
+          width={1672}
+          height={941}
+          sizes="(min-width: 1024px) 1024px, 100vw"
+          className="h-auto w-full rounded-2xl border border-white/[0.08] shadow-soft"
+        />
+      </motion.div>
     </motion.section>
   );
 }

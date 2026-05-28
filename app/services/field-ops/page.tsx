@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
 import FieldOpsHero from "@/components/services/field-ops/FieldOpsHero";
-import FieldOpsImpactStats from "@/components/services/field-ops/FieldOpsImpactStats";
 import FieldOpsBeforeAfter from "@/components/services/field-ops/FieldOpsBeforeAfter";
-import FieldOpsWorkflow from "@/components/services/field-ops/FieldOpsWorkflow";
-import FieldOpsCase from "@/components/services/field-ops/FieldOpsCase";
 import FieldOpsRoles from "@/components/services/field-ops/FieldOpsRoles";
-import FieldOpsAssistant from "@/components/services/field-ops/FieldOpsAssistant";
-import FieldOpsExtensions from "@/components/services/field-ops/FieldOpsExtensions";
+import FieldOpsApproach from "@/components/services/field-ops/FieldOpsApproach";
 import FieldOpsIndustries from "@/components/services/field-ops/FieldOpsIndustries";
-import FieldOpsProcess from "@/components/services/field-ops/FieldOpsProcess";
-import FieldOpsPackages from "@/components/services/field-ops/FieldOpsPackages";
-import FieldOpsCTA from "@/components/services/field-ops/FieldOpsCTA";
+import FieldOpsCase from "@/components/services/field-ops/FieldOpsCase";
+import FieldOpsManuals from "@/components/services/field-ops/FieldOpsManuals";
 import FieldOpsFAQ from "@/components/services/field-ops/FieldOpsFAQ";
 
 export const metadata: Metadata = {
   title: "현장형 업체 운영 시스템 구축",
   description:
-    "카톡, 전화, 엑셀로 흩어진 현장 업무를 하나로 연결합니다. 상담, 견적, 계약, 일정, 정산까지 회사 업무 흐름에 맞춰 운영 시스템을 구축합니다.",
+    "카톡, 전화, 엑셀로 흩어진 업무를 하나로 연결합니다. 상담, 견적, 일정, 완료 보고, 정산까지 업체의 실제 업무 흐름에 맞춰 운영 시스템을 구축합니다.",
 };
 
 /** /services/field-ops — 현장형 업체 운영 시스템 구축 랜딩 (오케스트레이션만).
@@ -32,33 +27,29 @@ export default function FieldOpsPage() {
         </div>
       </div>
 
-      <div className="field-ops-section-muted">
-        <FieldOpsImpactStats />
-      </div>
-
+      {/* 흩어진 업무와 정리 후 비교 */}
       <FieldOpsBeforeAfter />
-      <FieldOpsWorkflow />
-      <FieldOpsRoles />
 
+      {/* 역할별 화면 소개 */}
       <div className="field-ops-section-muted">
-        <FieldOpsCase />
+        <FieldOpsRoles />
       </div>
 
-      <FieldOpsAssistant />
-      <FieldOpsExtensions />
+      {/* 업종을 먼저 이해하고, 화면은 그다음에 만듭니다 */}
+      <FieldOpsApproach />
 
+      {/* 이런 업무 구조에 잘 맞습니다 */}
       <div className="field-ops-section-muted">
         <FieldOpsIndustries />
       </div>
 
-      <FieldOpsProcess />
-      <FieldOpsPackages />
+      {/* 실제 업무 흐름을 화면으로 정리한 사례 */}
+      <FieldOpsCase />
 
-      {/* CTA — 본문보다 한 단계 강한 글로우 */}
-      <div className="field-ops-cta-bg relative overflow-hidden">
-        <FieldOpsCTA />
-      </div>
+      {/* 도입 후 사용 안내 자료 */}
+      <FieldOpsManuals />
 
+      {/* FAQ + 하단 CTA(우측 상담 카드) */}
       <div className="field-ops-section-muted">
         <FieldOpsFAQ />
       </div>
