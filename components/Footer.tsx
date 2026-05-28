@@ -4,7 +4,7 @@ import { useI18n } from "./I18nProvider";
 export default function Footer() {
   const { t } = useI18n();
   return (
-    <footer className="mt-20 border-t border-border py-10">
+    <footer className="mt-0 border-t border-border py-10 md:mt-20">
       <div className="container">
         {/* 모바일 레이아웃 */}
         <div className="flex flex-col gap-4 md:hidden text-sm">

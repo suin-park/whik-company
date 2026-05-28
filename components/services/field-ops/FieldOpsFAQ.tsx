@@ -20,9 +20,9 @@ export default function FieldOpsFAQ() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="container py-16 md:py-24"
+      className="container pt-14 pb-10 md:py-24"
     >
-      <div className="mx-auto max-w-[1180px] grid gap-6 lg:grid-cols-12 lg:gap-8">
+      <div className="mx-auto max-w-[1180px] grid gap-8 lg:grid-cols-12">
         {/* 왼쪽 — FAQ 아코디언 (약 65%) */}
         <div className="lg:col-span-8">
           <motion.h2 variants={fadeUp} className="text-2xl md:text-3xl font-semibold text-fg">
@@ -65,10 +65,10 @@ export default function FieldOpsFAQ() {
             데스크톱에서는 FAQ 제목 높이(약 36px) + 제목 아래 여백(mt-8, 32px)만큼 내려
             왼쪽 아코디언 첫 항목 상단과 수평을 맞춘다. 모바일에서는 적용하지 않음. */}
         <motion.aside variants={fadeUp} className="lg:col-span-4 lg:mt-[68px]">
-          <div className="rounded-2xl border border-accent/30 bg-fg/[0.03] p-6 lg:sticky lg:top-24">
+          <div className="flex flex-col gap-4 rounded-2xl border border-accent/30 bg-fg/[0.03] p-7 lg:p-6 lg:sticky lg:top-24">
             <h3 className="text-lg font-semibold text-fg leading-snug">{a.title}</h3>
-            <p className="mt-3 text-sm text-subtle leading-relaxed">{a.body}</p>
-            <div className="mt-6 flex flex-col gap-3">
+            <p className="text-sm text-subtle leading-relaxed">{a.body}</p>
+            <div className="flex flex-col gap-3">
               <Link
                 href={href}
                 className="min-h-[48px] px-5 rounded-2xl inline-flex items-center justify-center text-[15px] font-semibold bg-accent text-black hover:opacity-90 transition"
