@@ -142,6 +142,7 @@ export default function TopNav() {
   const serviceItems: SimpleLink[] = [
     { href: WHIK_AI_LAB_URL, label: t("nav.aiSolutions"), external: true },
     { href: "https://ai.whik.co.kr/sales", label: t("nav.salesSupport"), external: true },
+    { href: "/services/field-ops", label: t("nav.opsSystem") },
   ];
 
   const linksBeforeServices: SimpleLink[] = [
