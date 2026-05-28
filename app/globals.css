@@ -34,6 +34,52 @@ img[src*="whik-logo"] {
     linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 40%);
 }
 
+/* ===== /services/field-ops 전용 배경 (다른 페이지 영향 없음) ===== */
+
+/* 페이지 스코프 래퍼 — 아래 .card 오버라이드를 이 페이지로 한정 */
+.field-ops-page {
+  position: relative;
+}
+
+/* 카드 대비 강화 — 전역 .card 정의는 그대로 두고 이 페이지에서만 한 단계 밝게 */
+.field-ops-page .card {
+  background-color: #181b20;
+  border-color: #23262d;
+}
+
+/* 섹션 미세 톤 차이 — 줄무늬가 아니라 은은한 구간 구분용 */
+.field-ops-section-muted {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+
+/* Hero 글로우 — 오렌지/청록 약하게 (배경 이미지라 콘텐츠 뒤에 깔림) */
+.field-ops-hero-bg {
+  background-image:
+    radial-gradient(900px 420px at 12% -12%, rgba(255, 106, 0, 0.13), transparent 60%),
+    radial-gradient(760px 380px at 88% -16%, rgba(0, 212, 255, 0.10), transparent 58%);
+}
+
+/* Hero 미세 그리드 — 별도 레이어로 깔고 가장자리로 갈수록 사라지게 mask */
+.field-ops-hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(125% 95% at 50% 0%, #000 30%, transparent 76%);
+  mask-image: radial-gradient(125% 95% at 50% 0%, #000 30%, transparent 76%);
+}
+
+/* CTA 글로우 — 페이지 마무리에 무게. 카드 뒤쪽에 은은하게 */
+.field-ops-cta-bg {
+  background-image:
+    radial-gradient(620px 320px at 50% 52%, rgba(255, 106, 0, 0.10), transparent 62%),
+    radial-gradient(540px 280px at 72% 60%, rgba(0, 212, 255, 0.08), transparent 60%);
+}
+
 /* 모바일 터치 타겟 최소 높이 */
 @media (max-width: 640px) {
   a, button {

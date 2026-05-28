@@ -1,9 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
+import {
+  Blinds,
+  Grid3x3,
+  Wind,
+  Sparkles,
+  Sofa,
+  Bath,
+  Wrench,
+  PaintRoller,
+  type LucideIcon,
+} from "lucide-react";
 import { staggerContainer, fadeUp } from "../../motionPresets";
 import { fieldOpsContent } from "./fieldOpsContent";
 
+const ICONS: Record<string, LucideIcon> = {
+  wallpaper: PaintRoller,
+  blinds: Blinds,
+  grid: Grid3x3,
+  wind: Wind,
+  sparkles: Sparkles,
+  sofa: Sofa,
+  bath: Bath,
+  wrench: Wrench,
+};
+
+/** 적용 업종 — 아이콘 타일로 텍스트 박스 느낌 줄임. */
 export default function FieldOpsIndustries() {
   const c = fieldOpsContent.industries;
   return (
@@ -23,15 +46,21 @@ export default function FieldOpsIndustries() {
       </motion.p>
 
       <div className="mt-8 grid gap-3 grid-cols-2 sm:grid-cols-4">
-        {c.items.map((item) => (
-          <motion.div
-            key={item}
-            variants={fadeUp}
-            className="card p-4 text-sm font-medium text-fg/90 text-center"
-          >
-            {item}
-          </motion.div>
-        ))}
+        {c.items.map((item) => {
+          const Icon = ICONS[item.icon] ?? Wrench;
+          return (
+            <motion.div
+              key={item.label}
+              variants={fadeUp}
+              className="card p-4 flex flex-col items-center gap-2.5 text-center"
+            >
+              <span className="grid place-items-center w-10 h-10 rounded-xl bg-accent/12 text-accent">
+                <Icon className="w-5 h-5" aria-hidden />
+              </span>
+              <span className="text-sm font-medium text-fg/90 leading-snug">{item.label}</span>
+            </motion.div>
+          );
+        })}
       </div>
     </motion.section>
   );

@@ -62,28 +62,55 @@ export default function FieldOpsHero() {
         </motion.div>
       </div>
 
-      {/* 우측 비주얼 — 업무 흐름 요약 카드 (예시 데이터) */}
+      {/* 우측 비주얼 — 관리자 대시보드 목업 (예시 데이터) */}
       <motion.div variants={fadeUpSlow} className="card p-5 md:p-6">
-        <p className="text-xs text-subtle">운영 화면 미리보기 (예시)</p>
-        <div className="mt-4 space-y-2.5">
-          {["고객 문의 3건 도착", "오늘 방문 예정 2건", "정산 확인 필요 1건", "완료 보고 대기 2건"].map(
-            (line, i) => (
-              <div
-                key={line}
-                className="flex items-center gap-3 rounded-xl border border-border bg-fg/[0.03] px-3.5 py-3"
-              >
-                <span className="grid place-items-center w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-semibold">
-                  {i + 1}
-                </span>
-                <span className="text-sm text-fg/90">{line}</span>
-              </div>
-            ),
-          )}
+        {/* 목업 헤더 — 창 점 + 라벨 */}
+        <div className="flex items-center justify-between border-b border-border pb-3">
+          <div className="flex items-center gap-2">
+            <span className="flex gap-1.5" aria-hidden>
+              <span className="h-2.5 w-2.5 rounded-full bg-fg/15" />
+              <span className="h-2.5 w-2.5 rounded-full bg-fg/15" />
+              <span className="h-2.5 w-2.5 rounded-full bg-accent/40" />
+            </span>
+            <span className="text-xs text-subtle">{c.dashboard.label}</span>
+          </div>
+          <span className="text-[11px] text-subtle/70">오늘</span>
         </div>
-        <p className="mt-4 text-[11px] text-subtle/70">
-          실제 화면은 회사 업무에 맞춰 구성되며, 위 내용은 예시입니다.
-        </p>
+
+        <p className="mt-4 text-xs font-medium text-subtle">{c.dashboard.today}</p>
+        <div className="mt-2.5 space-y-2">
+          {c.dashboard.items.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center justify-between gap-3 rounded-xl border border-border bg-fg/[0.03] px-3.5 py-2.5"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className={`h-2 w-2 rounded-full ${TONE_DOT[item.tone]}`} aria-hidden />
+                <span className="text-sm text-fg/90 truncate">{item.label}</span>
+              </div>
+              <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${TONE_CHIP[item.tone]}`}>
+                {item.count}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-4 text-[11px] text-subtle/70">{c.dashboard.note}</p>
       </motion.div>
     </motion.section>
   );
 }
+
+const TONE_DOT: Record<string, string> = {
+  info: "bg-accent-blue",
+  active: "bg-accent",
+  warn: "bg-amber-400",
+  done: "bg-emerald-400",
+};
+
+const TONE_CHIP: Record<string, string> = {
+  info: "bg-accent-blue/15 text-accent-blue",
+  active: "bg-accent/15 text-accent",
+  warn: "bg-amber-400/15 text-amber-300",
+  done: "bg-emerald-400/15 text-emerald-300",
+};
