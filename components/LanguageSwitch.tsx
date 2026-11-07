@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useI18n } from "./I18nProvider";
 import type { Lang } from "@/lib/messages";
 
-function useOutside(ref: React.RefObject<HTMLElement>, onClose: () => void) {
+function useOutside(ref: React.RefObject<HTMLElement | null>, onClose: () => void) {
   useEffect(() => {
     const h = (e: MouseEvent) => ref.current && !ref.current.contains(e.target as Node) && onClose();
     document.addEventListener("mousedown", h);
