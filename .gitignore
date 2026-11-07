@@ -1,2 +1,6 @@
-
 .next
+node_modules/
+.vercel
+# secrets: real values live in Vercel environment variables only
+.env
+.env*.local
