@@ -70,6 +70,8 @@ const T = {
     noContracts: "아직 받은 계약서가 없습니다.",
     printHint: "브라우저 인쇄에서 ‘PDF로 저장’을 고르면 파일로 보관할 수 있습니다.",
     print: "출력 / PDF 저장",
+    jumpSign: "서명하러 가기",
+    jumpAnswer: "응답하러 가기",
     docLang: "",
     answered: "견적서 응답을 보냈습니다. 담당자가 확인 후 연락드립니다.",
     signed: "전자서명이 접수되었습니다. 계약서와 계약 증명서를 출력해 보관하실 수 있습니다.",
@@ -131,6 +133,8 @@ const T = {
     noContracts: "No contracts yet.",
     printHint: "Choose ‘Save as PDF’ in the print dialog to keep a file.",
     print: "Print / Save PDF",
+    jumpSign: "Go to signing",
+    jumpAnswer: "Go to answer",
     docLang: "Documents are issued in Korean, the governing language of the contract.",
     answered: "Your answer has been sent. We will be in touch shortly.",
     signed: "Your e-signature has been received. You can print the contract and its certificate for your records.",
@@ -441,7 +445,7 @@ export default function PortalPage() {
       {state === "gate" && <CodeGate onIn={() => load(false)} />}
 
       {state === "in" && data && (
-        <div className="mx-auto max-w-[1600px] px-[5%] pb-24 pt-28 md:pt-32">
+        <div className="mx-auto max-w-[1920px] px-[4%] pb-24 pt-28 md:pt-32">
           <div className="mb-8 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="mb-2 text-[11px] font-semibold tracking-[0.22em] text-[#ffc27a]">CLIENT PORTAL</p>
@@ -491,7 +495,7 @@ export default function PortalPage() {
               {tab === "quotes" ? t.noQuotes : t.noContracts}
             </div>
           ) : (
-            <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
+            <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
               <ul className="m-0 grid list-none content-start gap-2 p-0">
                 {items.map((it) => {
                   const label = tab === "quotes" ? t.qs[it.status] : t.cs[it.status];
@@ -528,16 +532,23 @@ export default function PortalPage() {
                       {t.printHint}
                       {t.docLang && <span className="block text-white/40">{t.docLang}</span>}
                     </p>
+                    <span className="flex flex-wrap gap-2">
+                    {current.status === "SENT" && (
+                      <a href="#portal-action" className="inline-flex items-center gap-2 bg-[#ffc27a] px-4 py-2 text-sm font-bold text-[#0b0d0f] hover:bg-[#ffd7a6] min-[1700px]:hidden">
+                        {tab === "contracts" ? t.jumpSign : t.jumpAnswer} <span aria-hidden>↓</span>
+                      </a>
+                    )}
                     <button type="button" onClick={() => window.print()} className="inline-flex items-center gap-2 border border-white/20 px-4 py-2 text-sm font-semibold hover:border-white/50">
                       {t.print}
                     </button>
+                    </span>
                   </div>
-                  <div className={`grid gap-6 ${(tab === "quotes" && current.status === "SENT") || (tab === "contracts" && current.status === "SENT") ? "2xl:grid-cols-[minmax(0,1fr)_380px]" : ""}`}>
+                  <div className={`grid gap-6 ${(tab === "quotes" && current.status === "SENT") || (tab === "contracts" && current.status === "SENT") ? "min-[1700px]:grid-cols-[minmax(0,1fr)_360px]" : ""}`}>
                     <div className="wb-print min-w-0 overflow-x-auto bg-white/[.03] p-3 md:p-6">
                       {tab === "quotes" ? <QuoteDocument q={current as Quote} client={data.client} provider={data.provider} /> : <ContractDocument k={current as Contract} client={data.client} provider={data.provider} />}
                     </div>
                     {tab === "quotes" && current.status === "SENT" && (
-                      <div className="2xl:sticky 2xl:top-28 2xl:self-start">
+                      <div id="portal-action" className="scroll-mt-24 min-[1700px]:sticky min-[1700px]:top-28 min-[1700px]:self-start">
                         <QuoteAnswer
                           q={current as Quote}
                           onDone={async () => {
@@ -548,7 +559,7 @@ export default function PortalPage() {
                       </div>
                     )}
                     {tab === "contracts" && current.status === "SENT" && (
-                      <div className="2xl:sticky 2xl:top-28 2xl:self-start">
+                      <div id="portal-action" className="scroll-mt-24 min-[1700px]:sticky min-[1700px]:top-28 min-[1700px]:self-start">
                         <SignPanel
                           k={current as Contract}
                           onSigned={async () => {

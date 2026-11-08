@@ -456,7 +456,7 @@ export const DOC_CSS = `
 .wb-paper+.wb-paper{margin-top:28px}
 .wb-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:3px solid #111;padding-bottom:18px;margin-bottom:22px}
 .wb-eyebrow{margin:0 0 4px;font-size:10px;letter-spacing:.24em;color:#0f9f86;font-weight:700}
-.wb-head h1{margin:0;font-size:30px;letter-spacing:.12em;font-weight:800}
+.wb-head h1{margin:0;font-size:30px;letter-spacing:.12em;font-weight:800;white-space:nowrap}
 .wb-meta{display:grid;gap:3px;text-align:right;font-size:12px}
 .wb-meta span{color:#6b7280;margin-right:10px}
 .wb-parties{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
