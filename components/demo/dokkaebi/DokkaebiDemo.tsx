@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { STORE } from "./data";
 import { useToast } from "./ui";
@@ -128,6 +129,17 @@ export default function DokkaebiDemo() {
             {view === "campaign" && <ViewCampaign preset={preset} toast={show} />}
             {view === "content" && <ViewContent toast={show} />}
             {view === "hq" && <ViewHQ toast={show} />}
+            <div className="mt-10 flex flex-col items-center gap-3 pb-4 text-center md:mt-14">
+              <p className="m-0 text-[13px] text-white/50">이 화면 그대로, 청주 본점에서 바로 시작할 수 있습니다.</p>
+              <Link
+                href="/business/portal"
+                className="group inline-flex items-center gap-2 rounded-2xl bg-[#ff5a36] px-8 py-4 text-[15px] font-bold text-white shadow-[0_18px_50px_-12px_rgba(255,90,54,.9)] transition hover:-translate-y-0.5 hover:bg-[#ff6d4d]"
+              >
+                견적서 확인하고 계약하기
+                <span aria-hidden className="transition group-hover:translate-x-1">→</span>
+              </Link>
+              <p className="m-0 text-[11.5px] text-white/35">담당자에게 받은 기업 관리 코드로 견적서 확인과 전자계약을 진행합니다.</p>
+            </div>
           </div>
         </div>
       </section>

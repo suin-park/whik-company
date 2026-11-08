@@ -16,15 +16,13 @@ const FEED: { who: string; src: Source; what: string }[] = [
 ];
 
 export function ViewHome({ go }: { go: Go }) {
-  const [feed, setFeed] = useState(FEED.slice(0, 3));
+  const [tick, setTick] = useState(0);
   useEffect(() => {
-    let i = 3;
-    const id = setInterval(() => {
-      setFeed((f) => [FEED[i % FEED.length], ...f].slice(0, 5));
-      i++;
-    }, 3200);
+    const id = setInterval(() => setTick((t) => t + 1), 3200);
     return () => clearInterval(id);
   }, []);
+  // Newest first, each person once: a window that moves through FEED.
+  const feed = Array.from({ length: 4 }, (_, k) => FEED[(tick + FEED.length * 4 - k) % FEED.length]);
   const total = SOURCE_SHARE.reduce((a, b) => a + b.count, 0);
   const birthdays = useMemo(() => CUSTOMERS.filter((c) => c.birthday && c.birthday >= "11-08" && c.birthday <= "11-14" && c.marketing).length, []);
 
@@ -117,7 +115,7 @@ export function ViewHome({ go }: { go: Go }) {
           </div>
           <ul className="m-0 mt-4 grid list-none gap-2 p-0">
             {feed.map((f, i) => (
-              <li key={`${f.who}-${i}-${feed.length}`} className="dk-feed flex items-center gap-3 rounded-xl bg-white/[.025] px-3.5 py-3">
+              <li key={`${f.who}-${tick - i}`} className="dk-feed flex items-center gap-3 rounded-xl bg-white/[.025] px-3.5 py-3">
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#ff5a36]/15 text-[12px] font-bold text-[#ffb19c]">{f.who[0]}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-[13px] font-semibold">{mask(f.who)} 님</span>
