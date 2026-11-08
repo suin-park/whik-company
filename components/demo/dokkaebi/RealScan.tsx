@@ -15,7 +15,9 @@ type Row = {
 };
 type Shot = { id: string; url: string; status: "wait" | "read" | "done" | "fail"; error?: string; rows: Row[] };
 
-const MAX_SIDE = 1600;
+/** High resolution so several tickets in one photo can each be cut out and read sharply (3D Locker extractTickets). */
+const MAX_SIDE = 3000;
+const MAX_B64 = 3_300_000; // server limit 3.5M characters
 const MAX_PHOTOS = 12;
 const ERR: Record<string, string> = {
   TOO_MANY_SCANS: "시연용 인식 횟수를 다 썼어요. 잠시 후 다시 해 주세요.",
@@ -38,15 +40,19 @@ async function toJpeg(file: File): Promise<string> {
       img.src = URL.createObjectURL(file);
     });
   }
-  const k = Math.min(1, MAX_SIDE / Math.max(src.width, src.height));
-  const c = document.createElement("canvas");
-  c.width = Math.round(src.width * k);
-  c.height = Math.round(src.height * k);
-  const g = c.getContext("2d")!;
-  g.fillStyle = "#fff";
-  g.fillRect(0, 0, c.width, c.height);
-  g.drawImage(src, 0, 0, c.width, c.height);
-  return c.toDataURL("image/jpeg", 0.85).split(",")[1];
+  for (const side of [MAX_SIDE, 2400, 1600]) {
+    const k = Math.min(1, side / Math.max(src.width, src.height));
+    const c = document.createElement("canvas");
+    c.width = Math.round(src.width * k);
+    c.height = Math.round(src.height * k);
+    const g = c.getContext("2d")!;
+    g.fillStyle = "#fff";
+    g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(src, 0, 0, c.width, c.height);
+    const b64 = c.toDataURL("image/jpeg", 0.85).split(",")[1];
+    if (b64.length <= MAX_B64 || side === 1600) return b64;
+  }
+  throw new Error("decode");
 }
 
 const digits = (p: string) => p.replace(/\D/g, "");

@@ -669,17 +669,23 @@ function ProgressView({ p }: { p: Progress }) {
   );
 }
 
-/** Photo → base64 JPEG (no data: prefix), at most 1600 px, orientation applied. */
+/** Photo → base64 JPEG (no data: prefix), up to 3000 px so several tickets in one photo can each be read sharply. */
 async function samplePhoto(file: File): Promise<{ b64: string; url: string }> {
   const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
-  const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
-  const c = document.createElement("canvas");
-  c.width = Math.max(1, Math.round(bmp.width * k));
-  c.height = Math.max(1, Math.round(bmp.height * k));
-  c.getContext("2d")!.drawImage(bmp, 0, 0, c.width, c.height);
-  bmp.close();
-  const url = c.toDataURL("image/jpeg", 0.85);
-  return { b64: url.split(",")[1], url };
+  try {
+    for (const side of [3000, 2400, 1600]) {
+      const k = Math.min(1, side / Math.max(bmp.width, bmp.height));
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(bmp.width * k));
+      c.height = Math.max(1, Math.round(bmp.height * k));
+      c.getContext("2d")!.drawImage(bmp, 0, 0, c.width, c.height);
+      const url = c.toDataURL("image/jpeg", 0.85);
+      if (url.length <= 3_300_000 || side === 1600) return { b64: url.split(",")[1], url };
+    }
+    throw new Error("decode");
+  } finally {
+    bmp.close();
+  }
 }
 
 type SampleCard = { key: number; url: string; b64: string; state: "reading" | "ready" | "saving" | "error"; ai: string[]; values: string[]; uncertain: number[]; error?: string };
