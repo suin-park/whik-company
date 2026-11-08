@@ -21,6 +21,7 @@ type TaxInfo = {
   email: string;
   managerName: string;
   managerPhone: string;
+  amount?: number | null;
 };
 type CompanyFile = { key: string; label: string; filename: string };
 type Data = {
@@ -28,7 +29,9 @@ type Data = {
   provider: Provider;
   quotes: Quote[];
   contracts: Contract[];
-  taxInfo: TaxInfo | null;
+  /** One entry per business that receives a tax invoice (e.g. two stores splitting the amount). */
+  taxInfo: TaxInfo[];
+  taxComplete?: boolean;
   taxInfoAt: string | null;
   companyFiles?: CompanyFile[];
 };
@@ -53,6 +56,7 @@ const T = {
       TAX_INFO_REQUIRED: "서명 전에 ‘거래 정보’ 탭에서 세금계산서 발행 정보를 먼저 입력해 주세요.",
       INVALID_BIZ_REG_NO: "사업자등록번호 10자리를 확인해 주세요.",
       INVALID_EMAIL: "세금계산서 받을 이메일 주소를 확인해 주세요.",
+      TOO_MANY_TAX_ENTRIES: "사업자는 5곳까지 입력할 수 있습니다.",
     } as Record<string, string>,
     errDefault: "처리하지 못했습니다. 잠시 후 다시 시도해 주세요.",
     tabInfo: "거래 정보",
@@ -85,6 +89,11 @@ const T = {
     taxGo: "입력하러 가기",
     taxOk: "세금계산서 정보 입력 완료",
     taxEdit: "수정",
+    tAmount: "발행 금액 (VAT 포함)",
+    entry: (n: number) => `사업자 ${n}`,
+    addEntry: "+ 사업자 추가 (매장별로 나누어 발행)",
+    removeEntry: "이 사업자 빼기",
+    multiHint: "여러 사업자로 나누어 발행하려면 사업자를 추가하고 각자의 발행 금액을 적어 주세요.",
     back: "뒤로 가기",
     gateTitle: "기업 관리 코드를 입력하세요.",
     gateDesc: ["담당자에게 받은 코드로 견적서를 확인하고,", "계약서에 전자서명할 수 있습니다."],
@@ -152,6 +161,7 @@ const T = {
       TAX_INFO_REQUIRED: "Please enter your tax invoice details in the ‘Billing’ tab before signing.",
       INVALID_BIZ_REG_NO: "Please check the 10-digit business registration number.",
       INVALID_EMAIL: "Please check the email address for tax invoices.",
+      TOO_MANY_TAX_ENTRIES: "You can add up to 5 businesses.",
     } as Record<string, string>,
     errDefault: "Something went wrong. Please try again shortly.",
     tabInfo: "Billing",
@@ -184,6 +194,11 @@ const T = {
     taxGo: "Enter details",
     taxOk: "Tax invoice details saved",
     taxEdit: "Edit",
+    tAmount: "Amount to invoice (VAT incl.)",
+    entry: (n: number) => `Business ${n}`,
+    addEntry: "+ Add a business (split invoices)",
+    removeEntry: "Remove this business",
+    multiHint: "To split the invoice across businesses, add each one with its amount.",
     back: "Back",
     gateTitle: "Enter your company code.",
     gateDesc: ["Review quotes and sign contracts", "with the code from your WHIK contact."],
@@ -497,30 +512,36 @@ function WhikInfo({ p, files }: { p: Provider; files: CompanyFile[] }) {
   );
 }
 
+const blankTax = (): TaxInfo => ({ companyName: "", bizRegNo: "", ceoName: "", address: "", bizType: "", bizItem: "", email: "", managerName: "", managerPhone: "", amount: null });
+
 function TaxForm({ data, onSaved }: { data: Data; onSaved: () => void }) {
   const t = usePT();
   const c = data.client;
-  const [f, setF] = useState<TaxInfo>(
-    data.taxInfo ?? {
-      companyName: c.companyName ?? "",
-      bizRegNo: c.bizRegNo ?? "",
-      ceoName: c.ceoName ?? "",
-      address: c.address ?? "",
-      bizType: "",
-      bizItem: "",
-      email: c.contactEmail ?? "",
-      managerName: c.contactName ?? "",
-      managerPhone: c.contactPhone ?? "",
-    },
+  const [list, setList] = useState<TaxInfo[]>(() =>
+    data.taxInfo.length
+      ? data.taxInfo.map((e) => ({ ...blankTax(), ...e }))
+      : [
+          {
+            ...blankTax(),
+            companyName: c.companyName ?? "",
+            bizRegNo: c.bizRegNo ?? "",
+            ceoName: c.ceoName ?? "",
+            address: c.address ?? "",
+            email: c.contactEmail ?? "",
+            managerName: c.contactName ?? "",
+            managerPhone: c.contactPhone ?? "",
+          },
+        ],
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const set = (k: keyof TaxInfo) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
+  const set = (i: number, k: keyof TaxInfo) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setList((l) => l.map((x, j) => (j === i ? { ...x, [k]: k === "amount" ? Number(e.target.value.replace(/[^\d]/g, "")) || null : e.target.value } : x)));
   const save = async () => {
     setBusy(true);
     setError(null);
     try {
-      await post("/api/business/portal/tax-info", { taxInfo: f });
+      await post("/api/business/portal/tax-info", { taxInfo: list });
       onSaved();
     } catch (x) {
       setError(t.err[(x as Error).message] ?? t.errDefault);
@@ -528,29 +549,62 @@ function TaxForm({ data, onSaved }: { data: Data; onSaved: () => void }) {
       setBusy(false);
     }
   };
-  const field = (k: keyof TaxInfo, label: string, opts: { full?: boolean; type?: string; max?: number; inputMode?: "numeric" | "email" | "tel" } = {}) => (
-    <label className={`block ${opts.full ? "sm:col-span-2" : ""}`}>
-      <span className="mb-1.5 block text-[12px] text-white/55">{label}</span>
-      <input value={f[k]} onChange={set(k)} type={opts.type ?? "text"} inputMode={opts.inputMode} maxLength={opts.max ?? 120} className={fieldCls} />
-    </label>
-  );
+  const field = (i: number, k: keyof TaxInfo, label: string, opts: { full?: boolean; type?: string; max?: number; inputMode?: "numeric" | "email" | "tel" } = {}) => {
+    const v = list[i][k];
+    return (
+      <label className={`block ${opts.full ? "sm:col-span-2" : ""}`}>
+        <span className="mb-1.5 block text-[12px] text-white/55">{label}</span>
+        <input
+          value={k === "amount" ? (v ? Number(v).toLocaleString(t.locale) : "") : String(v ?? "")}
+          onChange={set(i, k)}
+          type={opts.type ?? "text"}
+          inputMode={opts.inputMode}
+          maxLength={opts.max ?? 120}
+          className={fieldCls}
+        />
+      </label>
+    );
+  };
   return (
     <section id="portal-tax" className="scroll-mt-24 border border-[#ffc27a]/40 bg-[#ffc27a]/[.04] p-5 md:p-6">
       <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#ffc27a]">TAX INVOICE</p>
       <h3 className="m-0 mt-2 text-xl font-semibold">{t.taxTitle}</h3>
       <p className="mt-1.5 text-[13px] text-white/55">{t.taxDesc}</p>
-      {data.taxInfoAt && <p className="mt-1 text-[12px] text-[#7fe0c8]">{t.taxDone(new Date(data.taxInfoAt).toLocaleString(t.locale, { timeZone: "Asia/Seoul" }))}</p>}
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        {field("companyName", t.tCompany)}
-        {field("bizRegNo", t.tBizNo, { max: 20, inputMode: "numeric" })}
-        {field("ceoName", t.tCeo, { max: 80 })}
-        {field("email", t.tEmail, { type: "email", max: 160, inputMode: "email" })}
-        {field("address", t.tAddr, { full: true, max: 200 })}
-        {field("bizType", t.tType)}
-        {field("bizItem", t.tItem)}
-        {field("managerName", t.tManager, { max: 80 })}
-        {field("managerPhone", t.tPhone, { max: 40, inputMode: "tel" })}
+      {data.taxInfoAt && data.taxComplete && <p className="mt-1 text-[12px] text-[#7fe0c8]">{t.taxDone(new Date(data.taxInfoAt).toLocaleString(t.locale, { timeZone: "Asia/Seoul" }))}</p>}
+      <div className="mt-5 grid gap-6">
+        {list.map((_, i) => (
+          <div key={i} className={list.length > 1 ? "border-t border-white/10 pt-5 first:border-t-0 first:pt-0" : ""}>
+            {list.length > 1 && (
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <p className="m-0 text-[13px] font-bold text-[#ffc27a]">{t.entry(i + 1)}</p>
+                <button type="button" onClick={() => setList((l) => l.filter((_, j) => j !== i))} className="text-[12px] text-white/45 underline underline-offset-4 hover:text-[#ff8a7a]">
+                  {t.removeEntry}
+                </button>
+              </div>
+            )}
+            <div className="grid gap-3 sm:grid-cols-2">
+              {field(i, "companyName", t.tCompany)}
+              {field(i, "bizRegNo", t.tBizNo, { max: 20, inputMode: "numeric" })}
+              {field(i, "ceoName", t.tCeo, { max: 80 })}
+              {field(i, "email", t.tEmail, { type: "email", max: 160, inputMode: "email" })}
+              {field(i, "address", t.tAddr, { full: true, max: 200 })}
+              {field(i, "bizType", t.tType)}
+              {field(i, "bizItem", t.tItem)}
+              {field(i, "managerName", t.tManager, { max: 80 })}
+              {field(i, "managerPhone", t.tPhone, { max: 40, inputMode: "tel" })}
+              {list.length > 1 && field(i, "amount", t.tAmount, { max: 16, inputMode: "numeric" })}
+            </div>
+          </div>
+        ))}
       </div>
+      {list.length < 5 && (
+        <div className="mt-4">
+          <button type="button" onClick={() => setList((l) => [...l, blankTax()])} className="text-[13px] font-semibold text-[#ffc27a] hover:underline">
+            {t.addEntry}
+          </button>
+          {list.length === 1 && <p className="mt-1 text-[11.5px] text-white/40">{t.multiHint}</p>}
+        </div>
+      )}
       {error && (
         <p role="alert" className="mt-4 text-[13px] text-[#ff8a7a]">
           {error}
@@ -691,7 +745,7 @@ export default function PortalPage() {
               [
                 ["quotes", t.tabQuotes, data.quotes.length, pending],
                 ["contracts", t.tabContracts, data.contracts.length, toSign],
-                ["info", t.tabInfo, null, !data.taxInfo && data.contracts.length > 0 ? 1 : 0],
+                ["info", t.tabInfo, null, !data.taxComplete && data.contracts.length > 0 ? 1 : 0],
               ] as const
             ).map(([k, l, n, badge]) => (
               <button
@@ -817,7 +871,7 @@ export default function PortalPage() {
                       <div id="portal-action" className="scroll-mt-24 min-[1700px]:sticky min-[1700px]:top-28 min-[1700px]:self-start">
                         <SignPanel
                           k={current as Contract}
-                          hasTax={!!data.taxInfo}
+                          hasTax={!!data.taxComplete}
                           onNeedTax={() => {
                             setTab("info");
                             setNotice(null);
