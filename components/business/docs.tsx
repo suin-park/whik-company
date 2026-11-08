@@ -276,18 +276,7 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
 
         <p className="wb-date">{day(k.clientSignedAt ?? k.sentAt ?? new Date())}</p>
         <div className="wb-signs">
-          <div className="wb-sign wb-sign-client">
-            {(() => {
-              const seals = k.clientSignedAt ? (k.clientSeals ?? []) : (client.seals ?? []);
-              return seals.length > 0 ? (
-                <div className="wb-seals">
-                  {seals.map((sl, i) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={i} className="wb-seal" src={sl.src} alt={sl.label || "갑 도장"} />
-                  ))}
-                </div>
-              ) : null;
-            })()}
+          <div className="wb-sign">
             <p className="role">갑 (발주자)</p>
             <dl>
               <dt>상호</dt>
@@ -303,13 +292,25 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
               </dd>
             </dl>
             <div className="sigbox">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              {k.clientSignature ? <img src={k.clientSignature} alt="갑 서명" /> : <span>(서명)</span>}
+              {k.clientSignature ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={k.clientSignature} alt="갑 서명" />
+                  {(k.clientSeals ?? []).length > 0 && (
+                    <span className="wb-seals-in">
+                      {(k.clientSeals ?? []).map((sl, i) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img key={i} className="wb-seal" src={sl.src} alt={sl.label || "갑 도장"} />
+                      ))}
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span>(서명 또는 날인)</span>
+              )}
             </div>
           </div>
-          <div className="wb-sign wb-sign-provider">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            {provider.seal && <img className="wb-seal" src={provider.seal} alt="휙랩 도장" />}
+          <div className="wb-sign">
             <p className="role">을 (수급자)</p>
             <dl>
               <dt>상호</dt>
@@ -334,8 +335,26 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
               <dd>{k.providerSignerName || provider.representative}</dd>
             </dl>
             <div className="sigbox">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              {k.providerSignature ? <img src={k.providerSignature} alt="을 서명" /> : <span>(서명)</span>}
+              {k.providerSignature ? (
+                k.providerSignature === provider.seal ? (
+                  // signed with the seal only
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="wb-seal wb-seal-only" src={provider.seal} alt="휙랩 날인" />
+                ) : (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={k.providerSignature} alt="을 서명" />
+                    {provider.seal && (
+                      <span className="wb-seals-in">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img className="wb-seal" src={provider.seal} alt="휙랩 도장" />
+                      </span>
+                    )}
+                  </>
+                )
+              ) : (
+                <span>(서명 또는 날인)</span>
+              )}
             </div>
           </div>
         </div>
@@ -542,10 +561,10 @@ export const DOC_CSS = `
 .wb-sign dl{display:grid;grid-template-columns:72px 1fr;gap:3px 8px;margin:0 0 10px;font-size:12px}
 .wb-sign dt{color:#6b7280}
 .wb-sign dd{margin:0}
-.wb-sign-provider,.wb-sign-client{position:relative}
-.wb-seals{position:absolute;top:8px;right:10px;display:flex;gap:2px}
-.wb-seals .wb-seal{width:60px;height:60px;object-fit:contain}
-.wb-sign-provider .wb-seal{position:absolute;top:8px;right:10px;width:68px;height:68px}
+.wb-sign .sigbox{position:relative}
+.wb-seals-in{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;gap:2px}
+.wb-seals-in .wb-seal{width:64px;height:64px;object-fit:contain}
+.wb-seal-only{width:76px;height:76px;object-fit:contain}
 .wb-stamp{position:relative;display:inline-block;padding-right:40px}
 .wb-stamp .wb-seal{position:absolute;right:0;top:50%;width:56px;height:56px;transform:translateY(-50%) rotate(-4deg)}
 .wb-seal{mix-blend-mode:multiply;opacity:.92;pointer-events:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
