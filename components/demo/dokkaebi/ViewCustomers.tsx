@@ -67,7 +67,7 @@ export function ViewCustomers({ go }: { go: Go }) {
       </Panel>
 
       <Panel className="overflow-hidden">
-        <div className="flex items-center justify-between border-b border-white/[.07] px-5 py-3 text-[12.5px] text-white/55">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[.07] px-4 py-3 text-[12.5px] text-white/55 md:px-5">
           <span>
             <b className="text-white">{fmt(rows.length)}명</b> (데모에는 64명만 표시, 실제 3,184명)
           </span>
@@ -77,7 +77,36 @@ export function ViewCustomers({ go }: { go: Go }) {
             </button>
           )}
         </div>
-        <div className="overflow-x-auto">
+        <ul className="m-0 grid list-none gap-0 p-0 md:hidden">
+          {rows.slice(0, 30).map((c) => (
+            <li key={c.id}>
+              <button type="button" onClick={() => setOpen(c)} className="w-full border-t border-white/[.05] px-4 py-3.5 text-left first:border-0 active:bg-white/[.04]">
+                <span className="flex items-center justify-between gap-2">
+                  <span className="text-[15px] font-semibold">
+                    {c.name}
+                    {c.tags.map((t) => (
+                      <span key={t} className="ml-1.5 align-middle">
+                        <Chip tone={t === "단골" ? "gold" : t === "휴면 위험" ? "rose" : "slate"}>{t}</Chip>
+                      </span>
+                    ))}
+                  </span>
+                  <span className="text-[13px] font-bold tabular-nums">{c.visits}회</span>
+                </span>
+                <span className="mt-1 flex items-center justify-between gap-2 text-[12px] text-white/50">
+                  <span className="tabular-nums">{maskPhone(c.phone)}</span>
+                  <span className={c.lastVisitDays >= 60 ? "text-[#ffa3b4]" : ""}>{c.lastVisitDays === 0 ? "오늘 방문" : `${c.lastVisitDays}일 전 방문`}</span>
+                </span>
+                <span className="mt-2 flex flex-wrap gap-1">
+                  {c.sources.map((s) => (
+                    <SourceBadge key={s} s={s} />
+                  ))}
+                  {c.marketing ? <Chip tone="mint">광고 동의</Chip> : <Chip>광고 미동의</Chip>}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full min-w-[760px] text-left text-[13px]">
             <thead className="text-[11.5px] text-white/40">
               <tr>
@@ -140,7 +169,7 @@ function Profile({ c, onClose, go }: { c: Customer; onClose: () => void; go: Go 
   ];
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <aside className="dk-slide h-full w-full max-w-[440px] overflow-y-auto border-l border-white/10 bg-[#120f0d] p-6" role="dialog" aria-label={`${c.name} 고객 정보`}>
+      <aside className="dk-slide h-full w-full max-w-[440px] overflow-y-auto border-l border-white/10 bg-[#120f0d] p-5 pt-20 sm:p-6 sm:pt-20" role="dialog" aria-label={`${c.name} 고객 정보`}>
         <div className="flex items-start justify-between">
           <div>
             <p className="m-0 text-[22px] font-bold">{c.name}</p>

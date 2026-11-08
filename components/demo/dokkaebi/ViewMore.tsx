@@ -51,10 +51,10 @@ export function ViewContent({ toast }: { toast: (m: string) => void }) {
               className={`group relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br ${m.hue} text-left ring-2 transition ${shot === m.id ? "ring-[#ff5a36]" : "ring-transparent hover:ring-white/25"}`}
             >
               <span className="dk-steam absolute inset-0" />
-              <span className="absolute left-2.5 top-2.5">
+              <span className="absolute left-2.5 top-2.5 hidden sm:block">
                 <Chip tone="slate">{m.tag}</Chip>
               </span>
-              <span className="absolute bottom-2.5 left-2.5 right-2.5 text-[13px] font-bold text-white drop-shadow md:text-[15px]">{m.name}</span>
+              <span className="absolute bottom-2 left-2 right-2 text-[12px] font-bold leading-tight text-white drop-shadow sm:bottom-2.5 sm:left-2.5 sm:right-2.5 sm:text-[13px] md:text-[15px]">{m.name}</span>
             </button>
           ))}
         </div>

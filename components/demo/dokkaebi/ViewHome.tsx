@@ -93,13 +93,13 @@ export function ViewHome({ go }: { go: Go }) {
                 key={x.t}
                 type="button"
                 onClick={() => go("campaign", x.p)}
-                className="group flex items-center justify-between gap-4 rounded-xl border border-white/[.07] bg-white/[.02] p-4 text-left transition hover:border-[#ff5a36]/50 hover:bg-[#ff5a36]/[.06]"
+                className="group flex flex-col items-stretch gap-3 rounded-xl border border-white/[.07] bg-white/[.02] p-4 text-left transition hover:border-[#ff5a36]/50 hover:bg-[#ff5a36]/[.06] sm:flex-row sm:items-center sm:justify-between sm:gap-4"
               >
                 <span>
                   <span className="block text-[14.5px] font-semibold">{x.t}</span>
                   <span className="mt-0.5 block text-[12px] text-white/50">{x.d}</span>
                 </span>
-                <span className="shrink-0 rounded-lg bg-white/[.07] px-3 py-2 text-[12px] font-semibold text-white/80 transition group-hover:bg-[#ff5a36] group-hover:text-white">{x.a} →</span>
+                <span className="shrink-0 rounded-lg bg-white/[.07] px-3 py-2.5 text-center text-[12.5px] font-semibold text-white/80 transition group-hover:bg-[#ff5a36] group-hover:text-white sm:py-2 sm:text-[12px]">{x.a} →</span>
               </button>
             ))}
           </div>
@@ -251,7 +251,7 @@ export function ViewAI({ go }: { go: Go }) {
   };
 
   return (
-    <Panel glow className="flex min-h-[620px] flex-col overflow-hidden">
+    <Panel glow className="flex min-h-[72svh] flex-col overflow-hidden sm:min-h-[620px]">
       <div className="flex items-center gap-3 border-b border-white/[.07] px-5 py-4">
         <span className="dk-orb grid h-10 w-10 place-items-center rounded-full text-lg font-black text-white">W</span>
         <div>
@@ -260,7 +260,7 @@ export function ViewAI({ go }: { go: Go }) {
         </div>
       </div>
 
-      <div className="flex-1 space-y-5 overflow-y-auto px-5 py-6">
+      <div className="flex-1 space-y-5 overflow-y-auto px-4 py-5 sm:px-5 sm:py-6">
         {log.length === 0 && (
           <div className="grid place-items-center py-10 text-center">
             <p className="m-0 text-2xl font-bold tracking-[-0.03em] md:text-3xl">
@@ -273,8 +273,8 @@ export function ViewAI({ go }: { go: Go }) {
           const isLast = i === log.length - 1;
           return (
             <div key={i} className="grid gap-3">
-              <div className="ml-auto max-w-[80%] rounded-2xl rounded-br-md bg-[#ff5a36] px-4 py-2.5 text-[14px] font-medium text-white">{x.q}</div>
-              <div className="max-w-[92%]">
+              <div className="ml-auto max-w-[88%] rounded-2xl rounded-br-md bg-[#ff5a36] px-4 py-2.5 text-[14px] font-medium text-white">{x.q}</div>
+              <div className="max-w-full sm:max-w-[92%]">
                 {isLast && busy ? (
                   <div className="flex items-center gap-1.5 px-1 py-2">
                     <span className="dk-dot" />
@@ -300,7 +300,7 @@ export function ViewAI({ go }: { go: Go }) {
       </div>
 
       <div className="border-t border-white/[.07] p-4">
-        <div className="mb-3 flex gap-2 overflow-x-auto pb-1">
+        <div className="mb-3 flex flex-wrap gap-2 pb-1 sm:flex-nowrap sm:overflow-x-auto">
           {PROMPTS.map((p) => (
             <button key={p.q} type="button" disabled={busy} onClick={() => ask(p.q)} className="shrink-0 rounded-full border border-white/12 px-3.5 py-1.5 text-[12.5px] text-white/75 transition hover:border-[#ff5a36] hover:text-white disabled:opacity-40">
               {p.q}

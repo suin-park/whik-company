@@ -119,7 +119,7 @@ export function Bars({ values, labels, unit, highlightLast = true }: { values: n
   const bw = W / values.length;
   return (
     <div className="relative">
-      <svg viewBox={`0 0 ${W} ${H + 22}`} className="w-full" role="img" aria-label={`최근 ${values.length}일 방문 수`}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`최근 ${values.length}일 방문 수`}>
         {[0.25, 0.5, 0.75].map((g) => (
           <line key={g} x1={0} x2={W} y1={H - H * g} y2={H - H * g} stroke="rgba(255,255,255,.06)" strokeWidth={1} />
         ))}
@@ -135,15 +135,18 @@ export function Bars({ values, labels, unit, highlightLast = true }: { values: n
                 d={`M${x},${H} V${H - h + 4} q0,-4 4,-4 h${w - 8} q4,0 4,4 V${H} Z`}
                 fill={last ? FIRE : hover === i ? "rgba(255,181,71,.85)" : "rgba(255,181,71,.42)"}
               />
-              {(i % 2 === 1 || values.length < 9) && (
-                <text x={i * bw + bw / 2} y={H + 16} textAnchor="middle" fontSize={10} fill="rgba(255,255,255,.4)">
-                  {labels[i]}
-                </text>
-              )}
             </g>
           );
         })}
       </svg>
+      <div className="mt-1.5 grid text-center text-[10px] text-white/40 sm:text-[11px]" style={{ gridTemplateColumns: `repeat(${values.length}, minmax(0, 1fr))` }}>
+        {labels.map((l, i) => (
+          <span key={l} className="whitespace-nowrap">
+            <span className={i % 3 === 1 ? "sm:hidden" : "hidden"}>{l}</span>
+            <span className={i % 2 === 1 ? "hidden sm:inline" : "hidden"}>{l}</span>
+          </span>
+        ))}
+      </div>
       {hover !== null && (
         <div
           className="pointer-events-none absolute -translate-x-1/2 rounded-lg border border-white/10 bg-[#1b1714] px-2.5 py-1.5 text-[11px] text-white shadow-xl"
