@@ -12,8 +12,28 @@ type Row = {
   marketing: boolean;
   uncertain: string[];
   alternatives: { field: string; value: string }[];
+  /** Where this ticket sits in the photo (0-1), when several tickets were in one photo. */
+  box?: { x: number; y: number; w: number; h: number } | null;
 };
-type Shot = { id: string; url: string; status: "wait" | "read" | "done" | "fail"; error?: string; rows: Row[] };
+type Shot = { id: string; url: string; status: "wait" | "read" | "done" | "fail"; error?: string; rows: Row[]; w?: number; h?: number };
+
+/** The ticket's own part of the photo, so staff can compare the fields with the handwriting. */
+function TicketCrop({ shot, box }: { shot: Shot; box?: Row["box"] }) {
+  const b = box ?? { x: 0, y: 0, w: 1, h: 1 };
+  const ratio = shot.w && shot.h ? (b.w * shot.w) / (b.h * shot.h) : 0.75;
+  return (
+    <div
+      aria-label="응모권 사진"
+      className="w-2/3 max-w-[220px] rounded-lg bg-white bg-no-repeat ring-1 ring-white/10 sm:w-[150px]"
+      style={{
+        aspectRatio: String(ratio),
+        backgroundImage: `url(${shot.url})`,
+        backgroundSize: `${100 / b.w}% ${100 / b.h}%`,
+        backgroundPosition: `${b.w < 1 ? (b.x / (1 - b.w)) * 100 : 0}% ${b.h < 1 ? (b.y / (1 - b.h)) * 100 : 0}%`,
+      }}
+    />
+  );
+}
 
 /** High resolution so several tickets in one photo can each be cut out and read sharply (3D Locker extractTickets). */
 const MAX_SIDE = 3000;
@@ -72,6 +92,12 @@ export function RealScan({ toast }: { toast: (m: string) => void }) {
     if (list.length === 0) return;
     const fresh: (Shot & { file: File })[] = list.map((f, i) => ({ id: `${Date.now()}-${i}`, url: URL.createObjectURL(f), status: "wait", rows: [], file: f }));
     setShots((s) => [...s, ...fresh.map(({ file: _f, ...x }) => x)]);
+    // photo size, for the ticket crops next to each result
+    fresh.forEach((x) => {
+      const img = new Image();
+      img.onload = () => patch(x.id, { w: img.naturalWidth, h: img.naturalHeight });
+      img.src = x.url;
+    });
     setBusy(true);
     let next = 0;
     const worker = async () => {
@@ -180,17 +206,32 @@ export function RealScan({ toast }: { toast: (m: string) => void }) {
             <ul className="m-0 grid list-none gap-0 p-0">
               {rows.map(({ s, r, ri }) => {
                 const old = known.get(digits(r.phone));
-                const ring = (f: Field) => (r.uncertain.includes(f) ? "border-[#ff5a36] bg-[#ff5a36]/10" : "border-white/10 bg-black/30");
+                // names are the hardest part of real handwriting: always shown for a check unless a regular customer's name matches
+                const nameOk = !!old && old.name === r.name.replace(/\s/g, "");
+                const ring = (f: Field) =>
+                  r.uncertain.includes(f) ? "border-[#ff5a36] bg-[#ff5a36]/10" : f === "name" && !nameOk ? "border-[#ffb547]/60 bg-[#ffb547]/[.06]" : "border-white/10 bg-black/30";
                 return (
                   <li key={`${s.id}-${ri}`} className="dk-feed border-b border-white/[.05] px-4 py-3.5 last:border-0">
+                    <div className="grid gap-3 sm:grid-cols-[150px_minmax(0,1fr)]">
+                    <TicketCrop shot={s} box={r.box} />
+                    <div className="min-w-0">
                     <div className="grid gap-2 sm:grid-cols-[1fr_1.3fr_0.8fr]">
                       {(["name", "phone", "birthday"] as Field[]).map((f) => (
                         <label key={f} className="block">
-                          <span className="mb-1 block text-[10.5px] text-white/40">{f === "name" ? "이름" : f === "phone" ? "연락처" : "생일"}</span>
+                          <span className="mb-1 block text-[10.5px] text-white/40">{f === "name" ? (nameOk ? "이름 (단골 이름과 같음)" : "이름 (사진과 비교해 주세요)") : f === "phone" ? "연락처" : "생일"}</span>
                           <input value={r[f]} onChange={(e) => setRow(s.id, ri, { [f]: e.target.value, uncertain: r.uncertain.filter((u) => u !== f) })} className={`w-full rounded-lg border px-2.5 py-2 text-[14px] outline-none focus:border-[#ffb547] ${ring(f)}`} />
                         </label>
                       ))}
                     </div>
+                    {old && !nameOk && (
+                      <button
+                        type="button"
+                        onClick={() => setRow(s.id, ri, { name: old.name, uncertain: r.uncertain.filter((u) => u !== "name"), alternatives: r.alternatives.filter((a) => a.field !== "name") })}
+                        className="mt-2 rounded-lg border border-[#ffb547]/60 px-2.5 py-1 text-[11.5px] font-semibold text-[#ffd79a] hover:bg-[#ffb547] hover:text-[#111]"
+                      >
+                        같은 번호의 단골 손님: {old.name} (이 이름으로 바꾸기)
+                      </button>
+                    )}
                     {r.alternatives.length > 0 && (
                       <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11.5px]">
                         <span className="text-white/50">다르게 읽힌 글자:</span>
@@ -215,6 +256,8 @@ export function RealScan({ toast }: { toast: (m: string) => void }) {
                       </button>
                       {old && <Chip tone="gold">기존 고객, 방문 {old.visits}회</Chip>}
                       {r.uncertain.length > 0 && <Chip tone="fire">주황색 칸을 확인해 주세요</Chip>}
+                    </div>
+                    </div>
                     </div>
                   </li>
                 );
