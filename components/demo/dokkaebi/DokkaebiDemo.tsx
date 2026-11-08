@@ -155,6 +155,8 @@ const CSS = `
 @keyframes dk-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .dk-view{animation:dk-in .45s cubic-bezier(.22,1,.36,1) both}
 .dk-beam{background:linear-gradient(180deg,transparent,rgba(255,90,54,.55),transparent);box-shadow:0 0 24px rgba(255,90,54,.6);animation:dk-scan .72s ease-in-out both}
+.dk-beam-loop{background:linear-gradient(180deg,transparent,rgba(255,90,54,.6),transparent);box-shadow:0 0 24px rgba(255,90,54,.6);animation:dk-scan-loop 1.1s ease-in-out infinite}
+@keyframes dk-scan-loop{from{transform:translateY(-40px)}to{transform:translateY(260px)}}
 @keyframes dk-scan{from{transform:translateY(-40px)}to{transform:translateY(240px)}}
 .dk-pop{animation:dk-pop .5s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes dk-pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}

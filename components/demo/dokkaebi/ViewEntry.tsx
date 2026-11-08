@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { STORE, TICKETS, mask, maskPhone, type Ticket } from "./data";
 import { Chip, Eyebrow, FakeQR, Panel, PhoneFrame } from "./ui";
+import { RealScan } from "./RealScan";
 
 /* The paper ticket, redrawn the way we recommend: 010 printed, one box per digit, birthday month/day only. */
 export function PaperTicket({ t, scanning = false, done = false, small = false }: { t: Ticket; scanning?: boolean; done?: boolean; small?: boolean }) {
@@ -107,11 +108,12 @@ export function ViewEntry({ toast }: { toast: (m: string) => void }) {
 
   return (
     <div className="grid gap-5">
+      <RealScan toast={toast} />
       <Panel className="p-5 md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <Eyebrow>PAPER TO DATA</Eyebrow>
-            <h3 className="m-0 mt-1 text-xl font-semibold md:text-2xl">응모권, 찍기만 하면 고객이 됩니다</h3>
+            <Eyebrow>EXAMPLE</Eyebrow>
+            <h3 className="m-0 mt-1 text-xl font-semibold md:text-2xl">응모권이 없으면 예시로 보세요</h3>
             <p className="m-0 mt-1 text-[13px] text-white/50">하루치를 모아 한 번에 올려도 되고, 한 장씩 찍어도 됩니다. 애매한 글씨는 AI가 표시해 직원이 골라만 줍니다.</p>
           </div>
           <div className="flex rounded-xl border border-white/10 p-1 text-[13px]">
