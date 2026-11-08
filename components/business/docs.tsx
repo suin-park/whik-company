@@ -26,6 +26,8 @@ export type ClientInfo = {
   contactName?: string | null;
   contactEmail?: string | null;
   contactPhone?: string | null;
+  /** Seal image(s) the client uploaded; shown on contracts not signed yet. */
+  seals?: { label?: string; src: string }[];
 };
 export type QuoteItem = { name: string; spec?: string; qty: number; unitPrice: number; note?: string };
 export type QuoteDoc = {
@@ -54,6 +56,8 @@ export type ContractDoc = {
   clientSignature?: string | null;
   clientSignedAt?: string | Date | null;
   clientSignedIp?: string | null;
+  /** The client's seal(s) frozen at signing. */
+  clientSeals?: { label?: string; src: string }[];
   providerSignerName?: string | null;
   providerSignature?: string | null;
   providerSignedAt?: string | Date | null;
@@ -272,7 +276,18 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
 
         <p className="wb-date">{day(k.clientSignedAt ?? k.sentAt ?? new Date())}</p>
         <div className="wb-signs">
-          <div className="wb-sign">
+          <div className="wb-sign wb-sign-client">
+            {(() => {
+              const seals = k.clientSignedAt ? (k.clientSeals ?? []) : (client.seals ?? []);
+              return seals.length > 0 ? (
+                <div className="wb-seals">
+                  {seals.map((sl, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img key={i} className="wb-seal" src={sl.src} alt={sl.label || "갑 도장"} />
+                  ))}
+                </div>
+              ) : null;
+            })()}
             <p className="role">갑 (발주자)</p>
             <dl>
               <dt>상호</dt>
@@ -527,7 +542,9 @@ export const DOC_CSS = `
 .wb-sign dl{display:grid;grid-template-columns:72px 1fr;gap:3px 8px;margin:0 0 10px;font-size:12px}
 .wb-sign dt{color:#6b7280}
 .wb-sign dd{margin:0}
-.wb-sign-provider{position:relative}
+.wb-sign-provider,.wb-sign-client{position:relative}
+.wb-seals{position:absolute;top:8px;right:10px;display:flex;gap:2px}
+.wb-seals .wb-seal{width:60px;height:60px;object-fit:contain}
 .wb-sign-provider .wb-seal{position:absolute;top:8px;right:10px;width:68px;height:68px}
 .wb-stamp{position:relative;display:inline-block;padding-right:40px}
 .wb-stamp .wb-seal{position:absolute;right:0;top:50%;width:56px;height:56px;transform:translateY(-50%) rotate(-4deg)}

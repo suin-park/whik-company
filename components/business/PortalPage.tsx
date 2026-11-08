@@ -57,6 +57,8 @@ const T = {
       INVALID_BIZ_REG_NO: "사업자등록번호 10자리를 확인해 주세요.",
       INVALID_EMAIL: "세금계산서 받을 이메일 주소를 확인해 주세요.",
       TOO_MANY_TAX_ENTRIES: "사업자는 5곳까지 입력할 수 있습니다.",
+      INVALID_SEAL: "도장 이미지를 읽지 못했습니다. 다른 사진으로 다시 올려 주세요.",
+      TOO_MANY_SEALS: "도장은 3개까지 올릴 수 있습니다.",
     } as Record<string, string>,
     errDefault: "처리하지 못했습니다. 잠시 후 다시 시도해 주세요.",
     tabInfo: "거래 정보",
@@ -90,6 +92,14 @@ const T = {
     taxOk: "세금계산서 정보 입력 완료",
     taxEdit: "수정",
     tAmount: "발행 금액 (VAT 포함)",
+    sealTitle: "회사 도장 (선택)",
+    sealDesc: "도장 이미지를 올리시면 계약서의 갑 서명란에 함께 찍힙니다. 흰 배경은 자동으로 지워집니다. 서명하신 계약서에는 서명 당시의 도장이 고정됩니다.",
+    sealPick: "도장 이미지 올리기",
+    sealLabel: "구분 (예: 1호점)",
+    sealRemove: "빼기",
+    sealSave: "도장 저장",
+    sealSaved: "도장을 저장했습니다.",
+    sealEmpty: "아직 올린 도장이 없습니다.",
     entry: (n: number) => `사업자 ${n}`,
     addEntry: "+ 사업자 추가 (매장별로 나누어 발행)",
     removeEntry: "이 사업자 빼기",
@@ -162,6 +172,8 @@ const T = {
       INVALID_BIZ_REG_NO: "Please check the 10-digit business registration number.",
       INVALID_EMAIL: "Please check the email address for tax invoices.",
       TOO_MANY_TAX_ENTRIES: "You can add up to 5 businesses.",
+      INVALID_SEAL: "Could not read the seal image. Please try another photo.",
+      TOO_MANY_SEALS: "You can upload up to 3 seals.",
     } as Record<string, string>,
     errDefault: "Something went wrong. Please try again shortly.",
     tabInfo: "Billing",
@@ -195,6 +207,14 @@ const T = {
     taxOk: "Tax invoice details saved",
     taxEdit: "Edit",
     tAmount: "Amount to invoice (VAT incl.)",
+    sealTitle: "Company seal (optional)",
+    sealDesc: "Upload your seal and it is stamped next to your signature on the contract. White backgrounds are removed automatically. A signed contract keeps the seal it was signed with.",
+    sealPick: "Upload a seal image",
+    sealLabel: "Label (e.g. Store 1)",
+    sealRemove: "Remove",
+    sealSave: "Save seal",
+    sealSaved: "Your seal has been saved.",
+    sealEmpty: "No seal uploaded yet.",
     entry: (n: number) => `Business ${n}`,
     addEntry: "+ Add a business (split invoices)",
     removeEntry: "Remove this business",
@@ -512,6 +532,107 @@ function WhikInfo({ p, files }: { p: Provider; files: CompanyFile[] }) {
   );
 }
 
+type Seal = { label: string; src: string };
+
+/** Seal photo → PNG data URL: at most 400 px, near-white background made transparent so it stamps cleanly. */
+async function sealFromFile(file: File): Promise<string> {
+  const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+  const make = (max: number) => {
+    const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas");
+    c.width = Math.max(1, Math.round(bmp.width * k));
+    c.height = Math.max(1, Math.round(bmp.height * k));
+    const g = c.getContext("2d")!;
+    g.drawImage(bmp, 0, 0, c.width, c.height);
+    const img = g.getImageData(0, 0, c.width, c.height);
+    const d = img.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const light = Math.min(d[i], d[i + 1], d[i + 2]);
+      if (light > 225) d[i + 3] = Math.round(d[i + 3] * Math.max(0, (245 - light) / 20));
+    }
+    g.putImageData(img, 0, 0);
+    return c.toDataURL("image/png");
+  };
+  let out = make(400);
+  if (out.length > 390_000) out = make(260);
+  bmp.close();
+  return out;
+}
+
+function SealUpload({ data, onSaved }: { data: Data; onSaved: () => void }) {
+  const t = usePT();
+  const [list, setList] = useState<Seal[]>(() => (data.client.seals ?? []).map((x) => ({ label: x.label ?? "", src: x.src })));
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const pick = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setError(null);
+    try {
+      const added: Seal[] = [];
+      for (const f of Array.from(files).slice(0, 3 - list.length)) added.push({ label: "", src: await sealFromFile(f) });
+      setList((l) => [...l, ...added].slice(0, 3));
+    } catch {
+      setError(t.err.INVALID_SEAL);
+    }
+  };
+  const save = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await post("/api/business/portal/seals", { seals: list });
+      onSaved();
+    } catch (x) {
+      setError(t.err[(x as Error).message] ?? t.errDefault);
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <section className="border border-white/10 bg-white/[.02] p-5 md:p-6">
+      <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#a9d0ff]">SEAL</p>
+      <h3 className="m-0 mt-2 text-xl font-semibold">{t.sealTitle}</h3>
+      <p className="mt-1.5 text-[13px] text-white/55">{t.sealDesc}</p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        {list.length === 0 && <p className="m-0 text-[13px] text-white/40">{t.sealEmpty}</p>}
+        {list.map((sl, i) => (
+          <div key={i} className="w-[150px]">
+            <div className="h-[110px] overflow-hidden bg-white p-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={sl.src} alt={sl.label || "seal"} className="h-full w-full object-contain" />
+            </div>
+            <input
+              value={sl.label}
+              maxLength={40}
+              onChange={(e) => setList((l) => l.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)))}
+              placeholder={t.sealLabel}
+              className="mt-1.5 w-full border border-white/15 bg-black/30 px-2 py-1.5 text-[12px] text-white outline-none focus:border-[#a9d0ff]"
+            />
+            <button type="button" onClick={() => setList((l) => l.filter((_, j) => j !== i))} className="mt-1 text-[12px] text-white/45 underline underline-offset-4 hover:text-[#ff8a7a]">
+              {t.sealRemove}
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {list.length < 3 && (
+          <label className="inline-flex cursor-pointer items-center gap-2 border border-white/20 px-4 py-2.5 text-sm font-semibold hover:border-[#a9d0ff] hover:text-[#cfe4ff]">
+            <input type="file" accept="image/*" multiple className="sr-only" onChange={(e) => { pick(e.target.files); e.target.value = ""; }} />
+            {t.sealPick}
+          </label>
+        )}
+        <button type="button" onClick={save} disabled={busy} className="inline-flex min-h-[44px] items-center bg-[#a9d0ff] px-6 text-sm font-bold text-[#0b0d0f] hover:bg-[#cfe4ff] disabled:opacity-50">
+          {busy ? t.taxSaving : t.sealSave}
+        </button>
+      </div>
+      {error && (
+        <p role="alert" className="mt-3 text-[13px] text-[#ff8a7a]">
+          {error}
+        </p>
+      )}
+    </section>
+  );
+}
+
 const blankTax = (): TaxInfo => ({ companyName: "", bizRegNo: "", ceoName: "", address: "", bizType: "", bizItem: "", email: "", managerName: "", managerPhone: "", amount: null });
 
 function TaxForm({ data, onSaved }: { data: Data; onSaved: () => void }) {
@@ -774,7 +895,17 @@ export default function PortalPage() {
 
           {tab === "info" ? (
             <div className="grid gap-6 xl:grid-cols-2">
-              <WhikInfo p={data.provider} files={data.companyFiles ?? []} />
+              <div className="grid content-start gap-6">
+                <WhikInfo p={data.provider} files={data.companyFiles ?? []} />
+                <SealUpload
+                  key={(data.client.seals ?? []).map((x) => x.src.length).join("-") || "none"}
+                  data={data}
+                  onSaved={async () => {
+                    setNotice(t.sealSaved);
+                    await load();
+                  }}
+                />
+              </div>
               <TaxForm
                 key={data.taxInfoAt ?? "new"}
                 data={data}
