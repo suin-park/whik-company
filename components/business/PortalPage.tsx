@@ -23,6 +23,10 @@ type TaxInfo = {
   managerPhone: string;
   amount?: number | null;
 };
+type Progress = {
+  milestones: { title: string; start: string; end: string; status: "todo" | "doing" | "done" }[];
+  updates: { id: string; date: string; title: string; body: string; link: string }[];
+};
 type CompanyFile = { key: string; label: string; filename: string };
 type Data = {
   client: ClientInfo;
@@ -35,6 +39,8 @@ type Data = {
   taxInfoAt: string | null;
   /** Portal tab for handwriting samples (turned on per client by WHIK). */
   scanSamples?: boolean;
+  /** Development progress written by WHIK (tab shown when present). */
+  progress?: Progress | null;
   companyFiles?: CompanyFile[];
 };
 
@@ -108,6 +114,14 @@ const T = {
     sealSaved: "도장을 저장했습니다.",
     sealEmpty: "아직 올린 도장이 없습니다.",
     tabSamples: "응모권 샘플",
+    tabProgress: "개발 진행",
+    pgTitle: "개발 진행 상황",
+    pgDesc: "단계별 일정과 진행 소식을 휙랩이 직접 올립니다.",
+    pgOverall: (n: number) => `전체 진행률 ${n}%`,
+    pgStatus: { todo: "예정", doing: "진행 중", done: "완료" } as Record<string, string>,
+    pgUpdates: "진행 소식",
+    pgNoUpdates: "아직 올라온 소식이 없습니다.",
+    pgOpen: "미리 보기",
     smTitle: "응모권 샘플 올리기",
     smDesc: "손글씨 인식 정확도를 매장 응모권에 맞추는 데 쓰입니다. 올린 사진은 휙랩만 볼 수 있고 30일 뒤 자동으로 지워집니다.",
     smHow: ["빈 응모권에 직원분들이 **가짜 이름과 번호**로 직접 써 주세요. 손님이 쓴 실제 응모권은 올리지 말아 주세요.", "여러 분이 나눠 쓰고, 흘려 쓰거나 작게 쓴 것도 섞어 주시면 좋습니다.", "사진을 올리면 AI가 읽은 결과가 나옵니다. 종이와 다른 칸만 고친 뒤 ‘제출’을 눌러 주세요."],
@@ -247,6 +261,14 @@ const T = {
     sealSaved: "Your seal has been saved.",
     sealEmpty: "No seal uploaded yet.",
     tabSamples: "Samples",
+    tabProgress: "Progress",
+    pgTitle: "Development progress",
+    pgDesc: "Milestones and updates, posted by WHIK.",
+    pgOverall: (n: number) => `Overall ${n}%`,
+    pgStatus: { todo: "Planned", doing: "In progress", done: "Done" } as Record<string, string>,
+    pgUpdates: "Updates",
+    pgNoUpdates: "No updates yet.",
+    pgOpen: "Preview",
     smTitle: "Upload entry-ticket samples",
     smDesc: "Used to tune handwriting reading to your tickets. Only WHIK can see the photos, and they are deleted automatically after 30 days.",
     smHow: ["Have staff fill blank tickets with **made-up names and numbers**. Please do not upload real customer tickets.", "Several people writing, including fast or small handwriting, helps most.", "After you upload a photo the AI reading appears. Fix only the fields that differ from the paper, then press ‘Submit’."],
@@ -583,6 +605,69 @@ function WhikInfo({ p, files }: { p: Provider; files: CompanyFile[] }) {
 }
 
 type Seal = { label: string; src: string };
+
+const md = (d: string) => (d ? `${Number(d.slice(5, 7))}/${Number(d.slice(8, 10))}` : "");
+
+function ProgressView({ p }: { p: Progress }) {
+  const t = usePT();
+  const total = p.milestones.length;
+  const pct = total ? Math.round((p.milestones.reduce((a, m) => a + (m.status === "done" ? 1 : m.status === "doing" ? 0.5 : 0), 0) / total) * 100) : 0;
+  return (
+    <div className="grid gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+      <section className="border border-white/10 bg-white/[.02] p-5 md:p-6">
+        <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#a9d0ff]">PROGRESS</p>
+        <h3 className="m-0 mt-2 text-xl font-semibold">{t.pgTitle}</h3>
+        <p className="mt-1.5 text-[13px] text-white/55">{t.pgDesc}</p>
+        {total > 0 && (
+          <>
+            <div className="mt-5 flex items-center justify-between text-[13px]">
+              <span className="font-semibold text-[#7fe0c8]">{t.pgOverall(pct)}</span>
+            </div>
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="h-full rounded-full bg-[linear-gradient(90deg,#7fe0c8,#a9d0ff)]" style={{ width: `${pct}%` }} />
+            </div>
+            <ol className="relative m-0 mt-6 list-none border-l border-white/12 p-0 pl-6">
+              {p.milestones.map((m, i) => (
+                <li key={i} className="relative pb-5 last:pb-0">
+                  <span
+                    className={`absolute -left-[31px] top-1 h-3.5 w-3.5 rounded-full ring-4 ring-[#0b0d0f] ${m.status === "done" ? "bg-[#7fe0c8]" : m.status === "doing" ? "animate-pulse bg-[#ffc27a]" : "bg-white/25"}`}
+                  />
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <p className={`m-0 text-[15px] font-semibold ${m.status === "todo" ? "text-white/60" : "text-white"}`}>{m.title}</p>
+                    <span className={`text-[12px] font-semibold ${m.status === "done" ? "text-[#7fe0c8]" : m.status === "doing" ? "text-[#ffc27a]" : "text-white/40"}`}>{t.pgStatus[m.status]}</span>
+                  </div>
+                  {(m.start || m.end) && <p className="m-0 mt-0.5 text-[12.5px] text-white/45">{m.start && m.end && m.start !== m.end ? `${md(m.start)} ~ ${md(m.end)}` : md(m.start || m.end)}</p>}
+                </li>
+              ))}
+            </ol>
+          </>
+        )}
+      </section>
+      <section className="border border-white/10 bg-white/[.02] p-5 md:p-6">
+        <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#ffc27a]">UPDATES</p>
+        <h3 className="m-0 mt-2 text-xl font-semibold">{t.pgUpdates}</h3>
+        {p.updates.length === 0 ? (
+          <p className="mt-4 text-[13px] text-white/40">{t.pgNoUpdates}</p>
+        ) : (
+          <ul className="m-0 mt-4 grid list-none gap-3 p-0">
+            {p.updates.map((u) => (
+              <li key={u.id} className="border border-white/[.08] bg-black/20 p-4">
+                <p className="m-0 font-mono text-[12px] text-white/45">{u.date}</p>
+                {u.title && <p className="m-0 mt-1 text-[15px] font-semibold">{u.title}</p>}
+                {u.body && <p className="m-0 mt-1.5 whitespace-pre-wrap break-keep text-[13.5px] leading-relaxed text-white/75">{u.body}</p>}
+                {u.link && /^https?:\/\//i.test(u.link) && (
+                  <a href={u.link} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 border border-white/20 px-3 py-1.5 text-[13px] font-semibold hover:border-[#a9d0ff] hover:text-[#cfe4ff]">
+                    {t.pgOpen} <span aria-hidden>↗</span>
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
+  );
+}
 
 /** Photo → base64 JPEG (no data: prefix), at most 1600 px, orientation applied. */
 async function samplePhoto(file: File): Promise<{ b64: string; url: string }> {
@@ -1016,7 +1101,7 @@ export default function PortalPage() {
   const day = (d?: string | Date | null) => (d ? new Date(d).toLocaleDateString(t.locale, { timeZone: "Asia/Seoul" }) : "-");
   const [state, setState] = useState<"loading" | "gate" | "in">("loading");
   const [data, setData] = useState<Data | null>(null);
-  const [tab, setTab] = useState<"quotes" | "contracts" | "info" | "samples">("quotes");
+  const [tab, setTab] = useState<"quotes" | "contracts" | "info" | "samples" | "progress">("quotes");
   const [sel, setSel] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -1098,6 +1183,7 @@ export default function PortalPage() {
                 ["quotes", t.tabQuotes, data.quotes.length, pending],
                 ["contracts", t.tabContracts, data.contracts.length, toSign],
                 ["info", t.tabInfo, null, !data.taxComplete && data.contracts.length > 0 ? 1 : 0],
+                ...(data.progress ? ([["progress", t.tabProgress, null, 0]] as const) : []),
                 ...(data.scanSamples ? ([["samples", t.tabSamples, null, 0]] as const) : []),
               ] as const
             ).map(([k, l, n, badge]) => (
@@ -1125,7 +1211,9 @@ export default function PortalPage() {
             </div>
           )}
 
-          {tab === "samples" ? (
+          {tab === "progress" && data.progress ? (
+            <ProgressView p={data.progress} />
+          ) : tab === "samples" ? (
             <SampleUpload />
           ) : tab === "info" ? (
             <div className="grid gap-6 xl:grid-cols-2">
