@@ -76,6 +76,8 @@ async function toJpeg(file: File): Promise<string> {
 }
 
 const digits = (p: string) => p.replace(/\D/g, "");
+// consent checkboxes toggle with a tap, so only text fields offer the other reader's value
+const TEXT_FIELDS = ["name", "phone", "birthday"];
 const known = new Map(CUSTOMERS.map((c) => [digits(c.phone), c]));
 
 export function RealScan({ toast }: { toast: (m: string) => void }) {
@@ -232,10 +234,10 @@ export function RealScan({ toast }: { toast: (m: string) => void }) {
                         같은 번호의 단골 손님: {old.name} (이 이름으로 바꾸기)
                       </button>
                     )}
-                    {r.alternatives.length > 0 && (
+                    {r.alternatives.some((a) => TEXT_FIELDS.includes(a.field)) && (
                       <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11.5px]">
                         <span className="text-white/50">다르게 읽힌 글자:</span>
-                        {r.alternatives.map((a) => (
+                        {r.alternatives.filter((a) => TEXT_FIELDS.includes(a.field)).map((a) => (
                           <button
                             key={a.field + a.value}
                             type="button"
