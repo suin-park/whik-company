@@ -71,6 +71,10 @@ const T = {
     printHint: "브라우저 인쇄에서 ‘PDF로 저장’을 고르면 파일로 보관할 수 있습니다.",
     print: "출력 / PDF 저장",
     jumpSign: "서명하러 가기",
+    demoEyebrow: "PREVIEW",
+    demoTitle: "이 견적으로 만들 화면을 미리 보세요",
+    demoDesc: "견적에 담긴 기능을 실제처럼 눌러 볼 수 있는 시연 화면입니다.",
+    demoBtn: "시연 화면 보기",
     jumpAnswer: "응답하러 가기",
     docLang: "",
     answered: "견적서 응답을 보냈습니다. 담당자가 확인 후 연락드립니다.",
@@ -134,6 +138,10 @@ const T = {
     printHint: "Choose ‘Save as PDF’ in the print dialog to keep a file.",
     print: "Print / Save PDF",
     jumpSign: "Go to signing",
+    demoEyebrow: "PREVIEW",
+    demoTitle: "Preview what this quote builds",
+    demoDesc: "A clickable demo of the features in this quote.",
+    demoBtn: "Open the demo",
     jumpAnswer: "Go to answer",
     docLang: "Documents are issued in Korean, the governing language of the contract.",
     answered: "Your answer has been sent. We will be in touch shortly.",
@@ -142,6 +150,8 @@ const T = {
 };
 type Dict = (typeof T)["ko"];
 const usePT = (): Dict => (useI18n().lang === "en" ? (T.en as unknown as Dict) : T.ko);
+/** A demo page linked from the quote notes (only whik.co.kr/demo/... paths, so a note can't send clients elsewhere). */
+const demoPath = (notes?: string | null) => notes?.match(/https?:\/\/(?:www\.)?whik\.co\.kr(\/demo\/[a-z0-9\-/]+)/i)?.[1] ?? null;
 const QC: Record<string, string> = { SENT: "#a9d0ff", ACCEPTED: "#7fe0c8", REJECTED: "#ff8a7a" };
 const CC: Record<string, string> = { SENT: "#ffc27a", CLIENT_SIGNED: "#a9d0ff", COMPLETED: "#7fe0c8" };
 
@@ -543,6 +553,21 @@ export default function PortalPage() {
                     </button>
                     </span>
                   </div>
+                  {tab === "quotes" && demoPath((current as Quote).notes) && (
+                    <Link
+                      href={demoPath((current as Quote).notes)!}
+                      className="group mb-5 flex flex-col gap-3 rounded-2xl border border-[#ff5a36]/40 bg-[linear-gradient(110deg,rgba(255,90,54,.16),rgba(255,181,71,.06))] p-5 transition hover:border-[#ff5a36]/80 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <span>
+                        <span className="block text-[10.5px] font-semibold tracking-[0.22em] text-[#ffb547]">{t.demoEyebrow}</span>
+                        <span className="mt-1 block text-[17px] font-bold">{t.demoTitle}</span>
+                        <span className="mt-0.5 block text-[13px] text-white/55">{t.demoDesc}</span>
+                      </span>
+                      <span className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#ff5a36] px-5 py-3 text-sm font-bold text-white shadow-[0_12px_32px_-10px_rgba(255,90,54,.8)]">
+                        {t.demoBtn} <span aria-hidden className="transition group-hover:translate-x-1">→</span>
+                      </span>
+                    </Link>
+                  )}
                   <div className={`grid gap-6 ${(tab === "quotes" && current.status === "SENT") || (tab === "contracts" && current.status === "SENT") ? "min-[1700px]:grid-cols-[minmax(0,1fr)_360px]" : ""}`}>
                     <div className="wb-print min-w-0 overflow-x-auto bg-white/[.03] p-3 md:p-6">
                       {tab === "quotes" ? <QuoteDocument q={current as Quote} client={data.client} provider={data.provider} /> : <ContractDocument k={current as Contract} client={data.client} provider={data.provider} />}
