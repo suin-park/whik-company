@@ -17,10 +17,10 @@ export async function visitor() {
   return { ip: ip.slice(0, 64), userAgent: (h.get("user-agent") || "").slice(0, 400) };
 }
 
-/** Calls 3D Locker and passes its JSON (and status) straight back. */
-export async function forward(path: string, body: Record<string, unknown>) {
+/** Calls 3D Locker and returns its JSON and status (errors become { ok: false, error }). */
+export async function callUpstream(path: string, body: Record<string, unknown>): Promise<{ status: number; json: Record<string, unknown> }> {
   const key = process.env.WHIK_BUSINESS_API_KEY;
-  if (!key) return NextResponse.json({ ok: false, error: "NOT_CONFIGURED" }, { status: 503 });
+  if (!key) return { status: 503, json: { ok: false, error: "NOT_CONFIGURED" } };
   const v = await visitor();
   try {
     const res = await fetch(`${apiBase()}${path}`, {
@@ -30,11 +30,17 @@ export async function forward(path: string, body: Record<string, unknown>) {
       cache: "no-store",
     });
     const json = await res.json().catch(() => ({ ok: false, error: "BAD_UPSTREAM" }));
-    return NextResponse.json(json, { status: res.status });
+    return { status: res.status, json };
   } catch (e) {
     console.error("[business] upstream error", path, e);
-    return NextResponse.json({ ok: false, error: "UPSTREAM_UNREACHABLE" }, { status: 502 });
+    return { status: 502, json: { ok: false, error: "UPSTREAM_UNREACHABLE" } };
   }
+}
+
+/** Calls 3D Locker and passes its JSON (and status) straight back. */
+export async function forward(path: string, body: Record<string, unknown>) {
+  const { status, json } = await callUpstream(path, body);
+  return NextResponse.json(json, { status });
 }
 
 export async function portalCode() {

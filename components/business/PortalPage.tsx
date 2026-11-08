@@ -11,7 +11,27 @@ const rise: Variants = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0
 
 type Quote = QuoteDoc & { id: string; status: string; respondedAt: string | null; respondedName: string | null; demoUrl?: string | null };
 type Contract = ContractDoc & { id: string; status: string; quoteNumber: string | null };
-type Data = { client: ClientInfo; provider: Provider; quotes: Quote[]; contracts: Contract[] };
+type TaxInfo = {
+  companyName: string;
+  bizRegNo: string;
+  ceoName: string;
+  address: string;
+  bizType: string;
+  bizItem: string;
+  email: string;
+  managerName: string;
+  managerPhone: string;
+};
+type CompanyFile = { key: string; label: string; filename: string };
+type Data = {
+  client: ClientInfo;
+  provider: Provider;
+  quotes: Quote[];
+  contracts: Contract[];
+  taxInfo: TaxInfo | null;
+  taxInfoAt: string | null;
+  companyFiles?: CompanyFile[];
+};
 
 const T = {
   ko: {
@@ -30,8 +50,41 @@ const T = {
       EXPIRED: "유효기간이 지난 견적서입니다. 담당자에게 문의해 주세요.",
       INVALID_SIGNATURE: "서명을 다시 그려주세요.",
       MISSING_FIELDS: "필수 항목을 확인해 주세요.",
+      TAX_INFO_REQUIRED: "서명 전에 ‘거래 정보’ 탭에서 세금계산서 발행 정보를 먼저 입력해 주세요.",
+      INVALID_BIZ_REG_NO: "사업자등록번호 10자리를 확인해 주세요.",
+      INVALID_EMAIL: "세금계산서 받을 이메일 주소를 확인해 주세요.",
     } as Record<string, string>,
     errDefault: "처리하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+    tabInfo: "거래 정보",
+    whikTitle: "WHIK 회사 정보",
+    whikDesc: "계약과 대금 지급에 필요한 휙랩의 정보입니다.",
+    pName: "상호",
+    pCeo: "대표자",
+    pBizNo: "사업자등록번호",
+    pType: "업태 / 종목",
+    pAddr: "사업장 주소",
+    pContact: "연락처",
+    pBank: "입금 계좌",
+    files: "서류 내려받기",
+    taxTitle: "세금계산서 발행 정보",
+    taxDesc: "입력하신 정보로 대금 청구 시 전자세금계산서를 발행합니다. 계약서 서명 전에 입력해 주세요.",
+    tCompany: "상호 (법인명) *",
+    tBizNo: "사업자등록번호 *",
+    tCeo: "대표자 성명 *",
+    tAddr: "사업장 주소 *",
+    tType: "업태",
+    tItem: "종목",
+    tEmail: "세금계산서 받을 이메일 *",
+    tManager: "담당자 이름",
+    tPhone: "담당자 연락처",
+    taxSave: "저장하기",
+    taxSaving: "저장 중…",
+    taxSaved: "세금계산서 정보를 저장했습니다.",
+    taxDone: (d: string) => `${d}에 입력됨`,
+    taxNeed: "서명 전에 세금계산서 발행 정보를 입력해 주세요.",
+    taxGo: "입력하러 가기",
+    taxOk: "세금계산서 정보 입력 완료",
+    taxEdit: "수정",
     back: "뒤로 가기",
     gateTitle: "기업 관리 코드를 입력하세요.",
     gateDesc: ["담당자에게 받은 코드로 견적서를 확인하고,", "계약서에 전자서명할 수 있습니다."],
@@ -96,8 +149,41 @@ const T = {
       EXPIRED: "This quote has expired. Please contact us.",
       INVALID_SIGNATURE: "Please draw your signature again.",
       MISSING_FIELDS: "Please fill in the required fields.",
+      TAX_INFO_REQUIRED: "Please enter your tax invoice details in the ‘Billing’ tab before signing.",
+      INVALID_BIZ_REG_NO: "Please check the 10-digit business registration number.",
+      INVALID_EMAIL: "Please check the email address for tax invoices.",
     } as Record<string, string>,
     errDefault: "Something went wrong. Please try again shortly.",
+    tabInfo: "Billing",
+    whikTitle: "WHIK company details",
+    whikDesc: "Our details for the contract and payment.",
+    pName: "Company",
+    pCeo: "Representative",
+    pBizNo: "Business reg. no.",
+    pType: "Business type / item",
+    pAddr: "Address",
+    pContact: "Contact",
+    pBank: "Bank account",
+    files: "Documents",
+    taxTitle: "Tax invoice details",
+    taxDesc: "We issue the electronic tax invoice with these details when we bill. Please enter them before signing.",
+    tCompany: "Company name *",
+    tBizNo: "Business registration no. *",
+    tCeo: "Representative *",
+    tAddr: "Business address *",
+    tType: "Business type (업태)",
+    tItem: "Business item (종목)",
+    tEmail: "Email for tax invoices *",
+    tManager: "Contact person",
+    tPhone: "Contact phone",
+    taxSave: "Save",
+    taxSaving: "Saving…",
+    taxSaved: "Your tax invoice details have been saved.",
+    taxDone: (d: string) => `Saved on ${d}`,
+    taxNeed: "Please enter your tax invoice details before signing.",
+    taxGo: "Enter details",
+    taxOk: "Tax invoice details saved",
+    taxEdit: "Edit",
     back: "Back",
     gateTitle: "Enter your company code.",
     gateDesc: ["Review quotes and sign contracts", "with the code from your WHIK contact."],
@@ -281,7 +367,7 @@ function Step({ n, done, children }: { n: number; done: boolean; children: React
   );
 }
 
-function SignPanel({ k, onSigned }: { k: Contract; onSigned: () => void }) {
+function SignPanel({ k, hasTax, onNeedTax, onSigned }: { k: Contract; hasTax: boolean; onNeedTax: () => void; onSigned: () => void }) {
   const t = usePT();
   const [read, setRead] = useState(false);
   const [name, setName] = useState("");
@@ -290,7 +376,7 @@ function SignPanel({ k, onSigned }: { k: Contract; onSigned: () => void }) {
   const [agree, setAgree] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const ready = read && name.trim() && sig && agree;
+  const ready = hasTax && read && name.trim() && sig && agree;
 
   const sign = async () => {
     if (!ready) return;
@@ -311,23 +397,40 @@ function SignPanel({ k, onSigned }: { k: Contract; onSigned: () => void }) {
       <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#ffc27a]">E-SIGNATURE</p>
       <h3 className="m-0 mt-2 text-xl font-semibold">{t.signTitle}</h3>
       <div className="mt-5 grid gap-5">
-        <Step n={1} done={read}>
+        <Step n={1} done={hasTax}>
+          {hasTax ? (
+            <p className="m-0 flex flex-wrap items-center gap-2 text-sm text-white/85">
+              {t.taxOk}
+              <button type="button" onClick={onNeedTax} className="text-[12px] text-white/50 underline underline-offset-4 hover:text-white">
+                {t.taxEdit}
+              </button>
+            </p>
+          ) : (
+            <div>
+              <p className="m-0 text-sm text-white/85">{t.taxNeed}</p>
+              <button type="button" onClick={onNeedTax} className="mt-2 inline-flex items-center gap-1.5 border border-[#ffc27a]/60 px-3 py-1.5 text-[13px] font-semibold text-[#ffc27a] hover:bg-[#ffc27a]/10">
+                {t.taxGo} <span aria-hidden>→</span>
+              </button>
+            </div>
+          )}
+        </Step>
+        <Step n={2} done={read}>
           <label className="flex cursor-pointer items-start gap-2 text-sm text-white/85">
             <input type="checkbox" checked={read} onChange={(e) => setRead(e.target.checked)} className="mt-1 h-4 w-4 accent-[#ffc27a]" />
             {t.readAll}
           </label>
         </Step>
-        <Step n={2} done={!!name.trim()}>
+        <Step n={3} done={!!name.trim()}>
           <div className="grid gap-2 sm:grid-cols-2">
             <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} placeholder={t.signerName} className="w-full border border-white/15 bg-black/30 px-3 py-2.5 text-sm text-white outline-none focus:border-[#ffc27a]" />
             <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={80} placeholder={t.signerTitle} className="w-full border border-white/15 bg-black/30 px-3 py-2.5 text-sm text-white outline-none focus:border-[#ffc27a]" />
           </div>
           <p className="mt-1.5 text-[11.5px] text-white/45">{t.authority}</p>
         </Step>
-        <Step n={3} done={!!sig}>
+        <Step n={4} done={!!sig}>
           <SignaturePad onChange={setSig} height={170} placeholder={t.padHint} clearLabel={t.padClear} />
         </Step>
-        <Step n={4} done={agree}>
+        <Step n={5} done={agree}>
           <label className="flex cursor-pointer items-start gap-2 text-sm text-white/85">
             <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-1 h-4 w-4 accent-[#ffc27a]" />
             <span>
@@ -347,6 +450,116 @@ function SignPanel({ k, onSigned }: { k: Contract; onSigned: () => void }) {
       </button>
       <p className="mt-3 text-center text-[11px] text-white/40">{t.signRecord}</p>
     </div>
+  );
+}
+
+const fieldCls = "w-full border border-white/15 bg-black/30 px-3 py-2.5 text-sm text-white outline-none focus:border-[#ffc27a]";
+
+function WhikInfo({ p, files }: { p: Provider; files: CompanyFile[] }) {
+  const t = usePT();
+  const rows: [string, string | undefined][] = [
+    [t.pName, p.name],
+    [t.pCeo, p.representative],
+    [t.pBizNo, p.bizRegNo],
+    [t.pType, p.bizType ? `${p.bizType} / ${p.bizItem ?? "-"}` : undefined],
+    [t.pAddr, p.address],
+    [t.pContact, `${p.phone} / ${p.email}`],
+    [t.pBank, p.bankAccount],
+  ];
+  return (
+    <section className="border border-white/10 bg-white/[.02] p-5 md:p-6">
+      <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#a9d0ff]">WHIK</p>
+      <h3 className="m-0 mt-2 text-xl font-semibold">{t.whikTitle}</h3>
+      <p className="mt-1.5 text-[13px] text-white/55">{t.whikDesc}</p>
+      <dl className="mt-5 grid grid-cols-[120px_minmax(0,1fr)] gap-x-4 gap-y-2.5 text-sm">
+        {rows
+          .filter(([, v]) => v)
+          .map(([k, v]) => (
+            <div key={k} className="contents">
+              <dt className="text-white/45">{k}</dt>
+              <dd className={`m-0 break-keep ${k === t.pBank ? "font-semibold text-[#ffc27a]" : "text-white/90"}`}>{v}</dd>
+            </div>
+          ))}
+      </dl>
+      {files.length > 0 && (
+        <div className="mt-6">
+          <p className="m-0 text-[12px] font-semibold text-white/60">{t.files}</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {files.map((f) => (
+              <a key={f.key} href={`/api/business/portal/company-file?f=${encodeURIComponent(f.key)}`} className="inline-flex items-center gap-2 border border-white/20 px-4 py-2.5 text-sm font-semibold hover:border-[#a9d0ff] hover:text-[#cfe4ff]">
+                <span aria-hidden>↓</span> {f.label} (PDF)
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function TaxForm({ data, onSaved }: { data: Data; onSaved: () => void }) {
+  const t = usePT();
+  const c = data.client;
+  const [f, setF] = useState<TaxInfo>(
+    data.taxInfo ?? {
+      companyName: c.companyName ?? "",
+      bizRegNo: c.bizRegNo ?? "",
+      ceoName: c.ceoName ?? "",
+      address: c.address ?? "",
+      bizType: "",
+      bizItem: "",
+      email: c.contactEmail ?? "",
+      managerName: c.contactName ?? "",
+      managerPhone: c.contactPhone ?? "",
+    },
+  );
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const set = (k: keyof TaxInfo) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value });
+  const save = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await post("/api/business/portal/tax-info", { taxInfo: f });
+      onSaved();
+    } catch (x) {
+      setError(t.err[(x as Error).message] ?? t.errDefault);
+    } finally {
+      setBusy(false);
+    }
+  };
+  const field = (k: keyof TaxInfo, label: string, opts: { full?: boolean; type?: string; max?: number; inputMode?: "numeric" | "email" | "tel" } = {}) => (
+    <label className={`block ${opts.full ? "sm:col-span-2" : ""}`}>
+      <span className="mb-1.5 block text-[12px] text-white/55">{label}</span>
+      <input value={f[k]} onChange={set(k)} type={opts.type ?? "text"} inputMode={opts.inputMode} maxLength={opts.max ?? 120} className={fieldCls} />
+    </label>
+  );
+  return (
+    <section id="portal-tax" className="scroll-mt-24 border border-[#ffc27a]/40 bg-[#ffc27a]/[.04] p-5 md:p-6">
+      <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#ffc27a]">TAX INVOICE</p>
+      <h3 className="m-0 mt-2 text-xl font-semibold">{t.taxTitle}</h3>
+      <p className="mt-1.5 text-[13px] text-white/55">{t.taxDesc}</p>
+      {data.taxInfoAt && <p className="mt-1 text-[12px] text-[#7fe0c8]">{t.taxDone(new Date(data.taxInfoAt).toLocaleString(t.locale, { timeZone: "Asia/Seoul" }))}</p>}
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {field("companyName", t.tCompany)}
+        {field("bizRegNo", t.tBizNo, { max: 20, inputMode: "numeric" })}
+        {field("ceoName", t.tCeo, { max: 80 })}
+        {field("email", t.tEmail, { type: "email", max: 160, inputMode: "email" })}
+        {field("address", t.tAddr, { full: true, max: 200 })}
+        {field("bizType", t.tType)}
+        {field("bizItem", t.tItem)}
+        {field("managerName", t.tManager, { max: 80 })}
+        {field("managerPhone", t.tPhone, { max: 40, inputMode: "tel" })}
+      </div>
+      {error && (
+        <p role="alert" className="mt-4 text-[13px] text-[#ff8a7a]">
+          {error}
+        </p>
+      )}
+      <button type="button" onClick={save} disabled={busy} className="mt-5 inline-flex min-h-[48px] w-full items-center justify-center bg-[#ffc27a] text-sm font-bold text-[#0b0d0f] hover:bg-[#ffd7a6] disabled:opacity-50 sm:w-auto sm:px-10">
+        {busy ? t.taxSaving : t.taxSave}
+      </button>
+    </section>
   );
 }
 
@@ -397,7 +610,7 @@ export default function PortalPage() {
   const day = (d?: string | Date | null) => (d ? new Date(d).toLocaleDateString(t.locale, { timeZone: "Asia/Seoul" }) : "-");
   const [state, setState] = useState<"loading" | "gate" | "in">("loading");
   const [data, setData] = useState<Data | null>(null);
-  const [tab, setTab] = useState<"quotes" | "contracts">("quotes");
+  const [tab, setTab] = useState<"quotes" | "contracts" | "info">("quotes");
   const [sel, setSel] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -431,7 +644,7 @@ export default function PortalPage() {
     load(false);
   }, [load]);
 
-  const items = useMemo(() => (data ? (tab === "quotes" ? data.quotes : data.contracts) : []), [data, tab]);
+  const items = useMemo(() => (data ? (tab === "quotes" ? data.quotes : tab === "contracts" ? data.contracts : []) : []), [data, tab]);
   const current = items.find((i) => i.id === sel) ?? null;
 
   // Log contract views for the audit trail.
@@ -473,11 +686,12 @@ export default function PortalPage() {
             </button>
           </div>
 
-          <div role="tablist" className="mb-6 flex gap-2 border-b border-white/10">
+          <div role="tablist" className="mb-6 flex gap-1 overflow-x-auto border-b border-white/10 sm:gap-2">
             {(
               [
                 ["quotes", t.tabQuotes, data.quotes.length, pending],
                 ["contracts", t.tabContracts, data.contracts.length, toSign],
+                ["info", t.tabInfo, null, !data.taxInfo && data.contracts.length > 0 ? 1 : 0],
               ] as const
             ).map(([k, l, n, badge]) => (
               <button
@@ -487,12 +701,12 @@ export default function PortalPage() {
                 type="button"
                 onClick={() => {
                   setTab(k);
-                  const list = k === "quotes" ? data.quotes : data.contracts;
+                  const list = k === "quotes" ? data.quotes : k === "contracts" ? data.contracts : [];
                   setSel(list[0]?.id ?? null);
                 }}
-                className={`-mb-px flex items-center gap-2 border-b-2 px-4 pb-3.5 pt-1 text-[15px] font-semibold transition ${tab === k ? "border-[#ffc27a] text-white" : "border-transparent text-white/45 hover:text-white/80"}`}
+                className={`-mb-px flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 pb-3.5 pt-1 text-[14px] font-semibold transition sm:gap-2 sm:px-4 sm:text-[15px] ${tab === k ? "border-[#ffc27a] text-white" : "border-transparent text-white/45 hover:text-white/80"}`}
               >
-                {l} <span className="text-white/35">{n}</span>
+                {l} {n !== null && <span className="text-white/35">{n}</span>}
                 {badge > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#ffc27a] px-1.5 text-[11px] font-bold text-[#0b0d0f]">{badge}</span>}
               </button>
             ))}
@@ -504,7 +718,19 @@ export default function PortalPage() {
             </div>
           )}
 
-          {items.length === 0 ? (
+          {tab === "info" ? (
+            <div className="grid gap-6 xl:grid-cols-2">
+              <WhikInfo p={data.provider} files={data.companyFiles ?? []} />
+              <TaxForm
+                key={data.taxInfoAt ?? "new"}
+                data={data}
+                onSaved={async () => {
+                  setNotice(t.taxSaved);
+                  await load();
+                }}
+              />
+            </div>
+          ) : items.length === 0 ? (
             <div className="border border-dashed border-white/12 px-6 py-20 text-center text-sm text-white/45">
               {tab === "quotes" ? t.noQuotes : t.noContracts}
             </div>
@@ -591,6 +817,12 @@ export default function PortalPage() {
                       <div id="portal-action" className="scroll-mt-24 min-[1700px]:sticky min-[1700px]:top-28 min-[1700px]:self-start">
                         <SignPanel
                           k={current as Contract}
+                          hasTax={!!data.taxInfo}
+                          onNeedTax={() => {
+                            setTab("info");
+                            setNotice(null);
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
                           onSigned={async () => {
                             setNotice(t.signed);
                             await load();

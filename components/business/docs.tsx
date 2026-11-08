@@ -5,7 +5,17 @@ import { useEffect, useRef, useState } from "react";
 // Print-ready quote and contract documents (A4, light paper look) plus a signature pad.
 // The whik.co.kr portal renders the same layout so both sides print the same paper.
 
-export type Provider = { name: string; representative: string; bizRegNo: string; address: string; phone: string; email: string };
+export type Provider = {
+  name: string;
+  representative: string;
+  bizRegNo: string;
+  address: string;
+  phone: string;
+  email: string;
+  bizType?: string;
+  bizItem?: string;
+  bankAccount?: string;
+};
 export type ClientInfo = {
   companyName: string;
   bizRegNo?: string | null;
@@ -140,6 +150,8 @@ export function QuoteDocument({ q, client, provider }: { q: QuoteDoc; client: Cl
             ["대표자", provider.representative],
             ["주소", provider.address],
             ["연락처", `${provider.phone} / ${provider.email}`],
+            ...(provider.bizType ? ([["업태 / 종목", `${provider.bizType} / ${provider.bizItem ?? "-"}`]] as [string, string][]) : []),
+            ...(provider.bankAccount ? ([["입금 계좌", provider.bankAccount]] as [string, string][]) : []),
           ]}
         />
       </div>
@@ -282,6 +294,18 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
               <dd>{provider.bizRegNo}</dd>
               <dt>주소</dt>
               <dd>{provider.address}</dd>
+              <dt>대표자</dt>
+              <dd>{provider.representative}</dd>
+              <dt>연락처</dt>
+              <dd>
+                {provider.phone} / {provider.email}
+              </dd>
+              {provider.bankAccount && (
+                <>
+                  <dt>입금 계좌</dt>
+                  <dd>{provider.bankAccount}</dd>
+                </>
+              )}
               <dt>서명자</dt>
               <dd>{k.providerSignerName || provider.representative}</dd>
             </dl>
