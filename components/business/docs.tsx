@@ -352,6 +352,10 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
                     )}
                   </>
                 )
+              ) : provider.seal && k.status === "DRAFT" ? (
+                // a draft: sending stamps the WHIK seal
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="wb-seal wb-seal-only" src={provider.seal} alt="휙랩 날인" />
               ) : (
                 <span>(서명 또는 날인)</span>
               )}
