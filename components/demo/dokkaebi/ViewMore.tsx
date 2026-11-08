@@ -84,7 +84,7 @@ export function ViewContent({ toast }: { toast: (m: string) => void }) {
 
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <button type="button" onClick={() => setGen((g) => g + 1)} className="rounded-xl bg-[#ff5a36] px-5 py-3 text-sm font-bold text-white shadow-[0_12px_32px_-10px_rgba(255,90,54,.8)]">
-            ✨ AI로 글 쓰기
+            AI로 글 쓰기
           </button>
           {gen > 0 && typed.length >= cap.length && (
             <>

@@ -46,8 +46,9 @@ export default function DokkaebiDemo() {
             <div className="flex items-center gap-3 rounded-2xl border border-white/[.07] bg-white/[.02] p-3 lg:mb-4 lg:p-3.5">
               <img src="/demo/dokkaebi/emblem.png" alt="{STORE.brand} 로고" width={40} height={40} className="h-10 w-10 shrink-0 rounded-full bg-white/95 lg:h-11 lg:w-11" />
               <span className="min-w-0">
-                <span className="block break-keep text-[13px] font-bold leading-snug">{STORE.legal}</span>
-                <span className="block text-[11px] text-white/45">사장님 화면 <span className="lg:hidden">| 시연용 가상 데이터</span></span>
+                <span className="block whitespace-nowrap text-[14px] font-bold leading-snug">{STORE.brand}</span>
+                <span className="block whitespace-nowrap text-[12px] font-semibold leading-snug text-[#ffb547]">THE 청주 본점</span>
+                <span className="mt-0.5 block text-[11px] text-white/45">사장님 화면 <span className="lg:hidden">| 시연용 가상 데이터</span></span>
               </span>
             </div>
             <nav className="dk-nav sticky top-16 z-30 -mx-4 flex gap-1.5 overflow-x-auto border-b border-white/[.06] bg-[#0f0c0b]/90 px-4 py-2 backdrop-blur sm:-mx-[3%] sm:px-[3%] lg:static lg:mx-0 lg:grid lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none" aria-label="시연 메뉴">
