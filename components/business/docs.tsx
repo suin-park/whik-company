@@ -15,6 +15,8 @@ export type Provider = {
   bizType?: string;
   bizItem?: string;
   bankAccount?: string;
+  /** Company seal image (data URL), stamped on quotes and contracts. */
+  seal?: string;
 };
 export type ClientInfo = {
   companyName: string;
@@ -219,7 +221,12 @@ export function QuoteDocument({ q, client, provider }: { q: QuoteDoc; client: Cl
         </section>
       )}
       <footer className="wb-foot">
-        위와 같이 견적합니다. <span>{provider.name}</span>
+        위와 같이 견적합니다.{" "}
+        <span className="wb-stamp">
+          {provider.name}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {provider.seal && <img className="wb-seal" src={provider.seal} alt="휙랩 도장" />}
+        </span>
       </footer>
     </article>
   );
@@ -285,7 +292,9 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
               {k.clientSignature ? <img src={k.clientSignature} alt="갑 서명" /> : <span>(서명)</span>}
             </div>
           </div>
-          <div className="wb-sign">
+          <div className="wb-sign wb-sign-provider">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {provider.seal && <img className="wb-seal" src={provider.seal} alt="휙랩 도장" />}
             <p className="role">을 (수급자)</p>
             <dl>
               <dt>상호</dt>
@@ -506,7 +515,7 @@ export const DOC_CSS = `
 .wb-notes{margin-top:16px;border-left:3px solid #0f9f86;padding:4px 0 4px 14px}
 .wb-notes h3{margin:0 0 4px;font-size:12px}
 .wb-notes p{margin:0;white-space:pre-wrap;color:#374151}
-.wb-foot{margin-top:30px;text-align:right;font-size:13px}
+.wb-foot{margin-top:30px;padding:16px 0;text-align:right;font-size:13px}
 .wb-foot span{font-weight:700;margin-left:8px}
 .wb-body h3{font-size:13px;margin:14px 0 2px;font-weight:800}
 .wb-body p{margin:0;white-space:pre-wrap;text-align:justify}
@@ -518,6 +527,11 @@ export const DOC_CSS = `
 .wb-sign dl{display:grid;grid-template-columns:72px 1fr;gap:3px 8px;margin:0 0 10px;font-size:12px}
 .wb-sign dt{color:#6b7280}
 .wb-sign dd{margin:0}
+.wb-sign-provider{position:relative}
+.wb-sign-provider .wb-seal{position:absolute;top:8px;right:10px;width:68px;height:68px}
+.wb-stamp{position:relative;display:inline-block;padding-right:40px}
+.wb-stamp .wb-seal{position:absolute;right:0;top:50%;width:56px;height:56px;transform:translateY(-50%) rotate(-4deg)}
+.wb-seal{mix-blend-mode:multiply;opacity:.92;pointer-events:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .wb-sign .sigbox{height:92px;border-top:1px dashed #d1d5db;display:grid;place-items:center}
 .wb-sign .sigbox img{max-height:84px;max-width:100%}
 .wb-sign .sigbox span{color:#9ca3af}
