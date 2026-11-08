@@ -108,7 +108,7 @@ export function ViewContent({ toast }: { toast: (m: string) => void }) {
         <PhoneFrame>
           <div className="flex h-full flex-col bg-white pt-10 text-[#111]">
             <div className="flex items-center gap-2 px-3 py-2">
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-[#ff5a36] to-[#b3261e] text-[10px] font-black text-white">돗</span>
+              <img src="/demo/dokkaebi/emblem.png" alt="" width={28} height={28} className="h-7 w-7 rounded-full ring-1 ring-black/10" />
               <span className="text-[12px] font-bold">dokkaebi_demo</span>
             </div>
             <div className={`relative aspect-square bg-gradient-to-br ${S.hue}`}>

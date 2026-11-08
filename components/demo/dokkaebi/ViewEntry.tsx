@@ -12,7 +12,7 @@ export function PaperTicket({ t, scanning = false, done = false, small = false }
       style={{ transform: `rotate(${t.tilt}deg)` }}
     >
       <div className="flex items-center justify-between border-b-2 border-[#b3261e] pb-1.5">
-        <span className={`whitespace-nowrap font-black tracking-[-0.04em] ${small ? "text-[11px]" : "text-[13px]"}`}>{STORE.brand}</span>
+        <span className="flex items-center gap-1.5"><img src="/demo/dokkaebi/emblem.png" alt="" width={20} height={20} className={small ? "h-4 w-4" : "h-5 w-5"} /><span className={`whitespace-nowrap font-black tracking-[-0.04em] ${small ? "text-[11px]" : "text-[13px]"}`}>{STORE.brand}</span></span>
         <span className={`whitespace-nowrap font-extrabold text-[#b3261e] ${small ? "text-[9.5px]" : "text-[12px]"}`}>{small ? "경품응모권" : "고객감사 경품응모권"}</span>
       </div>
       <div className={`mt-2 grid gap-1.5 ${small ? "text-[9px]" : "text-[10.5px]"}`}>
@@ -244,7 +244,8 @@ function QRFlow({ toast }: { toast: (m: string) => void }) {
         </div>
 
         <div className="mx-auto w-[220px] rotate-[-3deg] rounded-2xl bg-[#fbf8f2] p-4 text-center text-[#1b1a18] shadow-[0_30px_60px_-20px_rgba(0,0,0,.9)]">
-          <p className="m-0 text-[11px] font-black text-[#b3261e]">{STORE.brand}</p>
+          <img src="/demo/dokkaebi/emblem.png" alt="" width={44} height={44} className="mx-auto h-11 w-11" />
+          <p className="m-0 mt-1 text-[11px] font-black text-[#b3261e]">{STORE.brand}</p>
           <p className="m-0 mt-0.5 text-[15px] font-extrabold">찍고 바로 응모!</p>
           <div className="mx-auto mt-2 w-fit rounded-lg p-1.5 ring-2 ring-[#b3261e]">
             <FakeQR size={150} />
@@ -256,7 +257,7 @@ function QRFlow({ toast }: { toast: (m: string) => void }) {
           <div className="flex h-full flex-col bg-gradient-to-b from-[#1b0f0c] to-[#2b130d] px-5 pb-6 pt-12 text-white">
             {step === 0 && (
               <>
-                <p className="m-0 text-[11px] font-bold text-[#ffb547]">{STORE.brand}</p>
+                <p className="m-0 flex items-center gap-2 text-[11px] font-bold text-[#ffb547]"><img src="/demo/dokkaebi/emblem.png" alt="" width={28} height={28} className="h-7 w-7 rounded-full bg-white" />{STORE.brand}</p>
                 <p className="m-0 mt-1 text-[22px] font-extrabold leading-tight">이번 달 경품 응모</p>
                 <div className="mt-4 grid h-36 place-items-center rounded-2xl bg-gradient-to-br from-[#ff5a36] via-[#c2261b] to-[#3a0d08] text-center text-[13px] font-bold">
                   불쭈꾸미 철판 2인분
@@ -355,7 +356,8 @@ export function ViewTablet({ toast }: { toast: (m: string) => void }) {
         <div className="grid min-h-[430px] overflow-hidden rounded-[22px] bg-[#f6f1ea] text-[#1b1a18] md:grid-cols-[1.05fr_1fr]">
           <div className="relative flex flex-col justify-between bg-gradient-to-br from-[#2a0f0a] via-[#5a160d] to-[#b3261e] p-7 text-white">
             <div>
-              <p className="m-0 text-[13px] font-bold text-[#ffb547]">{STORE.brand}</p>
+              <img src="/demo/dokkaebi/emblem.png" alt="{STORE.brand} 로고" width={72} height={72} className="mb-3 h-16 w-16 rounded-full bg-white p-0.5 shadow-lg md:h-[72px] md:w-[72px]" />
+              <p className="m-0 text-[13px] font-bold text-[#ffb547]">{STORE.brand} THE청주</p>
               <p className="m-0 mt-2 text-[30px] font-extrabold leading-tight">
                 방문할 때마다
                 <br />

@@ -381,6 +381,7 @@ export function ViewCampaign({ preset, toast }: { preset: CampaignPreset; toast:
         <PhoneFrame>
           <div className="flex h-full flex-col bg-[#f2f2f7] pt-11">
             <div className="border-b border-black/10 pb-2 text-center">
+              <img src="/demo/dokkaebi/emblem.png" alt="" width={36} height={36} className="mx-auto mb-1 h-9 w-9 rounded-full" />
               <p className="m-0 text-[13px] font-semibold">{STORE.brand}</p>
               <p className="m-0 text-[10px] text-black/45">문자 메시지 | 오늘 {time}</p>
             </div>

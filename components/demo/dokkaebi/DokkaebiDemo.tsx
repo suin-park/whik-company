@@ -44,7 +44,7 @@ export default function DokkaebiDemo() {
         <div className="mx-auto grid max-w-[1600px] grid-cols-[minmax(0,1fr)] gap-3 lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-6">
           <aside className="min-w-0 max-lg:contents lg:sticky lg:top-20 lg:self-start">
             <div className="flex items-center gap-3 rounded-2xl border border-white/[.07] bg-white/[.02] p-3 lg:mb-4 lg:p-3.5">
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#ff5a36] to-[#8a1c14] text-[14px] font-black lg:h-10 lg:w-10 lg:text-[15px]">돗</span>
+              <img src="/demo/dokkaebi/emblem.png" alt="{STORE.brand} 로고" width={40} height={40} className="h-10 w-10 shrink-0 rounded-full bg-white/95 lg:h-11 lg:w-11" />
               <span className="min-w-0">
                 <span className="block break-keep text-[13px] font-bold leading-snug">{STORE.legal}</span>
                 <span className="block text-[11px] text-white/45">사장님 화면 <span className="lg:hidden">| 시연용 가상 데이터</span></span>
