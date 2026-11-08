@@ -9,7 +9,7 @@ import { ContractDocument, DOC_CSS, QuoteDocument, SignaturePad, type ClientInfo
 const EASE = [0.22, 1, 0.36, 1] as const;
 const rise: Variants = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } } };
 
-type Quote = QuoteDoc & { id: string; status: string; respondedAt: string | null; respondedName: string | null };
+type Quote = QuoteDoc & { id: string; status: string; respondedAt: string | null; respondedName: string | null; demoUrl?: string | null };
 type Contract = ContractDoc & { id: string; status: string; quoteNumber: string | null };
 type Data = { client: ClientInfo; provider: Provider; quotes: Quote[]; contracts: Contract[] };
 
@@ -150,8 +150,12 @@ const T = {
 };
 type Dict = (typeof T)["ko"];
 const usePT = (): Dict => (useI18n().lang === "en" ? (T.en as unknown as Dict) : T.ko);
-/** A demo page linked from the quote notes (only whik.co.kr/demo/... paths, so a note can't send clients elsewhere). */
-const demoPath = (notes?: string | null) => notes?.match(/https?:\/\/(?:www\.)?whik\.co\.kr(\/demo\/[a-z0-9\-/]+)/i)?.[1] ?? null;
+/**
+ * The quote's demo page: its own demo link field (set in the admin, not printed), or a whik.co.kr/demo/... link in the notes.
+ * Only /demo/... paths on this site, so neither can send clients elsewhere.
+ */
+const DEMO_RE = /^(?:https?:\/\/(?:www\.)?whik\.co\.kr)?(\/demo\/[a-z0-9\-/]+)/i;
+const demoPath = (q: Quote) => (q.demoUrl?.match(DEMO_RE)?.[1] ?? q.notes?.match(/https?:\/\/(?:www\.)?whik\.co\.kr(\/demo\/[a-z0-9\-/]+)/i)?.[1]) ?? null;
 const QC: Record<string, string> = { SENT: "#a9d0ff", ACCEPTED: "#7fe0c8", REJECTED: "#ff8a7a" };
 const CC: Record<string, string> = { SENT: "#ffc27a", CLIENT_SIGNED: "#a9d0ff", COMPLETED: "#7fe0c8" };
 
@@ -553,9 +557,9 @@ export default function PortalPage() {
                     </button>
                     </span>
                   </div>
-                  {tab === "quotes" && demoPath((current as Quote).notes) && (
+                  {tab === "quotes" && demoPath(current as Quote) && (
                     <Link
-                      href={demoPath((current as Quote).notes)!}
+                      href={demoPath(current as Quote)!}
                       className="group mb-5 flex flex-col gap-3 rounded-2xl border border-[#ff5a36]/40 bg-[linear-gradient(110deg,rgba(255,90,54,.16),rgba(255,181,71,.06))] p-5 transition hover:border-[#ff5a36]/80 sm:flex-row sm:items-center sm:justify-between"
                     >
                       <span>
