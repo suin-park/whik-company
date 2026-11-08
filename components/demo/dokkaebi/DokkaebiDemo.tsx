@@ -21,19 +21,25 @@ const NAV: { id: ViewId; label: string; hint: string }[] = [
 export default function DokkaebiDemo() {
   const [view, setView] = useState<ViewId>("home");
   const [preset, setPreset] = useState<CampaignPreset>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { show, node } = useToast();
   const consoleRef = useRef<HTMLDivElement>(null);
-  // Keep the active menu item visible in the horizontal phone menu.
   useEffect(() => {
-    document.querySelector<HTMLElement>(`.dk-nav [aria-current="page"]`)?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
-  }, [view]);
+    if (!menuOpen) return;
+    const k = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    document.addEventListener("keydown", k);
+    return () => document.removeEventListener("keydown", k);
+  }, [menuOpen]);
 
   const go = (v: ViewId, p: CampaignPreset = null) => {
+    setMenuOpen(false);
     setView(v);
     if (v === "campaign") setPreset(p);
     const top = (consoleRef.current?.getBoundingClientRect().top ?? 0) + window.scrollY - 64;
     if (window.scrollY > top) window.scrollTo({ top, behavior: "smooth" });
   };
+
+  const current = NAV.find((n) => n.id === view) ?? NAV[0];
 
   return (
     <div className="dk relative isolate min-h-[calc(100svh-4rem)] overflow-x-clip break-keep bg-[#0d0a09] text-[#f7efe6] [font-family:'Pretendard','Noto_Sans_KR','Apple_SD_Gothic_Neo','Malgun_Gothic',sans-serif]">
@@ -51,7 +57,7 @@ export default function DokkaebiDemo() {
                 <span className="mt-0.5 block text-[11px] text-white/45">사장님 화면 <span className="lg:hidden">| 시연용 가상 데이터</span></span>
               </span>
             </div>
-            <nav className="dk-nav sticky top-16 z-30 -mx-4 flex gap-1.5 overflow-x-auto border-b border-white/[.06] bg-[#0f0c0b]/90 px-4 py-2 backdrop-blur sm:-mx-[3%] sm:px-[3%] lg:static lg:mx-0 lg:grid lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none" aria-label="시연 메뉴">
+            <nav className="hidden gap-1.5 lg:grid" aria-label="시연 메뉴">
               {NAV.map((n) => (
                 <button
                   key={n.id}
@@ -67,6 +73,47 @@ export default function DokkaebiDemo() {
                 </button>
               ))}
             </nav>
+            <div className="sticky top-16 z-30 -mx-4 border-b border-white/[.06] bg-[#0f0c0b] px-4 py-2.5 sm:-mx-[3%] sm:px-[3%] lg:hidden">
+              <button
+                type="button"
+                onClick={() => setMenuOpen((o) => !o)}
+                aria-expanded={menuOpen}
+                aria-controls="dk-mobile-menu"
+                className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 text-left"
+              >
+                <span className="min-w-0">
+                  <span className="block text-[15px] font-bold">{current.label}</span>
+                  <span className="block text-[11.5px] text-white/45">{current.hint}</span>
+                </span>
+                <span className="flex shrink-0 items-center gap-2 text-[12px] font-semibold text-white/60">
+                  메뉴
+                  <span className={`dk-burger ${menuOpen ? "is-open" : ""}`} aria-hidden>
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                </span>
+              </button>
+              {menuOpen && (
+                <>
+                  <button type="button" aria-label="메뉴 닫기" onClick={() => setMenuOpen(false)} className="fixed inset-0 -z-10 bg-black/65" />
+                  <div id="dk-mobile-menu" className="dk-drop mt-2 grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-[#171210] p-2 shadow-[0_30px_60px_-20px_rgba(0,0,0,.9)]">
+                    {NAV.map((n) => (
+                      <button
+                        key={n.id}
+                        type="button"
+                        onClick={() => go(n.id)}
+                        aria-current={view === n.id ? "page" : undefined}
+                        className={`rounded-xl px-3.5 py-3 text-left transition ${view === n.id ? "bg-[#ff5a36] text-white" : "bg-white/[.03] text-white/80 active:bg-white/[.08]"}`}
+                      >
+                        <span className="block text-[14px] font-semibold">{n.label}</span>
+                        <span className={`block text-[11px] ${view === n.id ? "text-white/80" : "text-white/40"}`}>{n.hint}</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
             <div className="mt-4 hidden rounded-2xl border border-white/[.07] bg-white/[.02] p-4 text-[11.5px] leading-relaxed text-white/45 lg:block">
               시연용 가상 데이터입니다. 실제 손님 정보는 들어 있지 않습니다.
             </div>
@@ -121,6 +168,7 @@ const CSS = `
 @keyframes dk-blink{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
 .dk-steam{background:radial-gradient(40% 30% at 30% 20%,rgba(255,255,255,.18),transparent 70%),radial-gradient(30% 25% at 70% 30%,rgba(255,255,255,.12),transparent 70%);animation:dk-steam 5s ease-in-out infinite}
 @keyframes dk-steam{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(-8px);opacity:1}}
-.dk-nav::-webkit-scrollbar{display:none}.dk-nav{scrollbar-width:none}
+.dk-burger{position:relative;display:block;width:20px;height:14px}.dk-burger i{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:#f7efe6;transition:transform .25s,opacity .2s,top .25s}.dk-burger i:nth-child(1){top:0}.dk-burger i:nth-child(2){top:6px}.dk-burger i:nth-child(3){top:12px}.dk-burger.is-open i:nth-child(1){top:6px;transform:rotate(45deg)}.dk-burger.is-open i:nth-child(2){opacity:0}.dk-burger.is-open i:nth-child(3){top:6px;transform:rotate(-45deg)}
+.dk-drop{animation:dk-in .25s cubic-bezier(.22,1,.36,1) both}
 @media (prefers-reduced-motion:reduce){.dk *{animation:none!important;transition:none!important}}
 `;
