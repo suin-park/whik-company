@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useI18n } from "@/components/I18nProvider";
 import { ContractDocument, DOC_CSS, QuoteDocument, SignaturePad, type ClientInfo, type ContractDoc, type Provider, type QuoteDoc } from "./docs";
@@ -33,6 +33,8 @@ type Data = {
   taxInfo: TaxInfo[];
   taxComplete?: boolean;
   taxInfoAt: string | null;
+  /** Portal tab for handwriting samples (turned on per client by WHIK). */
+  scanSamples?: boolean;
   companyFiles?: CompanyFile[];
 };
 
@@ -59,6 +61,11 @@ const T = {
       TOO_MANY_TAX_ENTRIES: "사업자는 5곳까지 입력할 수 있습니다.",
       INVALID_SEAL: "도장 이미지를 읽지 못했습니다. 다른 사진으로 다시 올려 주세요.",
       TOO_MANY_SEALS: "도장은 3개까지 올릴 수 있습니다.",
+      INVALID_IMAGE: "사진을 읽지 못했습니다. JPG 또는 PNG 사진으로 다시 올려 주세요.",
+      EXTRACT_FAILED: "글씨를 읽지 못했습니다. 잠시 후 다시 시도해 주세요.",
+      TOO_MANY_SCANS: "오늘 읽을 수 있는 양을 다 썼습니다. 내일 다시 시도해 주세요.",
+      TOO_MANY_SAMPLES: "샘플은 60장까지 올릴 수 있습니다.",
+      SAMPLES_OFF: "샘플 올리기가 꺼져 있습니다. 담당자에게 문의해 주세요.",
     } as Record<string, string>,
     errDefault: "처리하지 못했습니다. 잠시 후 다시 시도해 주세요.",
     tabInfo: "거래 정보",
@@ -100,6 +107,25 @@ const T = {
     sealSave: "도장 저장",
     sealSaved: "도장을 저장했습니다.",
     sealEmpty: "아직 올린 도장이 없습니다.",
+    tabSamples: "응모권 샘플",
+    smTitle: "응모권 샘플 올리기",
+    smDesc: "손글씨 인식 정확도를 매장 응모권에 맞추는 데 쓰입니다. 올린 사진은 휙랩만 볼 수 있고 30일 뒤 자동으로 지워집니다.",
+    smHow: ["빈 응모권에 직원분들이 **가짜 이름과 번호**로 직접 써 주세요. 손님이 쓴 실제 응모권은 올리지 말아 주세요.", "여러 분이 나눠 쓰고, 흘려 쓰거나 작게 쓴 것도 섞어 주시면 좋습니다.", "사진을 올리면 AI가 읽은 결과가 나옵니다. 종이와 다른 칸만 고친 뒤 ‘제출’을 눌러 주세요."],
+    smGoal: (n: number) => `제출 ${n}장 / 목표 20장`,
+    smPick: "응모권 사진 올리기",
+    smReading: "읽는 중…",
+    smFix: "종이와 다른 칸을 고쳐 주세요. 주황색은 AI가 헷갈린 칸입니다.",
+    smName: "이름",
+    smPhone: "연락처",
+    smBirth: "생일 (월/일)",
+    smReq: "[필수] 개인정보 동의",
+    smMkt: "[선택] 광고 문자 동의",
+    smSubmit: "제출",
+    smDrop: "버리기",
+    smDone: "제출한 샘플",
+    smDelete: "삭제",
+    smNone: "아직 제출한 샘플이 없습니다.",
+    smFixed: (n: number) => (n ? `${n}칸 고침` : "AI가 모두 맞힘"),
     entry: (n: number) => `사업자 ${n}`,
     addEntry: "+ 사업자 추가 (매장별로 나누어 발행)",
     removeEntry: "이 사업자 빼기",
@@ -174,6 +200,11 @@ const T = {
       TOO_MANY_TAX_ENTRIES: "You can add up to 5 businesses.",
       INVALID_SEAL: "Could not read the seal image. Please try another photo.",
       TOO_MANY_SEALS: "You can upload up to 3 seals.",
+      INVALID_IMAGE: "Could not read the photo. Please upload a JPG or PNG.",
+      EXTRACT_FAILED: "Could not read the handwriting. Please try again shortly.",
+      TOO_MANY_SCANS: "Today's reading limit is used up. Please try again tomorrow.",
+      TOO_MANY_SAMPLES: "You can upload up to 60 samples.",
+      SAMPLES_OFF: "Sample upload is turned off. Please contact us.",
     } as Record<string, string>,
     errDefault: "Something went wrong. Please try again shortly.",
     tabInfo: "Billing",
@@ -215,6 +246,25 @@ const T = {
     sealSave: "Save seal",
     sealSaved: "Your seal has been saved.",
     sealEmpty: "No seal uploaded yet.",
+    tabSamples: "Samples",
+    smTitle: "Upload entry-ticket samples",
+    smDesc: "Used to tune handwriting reading to your tickets. Only WHIK can see the photos, and they are deleted automatically after 30 days.",
+    smHow: ["Have staff fill blank tickets with **made-up names and numbers**. Please do not upload real customer tickets.", "Several people writing, including fast or small handwriting, helps most.", "After you upload a photo the AI reading appears. Fix only the fields that differ from the paper, then press ‘Submit’."],
+    smGoal: (n: number) => `Submitted ${n} / goal 20`,
+    smPick: "Upload ticket photos",
+    smReading: "Reading…",
+    smFix: "Fix the fields that differ from the paper. Orange fields were unclear to the AI.",
+    smName: "Name",
+    smPhone: "Phone",
+    smBirth: "Birthday (MM/DD)",
+    smReq: "[Required] privacy consent",
+    smMkt: "[Optional] marketing SMS consent",
+    smSubmit: "Submit",
+    smDrop: "Discard",
+    smDone: "Submitted samples",
+    smDelete: "Delete",
+    smNone: "No samples submitted yet.",
+    smFixed: (n: number) => (n ? `${n} field(s) fixed` : "AI got all fields"),
     entry: (n: number) => `Business ${n}`,
     addEntry: "+ Add a business (split invoices)",
     removeEntry: "Remove this business",
@@ -534,6 +584,187 @@ function WhikInfo({ p, files }: { p: Provider; files: CompanyFile[] }) {
 
 type Seal = { label: string; src: string };
 
+/** Photo → base64 JPEG (no data: prefix), at most 1600 px, orientation applied. */
+async function samplePhoto(file: File): Promise<{ b64: string; url: string }> {
+  const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+  const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(bmp.width * k));
+  c.height = Math.max(1, Math.round(bmp.height * k));
+  c.getContext("2d")!.drawImage(bmp, 0, 0, c.width, c.height);
+  bmp.close();
+  const url = c.toDataURL("image/jpeg", 0.85);
+  return { b64: url.split(",")[1], url };
+}
+
+type SampleCard = { key: number; url: string; b64: string; state: "reading" | "ready" | "saving" | "error"; ai: string[]; values: string[]; uncertain: number[]; error?: string };
+type SavedSample = { id: string; values: string[]; aiValues: string[]; createdAt: string };
+const yesNo = (v: string) => /^(동의|예|yes|o|v|✓)/i.test(v.trim());
+
+function SampleUpload() {
+  const t = usePT();
+  const [cards, setCards] = useState<SampleCard[]>([]);
+  const [saved, setSaved] = useState<SavedSample[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const seq = useRef(0);
+  const refresh = useCallback(async () => {
+    try {
+      const j = await post("/api/business/portal/scan-samples", { op: "list" });
+      setSaved(j.samples ?? []);
+    } catch (x) {
+      setError(t.err[(x as Error).message] ?? t.errDefault);
+    }
+  }, [t]);
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+  const patch = (key: number, p: Partial<SampleCard>) => setCards((l) => l.map((c) => (c.key === key ? { ...c, ...p } : c)));
+  const read = async (card: SampleCard) => {
+    try {
+      const j = await post("/api/business/portal/scan-samples", { op: "read", image: card.b64 });
+      const row = j.rows?.[0] ?? { values: ["", "", "", "", ""], uncertain: [] };
+      const ai = Array.from({ length: 5 }, (_, i) => String(row.values[i] ?? ""));
+      const values = [ai[0], ai[1], ai[2], yesNo(ai[3]) ? "동의" : "미동의", yesNo(ai[4]) ? "동의" : "미동의"];
+      patch(card.key, { state: "ready", ai, values, uncertain: row.uncertain ?? [] });
+    } catch (x) {
+      patch(card.key, { state: "error", error: t.err[(x as Error).message] ?? t.errDefault });
+    }
+  };
+  const pick = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setError(null);
+    const fresh: SampleCard[] = [];
+    for (const f of Array.from(files).slice(0, 12)) {
+      try {
+        const { b64, url } = await samplePhoto(f);
+        fresh.push({ key: ++seq.current, url, b64, state: "reading", ai: [], values: [], uncertain: [] });
+      } catch {
+        setError(t.err.INVALID_IMAGE);
+      }
+    }
+    setCards((l) => [...fresh, ...l]);
+    // two at a time
+    const queue = [...fresh];
+    await Promise.all([0, 1].map(async () => {
+      while (queue.length) await read(queue.shift()!);
+    }));
+  };
+  const submit = async (card: SampleCard) => {
+    patch(card.key, { state: "saving" });
+    try {
+      await post("/api/business/portal/scan-samples", { op: "save", image: card.b64, aiValues: card.ai, values: card.values });
+      setCards((l) => l.filter((c) => c.key !== card.key));
+      refresh();
+    } catch (x) {
+      patch(card.key, { state: "ready", error: t.err[(x as Error).message] ?? t.errDefault });
+    }
+  };
+  const remove = async (id: string) => {
+    await post("/api/business/portal/scan-samples", { op: "delete", id }).catch(() => {});
+    refresh();
+  };
+  const labels = [t.smName, t.smPhone, t.smBirth, t.smReq, t.smMkt];
+  return (
+    <section className="border border-white/10 bg-white/[.02] p-5 md:p-6">
+      <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-[#a9d0ff]">SAMPLES</p>
+      <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
+        <h3 className="m-0 text-xl font-semibold">{t.smTitle}</h3>
+        <span className="text-sm font-semibold text-[#ffc27a]">{t.smGoal(saved.length)}</span>
+      </div>
+      <p className="mt-1.5 text-[13px] text-white/55">{t.smDesc}</p>
+      <ol className="mt-4 grid gap-1.5 pl-5 text-[13.5px] text-white/80">
+        {t.smHow.map((line, i) => (
+          <li key={i} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.+?)\*\*/g, "<b class='text-[#ffc27a]'>$1</b>") }} />
+        ))}
+      </ol>
+      <label className="mt-5 inline-flex cursor-pointer items-center gap-2 bg-[#a9d0ff] px-5 py-3 text-sm font-bold text-[#0b0d0f] hover:bg-[#cfe4ff]">
+        <input type="file" accept="image/*" multiple className="sr-only" onChange={(e) => { pick(e.target.files); e.target.value = ""; }} />
+        {t.smPick}
+      </label>
+      {error && <p className="mt-3 text-[13px] text-[#ff8a7a]">{error}</p>}
+
+      {cards.length > 0 && (
+        <div className="mt-6 grid gap-4">
+          {cards.map((c) => (
+            <div key={c.key} className="grid gap-4 border border-white/10 bg-black/20 p-4 md:grid-cols-[220px_minmax(0,1fr)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={c.url} alt="" className="max-h-[260px] w-full bg-white object-contain" />
+              <div className="min-w-0">
+                {c.state === "reading" && <p className="m-0 text-sm text-white/60">{t.smReading}</p>}
+                {c.state === "error" && <p className="m-0 text-sm text-[#ff8a7a]">{c.error}</p>}
+                {(c.state === "ready" || c.state === "saving") && (
+                  <>
+                    <p className="m-0 mb-3 text-[12px] text-white/50">{t.smFix}</p>
+                    <div className="grid gap-2.5 sm:grid-cols-3">
+                      {[0, 1, 2].map((i) => (
+                        <label key={i} className="block">
+                          <span className="mb-1 block text-[11.5px] text-white/50">{labels[i]}</span>
+                          <input
+                            value={c.values[i]}
+                            onChange={(e) => patch(c.key, { values: c.values.map((v, j) => (j === i ? e.target.value : v)) })}
+                            className={`${fieldCls} ${c.uncertain.includes(i) ? "!border-[#ff9b5a]" : ""}`}
+                          />
+                        </label>
+                      ))}
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-4">
+                      {[3, 4].map((i) => (
+                        <label key={i} className={`flex cursor-pointer items-center gap-2 text-[13px] ${c.uncertain.includes(i) ? "text-[#ffb27a]" : "text-white/80"}`}>
+                          <input
+                            type="checkbox"
+                            checked={c.values[i] === "동의"}
+                            onChange={(e) => patch(c.key, { values: c.values.map((v, j) => (j === i ? (e.target.checked ? "동의" : "미동의") : v)) })}
+                            className="h-4 w-4 accent-[#a9d0ff]"
+                          />
+                          {labels[i]}
+                        </label>
+                      ))}
+                    </div>
+                    {c.error && <p className="mt-2 text-[12.5px] text-[#ff8a7a]">{c.error}</p>}
+                  </>
+                )}
+                <div className="mt-4 flex gap-2">
+                  {(c.state === "ready" || c.state === "saving") && (
+                    <button type="button" disabled={c.state === "saving"} onClick={() => submit(c)} className="min-h-[42px] bg-[#ffc27a] px-6 text-sm font-bold text-[#0b0d0f] hover:bg-[#ffd7a6] disabled:opacity-50">
+                      {c.state === "saving" ? t.taxSaving : t.smSubmit}
+                    </button>
+                  )}
+                  <button type="button" onClick={() => setCards((l) => l.filter((x) => x.key !== c.key))} className="min-h-[42px] border border-white/20 px-4 text-sm text-white/70 hover:border-white/50">
+                    {t.smDrop}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="mt-7">
+        <p className="m-0 text-[12px] font-semibold text-white/60">{t.smDone}</p>
+        {saved.length === 0 ? (
+          <p className="mt-2 text-[13px] text-white/40">{t.smNone}</p>
+        ) : (
+          <ul className="m-0 mt-2 grid list-none gap-1.5 p-0">
+            {saved.map((x) => {
+              const fixed = x.values.filter((v, i) => (i < 3 ? v.replace(/\s/g, "") !== String(x.aiValues[i] ?? "").replace(/\s/g, "") : yesNo(v) !== yesNo(String(x.aiValues[i] ?? "")))).length;
+              return (
+                <li key={x.id} className="flex flex-wrap items-center justify-between gap-2 border border-white/[.07] px-3 py-2 text-[13px]">
+                  <span className="min-w-0 break-all text-white/85">
+                    {x.values.slice(0, 3).filter(Boolean).join(" | ")} <span className="ml-1 text-[12px] text-white/40">{t.smFixed(fixed)}</span>
+                  </span>
+                  <button type="button" onClick={() => remove(x.id)} className="text-[12px] text-white/45 underline underline-offset-4 hover:text-[#ff8a7a]">
+                    {t.smDelete}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+    </section>
+  );
+}
+
 /** Seal photo → PNG data URL: at most 400 px, near-white background made transparent so it stamps cleanly. */
 async function sealFromFile(file: File): Promise<string> {
   const bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
@@ -785,7 +1016,7 @@ export default function PortalPage() {
   const day = (d?: string | Date | null) => (d ? new Date(d).toLocaleDateString(t.locale, { timeZone: "Asia/Seoul" }) : "-");
   const [state, setState] = useState<"loading" | "gate" | "in">("loading");
   const [data, setData] = useState<Data | null>(null);
-  const [tab, setTab] = useState<"quotes" | "contracts" | "info">("quotes");
+  const [tab, setTab] = useState<"quotes" | "contracts" | "info" | "samples">("quotes");
   const [sel, setSel] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -867,6 +1098,7 @@ export default function PortalPage() {
                 ["quotes", t.tabQuotes, data.quotes.length, pending],
                 ["contracts", t.tabContracts, data.contracts.length, toSign],
                 ["info", t.tabInfo, null, !data.taxComplete && data.contracts.length > 0 ? 1 : 0],
+                ...(data.scanSamples ? ([["samples", t.tabSamples, null, 0]] as const) : []),
               ] as const
             ).map(([k, l, n, badge]) => (
               <button
@@ -893,7 +1125,9 @@ export default function PortalPage() {
             </div>
           )}
 
-          {tab === "info" ? (
+          {tab === "samples" ? (
+            <SampleUpload />
+          ) : tab === "info" ? (
             <div className="grid gap-6 xl:grid-cols-2">
               <div className="grid content-start gap-6">
                 <WhikInfo p={data.provider} files={data.companyFiles ?? []} />
