@@ -47,6 +47,8 @@ const T = {
     authority: "회사를 대표해 계약할 권한이 있는 분이 서명해 주세요.",
     agree: "위 계약을 전자문서로 체결하며, 이 전자서명이 서면 서명과 같은 효력을 가지는 것에 동의합니다.",
     hash: "문서 해시",
+    padHint: "여기에 서명해 주세요",
+    padClear: "지우기",
     signing: "서명 중…",
     signDone: "전자서명 완료하기",
     signRecord: "서명 시각, 접속 IP, 문서 해시가 계약 증명서에 함께 기록됩니다.",
@@ -105,6 +107,8 @@ const T = {
     authority: "Please sign as a person authorized to contract on behalf of the company.",
     agree: "I agree to conclude this contract as an electronic document, and that this e-signature has the same effect as a handwritten signature.",
     hash: "Document hash",
+    padHint: "Sign here",
+    padClear: "Clear",
     signing: "Signing…",
     signDone: "Complete e-signature",
     signRecord: "The signing time, IP address and document hash are recorded on the contract certificate.",
@@ -303,7 +307,7 @@ function SignPanel({ k, onSigned }: { k: Contract; onSigned: () => void }) {
           <p className="mt-1.5 text-[11.5px] text-white/45">{t.authority}</p>
         </Step>
         <Step n={3} done={!!sig}>
-          <SignaturePad onChange={setSig} height={170} />
+          <SignaturePad onChange={setSig} height={170} placeholder={t.padHint} clearLabel={t.padClear} />
         </Step>
         <Step n={4} done={agree}>
           <label className="flex cursor-pointer items-start gap-2 text-sm text-white/85">

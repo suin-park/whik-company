@@ -339,7 +339,17 @@ export function ContractDocument({ k, client, provider, showCertificate = true }
 }
 
 /** Canvas signature pad; returns a PNG data URL. */
-export function SignaturePad({ onChange, height = 180 }: { onChange: (dataUrl: string | null) => void; height?: number }) {
+export function SignaturePad({
+  onChange,
+  height = 180,
+  placeholder = "여기에 서명해 주세요",
+  clearLabel = "지우기",
+}: {
+  onChange: (dataUrl: string | null) => void;
+  height?: number;
+  placeholder?: string;
+  clearLabel?: string;
+}) {
   const ref = useRef<HTMLCanvasElement>(null);
   const drawing = useRef(false);
   const dirty = useRef(false);
@@ -432,9 +442,9 @@ export function SignaturePad({ onChange, height = 180 }: { onChange: (dataUrl: s
         onPointerLeave={up}
         aria-label="서명 입력 영역"
       />
-      {empty && <span className="pointer-events-none absolute inset-0 grid place-items-center text-sm text-slate-400">여기에 서명해 주세요</span>}
+      {empty && <span className="pointer-events-none absolute inset-0 grid place-items-center text-sm text-slate-400">{placeholder}</span>}
       <button type="button" onClick={clear} className="absolute right-2 top-2 rounded-md bg-slate-900/80 px-2 py-1 text-[11px] text-white hover:bg-slate-900">
-        지우기
+        {clearLabel}
       </button>
     </div>
   );
