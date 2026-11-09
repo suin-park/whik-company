@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { Bot, Boxes, Crosshair, Eraser, Scissors, Sparkles, Sun, Orbit, type LucideIcon } from "lucide-react";
-import type { Lang } from "@/lib/messages";
+import { sp, tx, type Lang } from "@/lib/messages";
 import { featureVideos, formatStart, homeCopy, nodeShorts, workspaceScreens, type Video } from "./homeContent";
 import { capabilities, headings, keyFeatures, nodeAccents, stats, videoTags, workspaceDetails, type KeyFeature } from "./studioContent";
 import type { PlayRequest } from "./VideoDialog";
@@ -65,7 +65,7 @@ export function StudioHeading({ id, index, keyName, lang, aside }: { id: string;
         <h2 id={id} className="m-0 break-keep text-[34px] font-semibold leading-[1.15] tracking-[-0.05em] md:text-[clamp(34px,3.9vw,58px)]">
           <span className="block overflow-hidden pb-[0.08em]">
             <motion.span variants={mask} className="inline-block">
-              {plain} <span className="studio-hi">{hi}</span>
+              {plain}{sp(lang)}<span className="studio-hi">{hi}</span>
             </motion.span>
           </span>
         </h2>
@@ -108,7 +108,7 @@ export function Showcase({ lang, onPlay, filmTitle }: { lang: Lang; onPlay: () =
           src="/images/home/studio-3dgs.jpg"
           width={2048}
           height={1133}
-          alt={lang === "ko" ? "WHIK Studio의 3DGS 뷰어와 합성 작업 화면" : "WHIK Studio 3DGS viewer and compositing workspace"}
+          alt={tx(lang, "WHIK Studio의 3DGS 뷰어와 합성 작업 화면", "WHIK Studio 3DGS viewer and compositing workspace", "WHIK Studio の3DGSビューアーと合成作業画面", "WHIK Studio 的3DGS查看器与合成工作界面")}
           loading="lazy"
           className="block h-full w-full object-cover brightness-[.7] transition duration-[1.2s] group-hover:scale-[1.03] group-hover:brightness-90"
         />
@@ -179,9 +179,9 @@ export function KeyFeatures({ lang }: { lang: Lang }) {
         aside={
           <dl className="mt-5 flex gap-7 md:gap-9">
             {stats.map((s) => (
-              <div key={s.value}>
+              <div key={s.label.en}>
                 <dt className="sr-only">{s.label[lang]}</dt>
-                <dd className="m-0 text-2xl font-semibold tracking-[-0.03em] text-white md:text-[28px]">{s.value}</dd>
+                <dd className="m-0 text-2xl font-semibold tracking-[-0.03em] text-white md:text-[28px]">{typeof s.value === "string" ? s.value : s.value[lang]}</dd>
                 <dd className="m-0 mt-1 text-[11px] text-white/45">{s.label[lang]}</dd>
               </div>
             ))}
@@ -363,7 +363,7 @@ export function WorkspaceExplorer({ lang }: { lang: Lang }) {
         onBlurCapture={() => setPaused(false)}
         className="grid gap-5 lg:grid-cols-[minmax(260px,.75fr)_2fr] lg:gap-10"
       >
-        <div role="tablist" aria-label={lang === "ko" ? "작업 화면 선택" : "Choose a workspace"} aria-orientation="vertical" className="flex gap-2 overflow-x-auto lg:flex-col lg:gap-0 lg:overflow-visible">
+        <div role="tablist" aria-label={tx(lang, "작업 화면 선택", "Choose a workspace", "作業画面を選択", "选择工作界面")} aria-orientation="vertical" className="flex gap-2 overflow-x-auto lg:flex-col lg:gap-0 lg:overflow-visible">
           {workspaceScreens.map((w, k) => {
             const on = k === i;
             return (

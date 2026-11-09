@@ -2,23 +2,84 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useI18n } from "./I18nProvider";
+import { LANGS, tx, type Tx } from "@/lib/messages";
 import { STUDIO_DOWNLOAD_URL, STUDIO_RELEASES_URL } from "./home/homeContent";
 
-type NavLink = { href: string; ko: string; en: string; external?: boolean };
+type NavLink = { href: string; label: Tx; external?: boolean };
 
 const LINKS: NavLink[] = [
-  { href: "/#products", ko: "제품", en: "Products" },
-  { href: "/#showcase", ko: "쇼케이스", en: "Showcase" },
-  { href: "/#feature-videos", ko: "학습", en: "Learn" },
-  { href: STUDIO_RELEASES_URL, ko: "새 소식", en: "What's new", external: true },
-  { href: "/business", ko: "기업 지원", en: "For business" },
+  { href: "/#products", label: { ko: "제품", en: "Products", ja: "製品", zh: "产品" } },
+  { href: "/#showcase", label: { ko: "쇼케이스", en: "Showcase", ja: "ショーケース", zh: "作品展示" } },
+  { href: "/#feature-videos", label: { ko: "학습", en: "Learn", ja: "学ぶ", zh: "学习" } },
+  { href: STUDIO_RELEASES_URL, label: { ko: "새 소식", en: "What's new", ja: "最新情報", zh: "最新动态" }, external: true },
+  { href: "/business", label: { ko: "기업 지원", en: "For business", ja: "法人サポート", zh: "企业支持" } },
 ];
+
+/** KR / EN / JP / CN picker. */
+function LangPicker() {
+  const { lang, setLang } = useI18n();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: PointerEvent) => ref.current && !ref.current.contains(e.target as Node) && setOpen(false);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("pointerdown", away);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("pointerdown", away);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [open]);
+  const cur = LANGS.find((l) => l.code === lang) ?? LANGS[0];
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={tx(lang, "언어 선택", "Choose language", "言語を選択", "选择语言")}
+        title="한국어 / English / 日本語 / 简体中文"
+        className="flex items-center gap-1.5 bg-transparent py-3 text-xs md:text-[13px]"
+      >
+        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 opacity-70" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" />
+        </svg>
+        {cur.short}
+      </button>
+      {open && (
+        <ul role="listbox" aria-label={tx(lang, "언어 선택", "Choose language", "言語を選択", "选择语言")} className="absolute right-0 top-full z-50 m-0 mt-1 w-40 list-none border border-white/15 bg-[#111518] p-1 shadow-[0_20px_50px_-15px_rgba(0,0,0,.8)]">
+          {LANGS.map((l) => (
+            <li key={l.code}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={l.code === lang}
+                lang={l.html}
+                onClick={() => {
+                  setLang(l.code);
+                  setOpen(false);
+                }}
+                className={`flex w-full items-center justify-between px-3 py-2.5 text-left text-[13px] transition-colors ${l.code === lang ? "text-[#a9d0ff]" : "text-white/80 hover:bg-white/[.06] hover:text-white"}`}
+              >
+                {l.label}
+                <span className="text-[10.5px] tracking-[0.12em] text-white/35">{l.short}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export default function TopNav() {
   const pathname = usePathname();
-  const { lang, setLang } = useI18n();
+  const { lang } = useI18n();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const home = pathname === "/";
@@ -45,7 +106,7 @@ export default function TopNav() {
     const cls = mobile
       ? "block w-full py-[15px] text-base font-semibold hover:text-[#a9d0ff]"
       : "whitespace-nowrap text-sm font-semibold transition-colors hover:text-[#a9d0ff]";
-    const label = lang === "en" ? l.en : l.ko;
+    const label = l.label[lang];
     return l.external ? (
       <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className={cls} onClick={() => setOpen(false)}>
         {label}
@@ -63,7 +124,7 @@ export default function TopNav() {
         solid ? "bg-[#0d0f11]/85 backdrop-blur-md" : "bg-transparent"
       }`}
     >
-      <nav aria-label={lang === "en" ? "Main menu" : "주 메뉴"} className="relative px-[5.5%] md:px-[3.3%]">
+      <nav aria-label={tx(lang, "주 메뉴", "Main menu", "メインメニュー", "主菜单")} className="relative px-[5.5%] md:px-[3.3%]">
         <div className={`flex h-16 items-center justify-between gap-4 border-b md:gap-8 ${solid ? "border-white/10" : "border-white/20"}`}>
           <Link href="/" aria-label="Whik Lab" className="shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -73,29 +134,21 @@ export default function TopNav() {
           <div className="mx-auto hidden items-center gap-5 md:flex lg:gap-[38px]">{LINKS.map((l) => renderLink(l))}</div>
 
           <div className="ml-auto flex items-center gap-4 md:ml-0 md:gap-7">
-            <button
-              type="button"
-              onClick={() => setLang(lang === "ko" ? "en" : "ko")}
-              aria-label={lang === "ko" ? "Switch to English" : "한국어로 변경"}
-              title="한국어 / English"
-              className="bg-transparent py-3 text-xs md:text-[13px]"
-            >
-              {lang === "en" ? "EN" : "KR"}
-            </button>
+            <LangPicker />
             <a
               href={STUDIO_DOWNLOAD_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-[35px] items-center justify-center bg-[#a9d0ff] px-[15px] text-xs font-bold text-[#0a141d] transition-colors hover:bg-[#d1e5ff] md:min-h-[38px] md:px-[23px] md:text-[13px]"
             >
-              {lang === "en" ? "Download" : "다운로드"}
+              {tx(lang, "다운로드", "Download", "ダウンロード", "下载")}
             </a>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="mobile-navigation"
-              aria-label={lang === "en" ? (open ? "Close menu" : "Open menu") : open ? "메뉴 닫기" : "메뉴 열기"}
+              aria-label={open ? tx(lang, "메뉴 닫기", "Close menu", "メニューを閉じる", "关闭菜单") : tx(lang, "메뉴 열기", "Open menu", "メニューを開く", "打开菜单")}
               className="flex h-10 w-10 items-center justify-center border border-white/20 bg-transparent md:hidden"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-5 w-5" aria-hidden>

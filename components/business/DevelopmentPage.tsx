@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useI18n } from "@/components/I18nProvider";
 import { Chips, Consent, Done, Label, errMsg, field } from "./formUi";
+import { labelsFor, tx, type Tx } from "@/lib/messages";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const stagger: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } } };
@@ -82,36 +83,110 @@ const T = {
     doneBody: "We'll review it and reply to your email, usually within 1 to 2 business days.",
     again: "Write another request",
   },
+  ja: {
+    crumb: "企業向け管理ツール開発",
+    label: "CUSTOM WEB / APP TOOLS",
+    title: ["自社にぴったりの", "管理ツールをつくります。"] as [string, string],
+    body: "Excelやチャットに散らばった業務を、ひとつの画面に。会社の業務フローに合わせたWeb、アプリの管理ツールを、設計から運用まで一緒につくります。",
+    cta: "開発を相談する",
+    watch: "実際の事例映像を見る",
+    videoLabel: "CASE FILM",
+    videoTitle: "実際につくった管理ツールを映像でご覧ください。",
+    buildLabel: "WHAT WE BUILD",
+    buildTitle: "業務に合わせてつくる機能。",
+    processLabel: "PROCESS",
+    formLabel: "REQUEST",
+    formTitle: "開発のご相談",
+    formBody: "いただいた内容をもとに、担当者がメールでご連絡します。決まっていない項目は空欄のままで構いません。",
+    company: "会社名",
+    name: "ご担当者名",
+    email: "メールアドレス",
+    phone: "電話番号",
+    platform: "つくりたい形",
+    features: "必要な機能",
+    budget: "想定予算",
+    timeline: "希望スケジュール",
+    team: "利用人数",
+    tools: "現在使っているツール",
+    toolsPh: "例: Excel、グループチャット、Googleスプレッドシート",
+    message: "どんな業務を解決したいですか？",
+    messagePh: "現在の業務のやり方や不便な点、必ず必要な画面や機能を自由にご記入ください。",
+    send: "相談を送る",
+    sending: "送信中…",
+    doneTitle: "開発のご相談を受け付けました。",
+    doneBody: "内容を確認のうえ、いただいたメールアドレスにご連絡します。通常1〜2営業日以内にご返信します。",
+    again: "別の相談を書く",
+  },
+  zh: {
+    crumb: "企业定制管理工具开发",
+    label: "CUSTOM WEB / APP TOOLS",
+    title: ["为您的公司", "量身打造管理工具。"] as [string, string],
+    body: "把散落在表格和聊天群里的工作汇集到一个界面。我们根据公司的业务流程，从设计到运营，一起打造网页与App管理工具。",
+    cta: "咨询开发",
+    watch: "观看真实案例视频",
+    videoLabel: "CASE FILM",
+    videoTitle: "通过视频看看我们做过的管理工具。",
+    buildLabel: "WHAT WE BUILD",
+    buildTitle: "贴合业务打造的功能。",
+    processLabel: "PROCESS",
+    formLabel: "REQUEST",
+    formTitle: "开发咨询",
+    formBody: "我们的负责人会根据您提供的信息通过邮件联系您。尚未确定的项目可以留空。",
+    company: "公司名称",
+    name: "负责人姓名",
+    email: "邮箱",
+    phone: "联系电话",
+    platform: "想做的形式",
+    features: "需要的功能",
+    budget: "预计预算",
+    timeline: "期望周期",
+    team: "使用人数",
+    tools: "目前使用的工具",
+    toolsPh: "例如：Excel、聊天群、在线表格",
+    message: "您想解决什么样的业务问题？",
+    messagePh: "请随意填写目前的工作方式、不便之处，以及必需的界面或功能。",
+    send: "发送咨询",
+    sending: "发送中…",
+    doneTitle: "开发咨询已提交。",
+    doneBody: "我们审阅后会发送邮件到您留下的邮箱，通常在1到2个工作日内回复。",
+    again: "填写新的咨询",
+  },
 };
 
-const BUILDS = [
-  { ko: "대시보드", en: "Dashboards", dko: "오늘 할 일과 핵심 지표를 한 화면에", den: "Today's work and key numbers on one screen" },
-  { ko: "고객, 주문 관리", en: "Customers & orders", dko: "상담부터 주문, AS까지 이어지는 기록", den: "From first contact to orders and after-sales" },
-  { ko: "일정, 현장 관리", en: "Scheduling & field ops", dko: "기사 배정, 방문 일정, 작업 사진", den: "Dispatch, visits and job photos" },
-  { ko: "정산, 결재", en: "Billing & approvals", dko: "견적, 계약, 정산 흐름 자동화", den: "Quotes, contracts and settlement" },
-  { ko: "권한과 로그", en: "Roles & audit logs", dko: "팀별 권한, 변경 기록, 보안", den: "Team roles, change history, security" },
-  { ko: "AI 기능", en: "AI features", dko: "문서 요약, 자동 분류, 상담 비서", den: "Summaries, auto-sorting, assistants" },
+const BUILDS: { name: Tx; desc: Tx }[] = [
+  { name: { ko: "대시보드", en: "Dashboards", ja: "ダッシュボード", zh: "仪表盘" }, desc: { ko: "오늘 할 일과 핵심 지표를 한 화면에", en: "Today's work and key numbers on one screen", ja: "今日のタスクと重要指標をひとつの画面に", zh: "今日待办与核心指标尽在一屏" } },
+  { name: { ko: "고객, 주문 관리", en: "Customers & orders", ja: "顧客、注文管理", zh: "客户与订单管理" }, desc: { ko: "상담부터 주문, AS까지 이어지는 기록", en: "From first contact to orders and after-sales", ja: "相談から注文、アフターサービスまでつながる記録", zh: "从咨询到下单、售后的完整记录" } },
+  { name: { ko: "일정, 현장 관리", en: "Scheduling & field ops", ja: "スケジュール、現場管理", zh: "日程与现场管理" }, desc: { ko: "기사 배정, 방문 일정, 작업 사진", en: "Dispatch, visits and job photos", ja: "担当者の割り当て、訪問日程、作業写真", zh: "派工、上门日程、作业照片" } },
+  { name: { ko: "정산, 결재", en: "Billing & approvals", ja: "精算、決裁", zh: "结算与审批" }, desc: { ko: "견적, 계약, 정산 흐름 자동화", en: "Quotes, contracts and settlement", ja: "見積もり、契約、精算フローの自動化", zh: "报价、合同、结算流程自动化" } },
+  { name: { ko: "권한과 로그", en: "Roles & audit logs", ja: "権限とログ", zh: "权限与日志" }, desc: { ko: "팀별 권한, 변경 기록, 보안", en: "Team roles, change history, security", ja: "チーム別の権限、変更履歴、セキュリティ", zh: "团队权限、变更记录、安全" } },
+  { name: { ko: "AI 기능", en: "AI features", ja: "AI機能", zh: "AI功能" }, desc: { ko: "문서 요약, 자동 분류, 상담 비서", en: "Summaries, auto-sorting, assistants", ja: "文書要約、自動分類、相談アシスタント", zh: "文档摘要、自动分类、咨询助手" } },
 ];
 
-const STEPS = [
-  { ko: "업무 분석", en: "Discovery", dko: "지금의 업무 흐름과 불편을 함께 정리합니다.", den: "We map your current workflow and pain points." },
-  { ko: "화면 설계", en: "Design", dko: "필요한 화면과 기능을 설계서로 확정합니다.", den: "Screens and features agreed in a spec." },
-  { ko: "개발", en: "Build", dko: "짧은 주기로 만들고 중간마다 확인합니다.", den: "Short cycles with regular check-ins." },
-  { ko: "운영", en: "Run", dko: "배포 후 교육과 유지보수까지 함께합니다.", den: "Launch, training and maintenance." },
+const STEPS: { name: Tx; desc: Tx }[] = [
+  { name: { ko: "업무 분석", en: "Discovery", ja: "業務分析", zh: "业务分析" }, desc: { ko: "지금의 업무 흐름과 불편을 함께 정리합니다.", en: "We map your current workflow and pain points.", ja: "今の業務フローと不便な点を一緒に整理します。", zh: "一起梳理现有业务流程与痛点。" } },
+  { name: { ko: "화면 설계", en: "Design", ja: "画面設計", zh: "界面设计" }, desc: { ko: "필요한 화면과 기능을 설계서로 확정합니다.", en: "Screens and features agreed in a spec.", ja: "必要な画面と機能を設計書で確定します。", zh: "用设计文档确定所需的界面与功能。" } },
+  { name: { ko: "개발", en: "Build", ja: "開発", zh: "开发" }, desc: { ko: "짧은 주기로 만들고 중간마다 확인합니다.", en: "Short cycles with regular check-ins.", ja: "短いサイクルでつくり、その都度確認します。", zh: "以短周期开发，阶段性确认。" } },
+  { name: { ko: "운영", en: "Run", ja: "運用", zh: "运营" }, desc: { ko: "배포 후 교육과 유지보수까지 함께합니다.", en: "Launch, training and maintenance.", ja: "リリース後の研修と保守まで伴走します。", zh: "上线后的培训与维护也一路相伴。" } },
 ];
 
-const PLATFORMS = [
-  { v: "web", ko: "웹", en: "Web" },
-  { v: "app", ko: "앱", en: "App" },
-  { v: "both", ko: "웹 + 앱", en: "Web + App" },
-  { v: "unsure", ko: "아직 모르겠어요", en: "Not sure" },
+const PLATFORMS: { v: string; l: Tx }[] = [
+  { v: "web", l: { ko: "웹", en: "Web", ja: "Web", zh: "网页" } },
+  { v: "app", l: { ko: "앱", en: "App", ja: "アプリ", zh: "App" } },
+  { v: "both", l: { ko: "웹 + 앱", en: "Web + App", ja: "Web + アプリ", zh: "网页 + App" } },
+  { v: "unsure", l: { ko: "아직 모르겠어요", en: "Not sure", ja: "まだ分からない", zh: "还不确定" } },
 ];
 const FEATURES = ["대시보드", "고객 관리", "주문/예약", "일정/배정", "재고", "정산/결제", "전자 계약", "권한 관리", "알림", "AI 기능"];
 const FEATURES_EN = ["Dashboard", "Customers", "Orders/booking", "Scheduling", "Inventory", "Billing", "E-contracts", "Roles", "Notifications", "AI"];
+const FEATURES_JA = ["ダッシュボード", "顧客管理", "注文/予約", "日程/割り当て", "在庫", "精算/決済", "電子契約", "権限管理", "通知", "AI機能"];
+const FEATURES_ZH = ["仪表盘", "客户管理", "订单/预约", "日程/派工", "库存", "结算/支付", "电子合同", "权限管理", "通知", "AI功能"];
 const BUDGETS = ["1천만원 미만", "1천~3천만원", "3천~5천만원", "5천만원 이상", "상담 후 결정"];
 const BUDGETS_EN = ["Under ₩10M", "₩10M to 30M", "₩30M to 50M", "Over ₩50M", "Decide later"];
+const BUDGETS_JA = ["1,000万ウォン未満", "1,000万〜3,000万ウォン", "3,000万〜5,000万ウォン", "5,000万ウォン以上", "相談して決める"];
+const BUDGETS_ZH = ["1千万韩元以下", "1千万至3千万韩元", "3千万至5千万韩元", "5千万韩元以上", "沟通后决定"];
 const TIMELINES = ["1개월 이내", "1~3개월", "3~6개월", "6개월 이상", "미정"];
 const TIMELINES_EN = ["Within 1 month", "1 to 3 months", "3 to 6 months", "6+ months", "Undecided"];
+const TIMELINES_JA = ["1か月以内", "1〜3か月", "3〜6か月", "6か月以上", "未定"];
+const TIMELINES_ZH = ["1个月内", "1至3个月", "3至6个月", "6个月以上", "未定"];
 
 export default function DevelopmentPage() {
   const { lang } = useI18n();
@@ -125,7 +200,6 @@ export default function DevelopmentPage() {
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
   const [error, setError] = useState<string | null>(null);
 
-  const ko2 = (arr: string[], en: string[]) => arr.map((v, i) => ({ v, l: lang === "ko" ? v : en[i] }));
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -157,7 +231,7 @@ export default function DevelopmentPage() {
   };
 
   return (
-    <div className="biz-page relative isolate -mt-16 overflow-hidden bg-[#0b0d0f] text-[#f5f5f4] [font-family:Arial,'Noto_Sans_KR','Apple_SD_Gothic_Neo','Malgun_Gothic',sans-serif]" style={{ "--acc": "#7fe0c8" } as React.CSSProperties}>
+    <div className="biz-page relative isolate -mt-16 overflow-hidden bg-[#0b0d0f] text-[#f5f5f4] [font-family:Arial,'Noto_Sans_KR','Apple_SD_Gothic_Neo','Malgun_Gothic',sans-serif] site-font" style={{ "--acc": "#7fe0c8" } as React.CSSProperties}>
       <span aria-hidden className="biz-aura pointer-events-none absolute inset-x-0 top-0 -z-10 h-[900px]" />
       <span aria-hidden className="biz-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[760px]" />
 
@@ -166,7 +240,7 @@ export default function DevelopmentPage() {
         <div>
           <motion.nav variants={rise} aria-label="Breadcrumb" className="mb-10 flex items-center gap-3 text-[11px] text-white/45">
             <Link href="/business" className="hover:text-white">
-              {lang === "ko" ? "기업 지원" : "For business"}
+              {tx(lang, "기업 지원", "For business", "法人サポート", "企业支持")}
             </Link>
             <span aria-hidden>/</span>
             <span className="text-white/75">{t.crumb}</span>
@@ -204,11 +278,11 @@ export default function DevelopmentPage() {
         <motion.div variants={rise} className="dev-stack relative mx-auto aspect-[4/3] w-full max-w-[720px]">
           <span aria-hidden className="absolute inset-[8%] -z-10 rounded-full bg-[radial-gradient(circle,rgba(127,224,200,.28),transparent_65%)] blur-2xl" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/business/tool-dashboard-2.jpg" alt={lang === "ko" ? "관리 툴 대시보드 예시" : "Example dashboard"} className="dev-shot dev-shot-back absolute right-0 top-0 w-[82%] rounded-lg" />
+          <img src="/images/business/tool-dashboard-2.jpg" alt={tx(lang, "관리 툴 대시보드 예시", "Example dashboard", "管理ツールのダッシュボード例", "管理工具仪表盘示例")} className="dev-shot dev-shot-back absolute right-0 top-0 w-[82%] rounded-lg" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/business/tool-dashboard-1.jpg" alt={lang === "ko" ? "운영 관리 화면 예시" : "Example operations screen"} className="dev-shot dev-shot-front absolute bottom-0 left-0 w-[70%] rounded-lg" />
-          <span className="dev-chip absolute left-[4%] top-[12%] rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-[11px] text-white/80 backdrop-blur">● {lang === "ko" ? "실시간 현황" : "Live status"}</span>
-          <span className="dev-chip absolute bottom-[8%] right-[2%] rounded-full border border-[var(--acc)]/40 bg-black/60 px-3 py-1.5 text-[11px] text-[var(--acc)] backdrop-blur">AI {lang === "ko" ? "업무 비서" : "assistant"}</span>
+          <img src="/images/business/tool-dashboard-1.jpg" alt={tx(lang, "운영 관리 화면 예시", "Example operations screen", "運用管理画面の例", "运营管理界面示例")} className="dev-shot dev-shot-front absolute bottom-0 left-0 w-[70%] rounded-lg" />
+          <span className="dev-chip absolute left-[4%] top-[12%] rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-[11px] text-white/80 backdrop-blur">● {tx(lang, "실시간 현황", "Live status", "リアルタイム状況", "实时状态")}</span>
+          <span className="dev-chip absolute bottom-[8%] right-[2%] rounded-full border border-[var(--acc)]/40 bg-black/60 px-3 py-1.5 text-[11px] text-[var(--acc)] backdrop-blur">AI {tx(lang, "업무 비서", "assistant", "業務アシスタント", "工作助手")}</span>
         </motion.div>
       </motion.section>
 
@@ -235,7 +309,7 @@ export default function DevelopmentPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`https://i.ytimg.com/vi/${VIDEO_ID}/maxresdefault.jpg`} alt="" className="h-full w-full object-cover brightness-[.6] transition duration-700 group-hover:scale-[1.03] group-hover:brightness-75" />
               <span className="absolute left-1/2 top-1/2 grid h-20 w-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-2xl text-[#0b0d0f] shadow-[0_0_0_14px_rgba(255,255,255,.1)] transition group-hover:scale-110 group-hover:bg-[var(--acc)]">▶</span>
-              <span className="absolute bottom-5 left-6 text-[11px] tracking-[0.18em] text-white/70">2:59 {lang === "ko" ? "부터 재생" : "START"}</span>
+              <span className="absolute bottom-5 left-6 text-[11px] tracking-[0.18em] text-white/70">2:59 {tx(lang, "부터 재생", "START", "から再生", "起播放")}</span>
             </button>
           )}
         </motion.div>
@@ -251,10 +325,10 @@ export default function DevelopmentPage() {
         </motion.h2>
         <div className="grid grid-cols-2 gap-2.5 md:grid-cols-3 md:gap-3">
           {BUILDS.map((b, i) => (
-            <motion.div key={b.en} variants={rise} className="dev-tile group relative overflow-hidden border border-white/[.08] bg-[#101316] p-5 md:p-7">
+            <motion.div key={b.name.en} variants={rise} className="dev-tile group relative overflow-hidden border border-white/[.08] bg-[#101316] p-5 md:p-7">
               <span className="text-[10px] tabular-nums tracking-[0.18em] text-[var(--acc)]">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="m-0 mt-4 text-[17px] font-semibold tracking-[-0.03em] md:text-xl">{lang === "ko" ? b.ko : b.en}</h3>
-              <p className="m-0 mt-2 break-keep text-[12.5px] leading-[1.6] text-white/55 md:text-sm">{lang === "ko" ? b.dko : b.den}</p>
+              <h3 className="m-0 mt-4 text-[17px] font-semibold tracking-[-0.03em] md:text-xl">{b.name[lang]}</h3>
+              <p className="m-0 mt-2 break-keep text-[12.5px] leading-[1.6] text-white/55 md:text-sm">{b.desc[lang]}</p>
             </motion.div>
           ))}
         </div>
@@ -264,10 +338,10 @@ export default function DevelopmentPage() {
         </motion.p>
         <ol className="m-0 grid list-none grid-cols-2 gap-x-5 gap-y-8 p-0 md:grid-cols-4">
           {STEPS.map((s, i) => (
-            <motion.li key={s.en} variants={rise} className="border-t border-white/15 pt-5">
+            <motion.li key={s.name.en} variants={rise} className="border-t border-white/15 pt-5">
               <span className="text-[12px] font-semibold tabular-nums text-[var(--acc)]">STEP {i + 1}</span>
-              <h3 className="m-0 mt-2 text-lg font-semibold">{lang === "ko" ? s.ko : s.en}</h3>
-              <p className="m-0 mt-1.5 break-keep text-[13px] leading-[1.65] text-white/55">{lang === "ko" ? s.dko : s.den}</p>
+              <h3 className="m-0 mt-2 text-lg font-semibold">{s.name[lang]}</h3>
+              <p className="m-0 mt-1.5 break-keep text-[13px] leading-[1.65] text-white/55">{s.desc[lang]}</p>
             </motion.li>
           ))}
         </ol>
@@ -310,26 +384,26 @@ export default function DevelopmentPage() {
                 </div>
                 <div>
                   <Label>{t.platform}</Label>
-                  <Chips options={PLATFORMS.map((p) => ({ v: p.v, l: lang === "ko" ? p.ko : p.en }))} value={platform} onChange={(v) => setPlatform(v as string)} />
+                  <Chips options={PLATFORMS.map((p) => ({ v: p.v, l: p.l[lang] }))} value={platform} onChange={(v) => setPlatform(v as string)} />
                 </div>
                 <div>
-                  <Label hint={lang === "ko" ? "여러 개 선택" : "Pick any"}>{t.features}</Label>
-                  <Chips multi options={ko2(FEATURES, FEATURES_EN)} value={features} onChange={(v) => setFeatures(v as string[])} />
+                  <Label hint={tx(lang, "여러 개 선택", "Pick any", "複数選択可", "可多选")}>{t.features}</Label>
+                  <Chips multi options={labelsFor(lang, FEATURES, FEATURES_EN, FEATURES_JA, FEATURES_ZH)} value={features} onChange={(v) => setFeatures(v as string[])} />
                 </div>
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
                     <Label>{t.budget}</Label>
-                    <Chips options={ko2(BUDGETS, BUDGETS_EN)} value={budget} onChange={(v) => setBudget(v as string)} />
+                    <Chips options={labelsFor(lang, BUDGETS, BUDGETS_EN, BUDGETS_JA, BUDGETS_ZH)} value={budget} onChange={(v) => setBudget(v as string)} />
                   </div>
                   <div>
                     <Label>{t.timeline}</Label>
-                    <Chips options={ko2(TIMELINES, TIMELINES_EN)} value={timeline} onChange={(v) => setTimeline(v as string)} />
+                    <Chips options={labelsFor(lang, TIMELINES, TIMELINES_EN, TIMELINES_JA, TIMELINES_ZH)} value={timeline} onChange={(v) => setTimeline(v as string)} />
                   </div>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-[180px_1fr]">
                   <label className="block">
                     <Label>{t.team}</Label>
-                    <input name="teamSize" maxLength={40} placeholder={lang === "ko" ? "예: 15명" : "e.g. 15"} className={field} />
+                    <input name="teamSize" maxLength={40} placeholder={tx(lang, "예: 15명", "e.g. 15", "例: 15名", "例如：15人")} className={field} />
                   </label>
                   <label className="block">
                     <Label>{t.tools}</Label>

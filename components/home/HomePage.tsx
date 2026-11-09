@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useI18n } from "@/components/I18nProvider";
+import { sp, tx } from "@/lib/messages";
 import { LOCKER_URL, MAIN_FILM_ID, STUDIO_DOWNLOAD_URL, homeCopy } from "./homeContent";
 import { KeyFeatures, NodeReels, Showcase, ToolsInAction, WorkspaceExplorer } from "./StudioSections";
 import VideoDialog, { type PlayRequest } from "./VideoDialog";
@@ -78,7 +79,7 @@ export default function HomePage() {
   const playFilm = () => setVideo({ id: MAIN_FILM_ID, title: c.filmTitle });
 
   return (
-    <div className="-mt-16 bg-[#0d0f11] text-[#f5f5f4] [font-family:Arial,'Noto_Sans_KR','Apple_SD_Gothic_Neo','Malgun_Gothic',sans-serif]">
+    <div className="-mt-16 bg-[#0d0f11] text-[#f5f5f4] [font-family:Arial,'Noto_Sans_KR','Apple_SD_Gothic_Neo','Malgun_Gothic',sans-serif] site-font">
       <SectionDots active={active} onJump={jump} />
 
       {/* 1. Hero + products: one screen, like the design */}
@@ -134,14 +135,14 @@ export default function HomePage() {
         >
           <motion.div variants={rise} className="mb-7 md:mb-8">
             <h2 className="m-0 text-4xl font-semibold leading-[1.2] tracking-[-0.045em] md:text-[clamp(34px,3.5vw,49px)]">
-              {c.ecoTitle1} {c.ecoTitle2}
+              {c.ecoTitle1}{sp(lang)}{c.ecoTitle2}
             </h2>
           </motion.div>
           <div className="grid gap-3 md:grid-cols-3 md:gap-4">
             <ProductCard
               variants={rise}
               index="01"
-              tag={lang === "ko" ? "무료" : "FREE"}
+              tag={tx(lang, "무료", "FREE", "無料", "免费")}
               image="/images/home/card-studio.jpg"
               accent="#a9d0ff"
               logo={
@@ -155,7 +156,7 @@ export default function HomePage() {
             <ProductCard
               variants={rise}
               index="02"
-              tag={lang === "ko" ? "서비스 중" : "LIVE"}
+              tag={tx(lang, "서비스 중", "LIVE", "提供中", "服务中")}
               image="/images/home/card-locker.jpg"
               accent="#3fe0c5"
               logo={

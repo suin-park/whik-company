@@ -342,7 +342,8 @@ const T = {
   },
 };
 type Dict = (typeof T)["ko"];
-const usePT = (): Dict => (useI18n().lang === "en" ? (T.en as unknown as Dict) : T.ko);
+// The portal is written in Korean and English only; Japanese and Chinese visitors read the English version.
+const usePT = (): Dict => (useI18n().lang === "ko" ? T.ko : (T.en as unknown as Dict));
 /**
  * The quote's demo page: its own demo link field (set in the admin, not printed), or a whik.co.kr/demo/... link in the notes.
  * Only /demo/... paths on this site, so neither can send clients elsewhere.

@@ -265,3 +265,8 @@ body:has(dialog[open]) { overflow: hidden; }
 .lang-next::before { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.04) 50%, transparent 60%); background-size: 250% 100%; animation: lang-shine 4.5s ease-in-out infinite; pointer-events: none; }
 @keyframes lang-shine { from { background-position: 120% 0; } to { background-position: -120% 0; } }
 @media (prefers-reduced-motion: reduce) { .lang-scan, .lang-next-track, .lang-next::before { animation: none; } }
+
+/* Japanese and Chinese pages use fonts with the right glyph shapes (Korean fonts draw some Han characters differently) */
+html:lang(ja) .site-font, html:lang(ja) body { font-family: Arial, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans JP", sans-serif; }
+html:lang(zh-Hans) .site-font, html:lang(zh-Hans) body { font-family: Arial, "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", "Source Han Sans SC", sans-serif; }
+html:lang(ja) .break-keep, html:lang(zh-Hans) .break-keep { word-break: normal; line-break: strict; }

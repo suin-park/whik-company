@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion, type Variants } from "framer-motion";
-import type { Lang } from "@/lib/messages";
+import { sp, tx, type Lang } from "@/lib/messages";
 import { StudioStop } from "./StudioSections";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -43,12 +43,34 @@ const COPY = {
     more: "More languages are on the way",
     moreSub: "Coming in future updates.",
   },
+  ja: {
+    label: "SPEAKS YOUR LANGUAGE",
+    plain: "4つの言語で、",
+    hi: "すぐに。",
+    body: "メニュー、パネル、ノードの説明まで、画面全体が切り替わります。インストール後に言語を選ぶだけです。",
+    pick: "言語を選択",
+    now: "対応中",
+    more: "対応言語はこれからも増えていきます",
+    moreSub: "今後のアップデートをお楽しみに。",
+  },
+  zh: {
+    label: "SPEAKS YOUR LANGUAGE",
+    plain: "四种语言，",
+    hi: "即刻可用。",
+    body: "菜单、面板乃至节点说明，整个界面一起切换。安装后选择语言即可。",
+    pick: "选择语言",
+    now: "现已支持",
+    more: "更多语言即将加入",
+    moreSub: "敬请期待后续更新。",
+  },
 } satisfies Record<Lang, Record<string, string>>;
 
 export default function LanguageStage({ lang }: { lang: Lang }) {
   const t = COPY[lang];
-  const [i, setI] = useState(0);
+  // start on the visitor's own language
+  const [i, setI] = useState(() => Math.max(0, ["ko", "en", "ja", "zh"].indexOf(lang)));
   const [paused, setPaused] = useState(false);
+  useEffect(() => setI(Math.max(0, ["ko", "en", "ja", "zh"].indexOf(lang))), [lang]);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.35 });
   const reduce = useReducedMotion();
@@ -83,7 +105,7 @@ export default function LanguageStage({ lang }: { lang: Lang }) {
           <h2 id="languages-title" className="m-0 break-keep text-[34px] font-semibold leading-[1.15] tracking-[-0.05em] md:text-[clamp(34px,3.9vw,58px)]">
             <span className="block overflow-hidden pb-[0.08em]">
               <motion.span variants={mask} className="inline-block">
-                {t.plain} <span className="studio-hi">{t.hi}</span>
+                {t.plain}{sp(lang)}<span className="studio-hi">{t.hi}</span>
               </motion.span>
             </span>
           </h2>
@@ -157,7 +179,7 @@ export default function LanguageStage({ lang }: { lang: Lang }) {
               <motion.img
                 key={L.src}
                 src={L.src}
-                alt={lang === "ko" ? `${L.native}로 표시된 WHIK Studio 화면` : `WHIK Studio in ${L.en}`}
+                alt={tx(lang, `${L.native}로 표시된 WHIK Studio 화면`, `WHIK Studio in ${L.en}`, `${L.native}で表示した WHIK Studio の画面`, `以${L.native}显示的 WHIK Studio 界面`)}
                 width={1600}
                 height={839}
                 initial={reduce ? false : { opacity: 0, filter: "blur(10px)", scale: 1.025 }}

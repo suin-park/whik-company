@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, type Variants } from "framer-motion";
-import type { Lang } from "@/lib/messages";
+import { tx, type Lang, type Tx } from "@/lib/messages";
 import { homeCopy } from "./homeContent";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -11,10 +11,10 @@ const rise: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
 };
 
-const MODES = [
-  { n: "01", name: "360° Space", ko: "한 자리에서 둘러보기", en: "Look around from one spot" },
-  { n: "02", name: "3D Space", ko: "걸으며 공간 담기", en: "Walk around your space" },
-  { n: "03", name: "3D Object", ko: "사물의 모든 면 담기", en: "Capture every side" },
+const MODES: { n: string; name: string; d: Tx }[] = [
+  { n: "01", name: "360° Space", d: { ko: "한 자리에서 둘러보기", en: "Look around from one spot", ja: "その場で360°見渡す", zh: "原地环视一周" } },
+  { n: "02", name: "3D Space", d: { ko: "걸으며 공간 담기", en: "Walk around your space", ja: "歩きながら空間を記録", zh: "边走边记录空间" } },
+  { n: "03", name: "3D Object", d: { ko: "사물의 모든 면 담기", en: "Capture every side", ja: "物のすべての面を記録", zh: "记录物体的每一面" } },
 ];
 
 /** Last stop: a "coming soon" teaser for WHIK 3D Scanner. */
@@ -71,7 +71,7 @@ export default function ScannerTeaser({ lang }: { lang: Lang }) {
               <span className="st-dot h-1.5 w-1.5 rounded-full bg-[#0b0d0f]" />
               COMING SOON
             </span>
-            <span className={`text-white/50 ${lang === "ko" ? "tracking-[0.04em]" : ""}`}>{lang === "ko" ? "출시 준비 중" : "IN DEVELOPMENT"}</span>
+            <span className={`text-white/50 ${lang === "en" ? "" : "tracking-[0.04em]"}`}>{tx(lang, "출시 준비 중", "IN DEVELOPMENT", "リリース準備中", "开发中")}</span>
           </motion.div>
 
           <motion.div variants={rise}>
@@ -94,7 +94,7 @@ export default function ScannerTeaser({ lang }: { lang: Lang }) {
               <li key={m.n} className="st-mode relative border-r border-white/10 py-4 pr-3 last:border-r-0 [&:not(:first-child)]:pl-3 md:pr-4 md:[&:not(:first-child)]:pl-4">
                 <span className="block text-[10px] tracking-[0.18em] text-[#ffc27a]">{m.n}</span>
                 <span className="mt-2 block text-[13px] font-semibold md:text-[15px]">{m.name}</span>
-                <span className="mt-1 block text-[11px] leading-snug text-[#8f99a2] md:text-xs">{lang === "ko" ? m.ko : m.en}</span>
+                <span className="mt-1 block text-[11px] leading-snug text-[#8f99a2] md:text-xs">{m.d[lang]}</span>
               </li>
             ))}
           </motion.ul>
@@ -114,7 +114,7 @@ export default function ScannerTeaser({ lang }: { lang: Lang }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/home/scanner-home.jpg"
-                alt={lang === "ko" ? "WHIK 3D Scanner 홈 화면" : "WHIK 3D Scanner home screen"}
+                alt={tx(lang, "WHIK 3D Scanner 홈 화면", "WHIK 3D Scanner home screen", "WHIK 3D Scanner のホーム画面", "WHIK 3D Scanner 主界面")}
                 width={720}
                 height={1562}
                 loading="lazy"
@@ -126,7 +126,7 @@ export default function ScannerTeaser({ lang }: { lang: Lang }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/home/scanner-capture.jpg"
-                alt={lang === "ko" ? "WHIK 3D Scanner 공간과 사물 촬영 메뉴" : "WHIK 3D Scanner capture menu"}
+                alt={tx(lang, "WHIK 3D Scanner 공간과 사물 촬영 메뉴", "WHIK 3D Scanner capture menu", "WHIK 3D Scanner の空間と物の撮影メニュー", "WHIK 3D Scanner 空间与物体拍摄菜单")}
                 width={720}
                 height={1562}
                 loading="lazy"

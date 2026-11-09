@@ -1,4 +1,28 @@
-export type Lang = "ko" | "en";
+export type Lang = "ko" | "en" | "ja" | "zh";
+
+/** Site languages, in switcher order. */
+export const LANGS: { code: Lang; short: string; label: string; html: string }[] = [
+  { code: "ko", short: "KR", label: "한국어", html: "ko" },
+  { code: "en", short: "EN", label: "English", html: "en" },
+  { code: "ja", short: "JP", label: "日本語", html: "ja" },
+  { code: "zh", short: "CN", label: "简体中文", html: "zh-Hans" },
+];
+
+/** One text in every site language. */
+export type Tx = Record<Lang, string>;
+
+/** Pick the text for the current language. */
+/** Space between two heading parts: none in Japanese and Chinese, whose punctuation already separates them. */
+export const sp = (lang: Lang) => (lang === "ja" || lang === "zh" ? "" : " ");
+
+export const tx = (lang: Lang, ko: string, en: string, ja: string, zh: string) => ({ ko, en, ja, zh })[lang];
+
+/** Pages that exist only in Korean and English (client portal, legal, older pages) show English to ja/zh visitors. */
+export const koEn = (lang: Lang): "ko" | "en" => (lang === "ko" ? "ko" : "en");
+
+/** Labels for a list of Korean form values: same order in every language. */
+export const labelsFor = (lang: Lang, ko: string[], en: string[], ja: string[], zh: string[]) =>
+  ko.map((v, i) => ({ v, l: ({ ko, en, ja, zh })[lang][i] ?? v }));
 
 // 중첩된 객체 및 배열 지원을 위한 타입 정의
 type MessageValue = string | string[] | { [key: string]: MessageValue };
@@ -495,5 +519,37 @@ export const messages: Record<Lang, Messages> = {
     "contact.send": "Send",
     "contact.sending": "Sending...",
     "contact.success": "Your inquiry has been received.",
+  },
+  ja: {
+    "footer.copyright": "© Whik Lab lnc.",
+    "footer.company_name_full": "Whik Lab",
+    "footer.representative": "代表者",
+    "footer.representative_name": "Claire Shim, Suin Park",
+    "footer.business_reg_no": "事業者登録番号",
+    "footer.business_reg_number": "883-29-01818",
+    "footer.online_sales_reg_no": "通信販売業届出番号",
+    "footer.online_sales_reg_number": "2025-Seoul-Gangnam-06533",
+    "footer.address_label": "所在地",
+    "footer.address": "韓国ソウル特別市江南区江南大路112ギル47 2階 466A号（論峴洞）",
+    "footer.phone_label": "電話",
+    "footer.phone": "0502-1939-7891",
+    "footer.customer_service": "お問い合わせ",
+    "footer.customer_service_email": "support@whiklab.com",
+  },
+  zh: {
+    "footer.copyright": "© Whik Lab lnc.",
+    "footer.company_name_full": "Whik Lab",
+    "footer.representative": "代表",
+    "footer.representative_name": "Claire Shim, Suin Park",
+    "footer.business_reg_no": "营业登记号",
+    "footer.business_reg_number": "883-29-01818",
+    "footer.online_sales_reg_no": "网络销售业申报号",
+    "footer.online_sales_reg_number": "2025-Seoul-Gangnam-06533",
+    "footer.address_label": "地址",
+    "footer.address": "韩国首尔特别市江南区江南大路112街47号 2层 466A（论岘洞）",
+    "footer.phone_label": "电话",
+    "footer.phone": "0502-1939-7891",
+    "footer.customer_service": "客户服务",
+    "footer.customer_service_email": "support@whiklab.com",
   },
 };

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useI18n } from "@/components/I18nProvider";
-import type { Lang } from "@/lib/messages";
+import { sp, type Lang, type Tx } from "@/lib/messages";
 import { SUPPORT_EMAIL, copy, services, steps, type Service, type ServiceKey } from "./businessContent";
 import RequestDialog from "./RequestDialog";
 
@@ -43,10 +43,10 @@ function CardArt({ s }: { s: Service }) {
   );
 }
 
-const CARD_LINK: Record<ServiceKey, { href: string; ko: string; en: string }> = {
-  tool: { href: "/business/development", ko: "개발 문의하기", en: "Start a request" },
-  contract: { href: "/business/portal", ko: "기업 관리 코드로 들어가기", en: "Enter with your code" },
-  training: { href: "/business/training", ko: "교육 신청하기", en: "Request training" },
+const CARD_LINK: Record<ServiceKey, { href: string; label: Tx }> = {
+  tool: { href: "/business/development", label: { ko: "개발 문의하기", en: "Start a request", ja: "開発を相談する", zh: "咨询开发" } },
+  contract: { href: "/business/portal", label: { ko: "기업 관리 코드로 들어가기", en: "Enter with your code", ja: "企業コードで入る", zh: "使用企业代码进入" } },
+  training: { href: "/business/training", label: { ko: "교육 신청하기", en: "Request training", ja: "研修を申し込む", zh: "申请培训" } },
 };
 
 function ServiceCard({ s, i, lang }: { s: Service; i: number; lang: Lang }) {
@@ -84,7 +84,7 @@ function ServiceCard({ s, i, lang }: { s: Service; i: number; lang: Lang }) {
               </span>
             ))}
           </span>
-          <span className="biz-cta mt-5 text-[13px] font-semibold text-[var(--accent)]">{lang === "ko" ? link.ko : link.en} →</span>
+          <span className="biz-cta mt-5 text-[13px] font-semibold text-[var(--accent)]">{link.label[lang]} →</span>
         </span>
       </Link>
     </motion.article>
@@ -98,7 +98,7 @@ export default function BusinessPage() {
   const open = (pick: ServiceKey | "other") => setDialog({ open: true, pick });
 
   return (
-    <div className="biz-page relative isolate -mt-16 overflow-hidden bg-[#0b0d0f] text-[#f5f5f4] [font-family:Arial,'Noto_Sans_KR','Apple_SD_Gothic_Neo','Malgun_Gothic',sans-serif]">
+    <div className="biz-page relative isolate -mt-16 overflow-hidden bg-[#0b0d0f] text-[#f5f5f4] [font-family:Arial,'Noto_Sans_KR','Apple_SD_Gothic_Neo','Malgun_Gothic',sans-serif] site-font">
       <span aria-hidden className="biz-aura pointer-events-none absolute inset-x-0 top-0 -z-10 h-[900px]" />
       <span aria-hidden className="biz-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[760px]" />
 
@@ -120,7 +120,7 @@ export default function BusinessPage() {
           <h1 className="m-0 break-keep text-[40px] font-semibold leading-[1.1] tracking-[-0.055em] md:text-[clamp(44px,5.4vw,84px)]">
             <span className="block overflow-hidden pb-[0.08em]">
               <motion.span variants={mask} className="inline-block">
-                {c.title[0]} <span className="biz-hi">{c.title[1]}</span>
+                {c.title[0]}{sp(lang)}<span className="biz-hi">{c.title[1]}</span>
               </motion.span>
             </span>
           </h1>
