@@ -7,6 +7,7 @@ import { KeyFeatures, NodeReels, Showcase, ToolsInAction, WorkspaceExplorer } fr
 import VideoDialog, { type PlayRequest } from "./VideoDialog";
 import ProductCard from "./ProductCard";
 import ScannerTeaser from "./ScannerTeaser";
+import LanguageStage from "./LanguageStage";
 import { useSectionSnap } from "./useSectionSnap";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -22,7 +23,7 @@ const rise: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
 };
 
-const SECTIONS = ["top", "showcase", "features", "feature-videos", "node-demos", "workspace", "scanner"];
+const SECTIONS = ["top", "showcase", "features", "feature-videos", "node-demos", "workspace", "languages", "scanner"];
 
 const Arrow = () => (
   <span aria-hidden className="inline-block transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
@@ -193,7 +194,10 @@ export default function HomePage() {
       <NodeReels lang={lang} onPlay={setVideo} />
       <WorkspaceExplorer lang={lang} />
 
-      {/* 7. Scanner: coming soon */}
+      {/* 7. Languages */}
+      <LanguageStage lang={lang} />
+
+      {/* 8. Scanner: coming soon */}
       <ScannerTeaser lang={lang} />
 
       {/* Studio detail */}

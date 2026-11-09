@@ -251,3 +251,17 @@ body:has(dialog[open]) { overflow: hidden; }
 .dev-tile { transition: transform .5s cubic-bezier(.22,1,.36,1), border-color .4s; }
 .dev-tile:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--acc) 45%, transparent); }
 @media (prefers-reduced-motion: reduce) { .dev-chip { animation: none; } .dev-shot, .dev-tile { transition: none; } }
+
+/* home: languages stop */
+.lang-native { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.22); }
+.lang-word:hover .lang-native { -webkit-text-stroke-color: rgba(255,255,255,.5); }
+.lang-native.is-on { color: #fff; -webkit-text-stroke-color: transparent; text-shadow: 0 0 34px color-mix(in srgb, var(--sec) 45%, transparent); }
+.lang-frame { box-shadow: 0 40px 120px -40px color-mix(in srgb, var(--sec) 35%, transparent), 0 0 0 1px rgba(255,255,255,.04); }
+.lang-scan { background: linear-gradient(100deg, transparent 35%, color-mix(in srgb, var(--sec) 22%, transparent) 50%, transparent 65%); transform: translateX(-100%); animation: lang-scan 1.1s cubic-bezier(.22,1,.36,1) forwards; mix-blend-mode: screen; }
+@keyframes lang-scan { to { transform: translateX(100%); } }
+.lang-next-rail { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.lang-next-track { animation: lang-next 26s linear infinite; }
+@keyframes lang-next { to { transform: translateX(-50%); } }
+.lang-next::before { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.04) 50%, transparent 60%); background-size: 250% 100%; animation: lang-shine 4.5s ease-in-out infinite; pointer-events: none; }
+@keyframes lang-shine { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+@media (prefers-reduced-motion: reduce) { .lang-scan, .lang-next-track, .lang-next::before { animation: none; } }
