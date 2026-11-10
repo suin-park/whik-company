@@ -94,7 +94,7 @@ export default function ManualShell({ categories, children }: { categories: NavC
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-4 text-[13px] text-white/80 lg:hidden"
+            className="mb-6 inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 text-[13px] text-white/80 lg:hidden"
           >
             <span aria-hidden>☰</span> {t("nav.toc")}
           </button>

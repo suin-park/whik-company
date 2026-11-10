@@ -1,7 +1,14 @@
 import raw from "./nodes.json";
 
 /** The node reference, exported from WHIK Studio (tools/manual_export.py in whik-studio). */
-export type Choice = { en: string; ko: string | null; ja?: string | null; zh?: string | null };
+export type Choice = {
+  en: string;
+  ko: string | null;
+  ja?: string | null;
+  zh?: string | null;
+  /** its line beside it in the app's menu (a Merge operation's formula), in each language */
+  hint?: { en: string; ko: string | null; ja: string | null; zh: string | null };
+};
 export type Knob = {
   name: string;
   label: string;
