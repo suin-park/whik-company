@@ -1,0 +1,166 @@
+/* The manual (/manual): the home page's studio look (dark, light-blue accent, big italic numerals). */
+
+.manual-root {
+  isolation: isolate;
+  overflow-x: clip; /* (the big numerals hang past the edge; no sideways scroll on phones) */
+}
+
+.manual-aura {
+  background:
+    radial-gradient(900px 420px at 18% -8%, rgba(169, 208, 255, 0.12), transparent 62%),
+    radial-gradient(700px 360px at 92% -12%, rgba(255, 106, 0, 0.08), transparent 60%);
+}
+
+.manual-num {
+  font-size: clamp(110px, 16vw, 230px);
+  max-width: 60%;
+  overflow: hidden;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(169, 208, 255, 0.16);
+  letter-spacing: -0.06em;
+}
+
+.manual-hi {
+  background: linear-gradient(92deg, #a9d0ff 0%, #e6f1ff 55%, #ffb27a 110%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.manual-step-n {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(169, 208, 255, 0.55);
+}
+
+.manual-prose {
+  color: #c8cdd2;
+  font-size: 15px;
+  line-height: 1.85;
+  word-break: keep-all;
+}
+.manual-prose p {
+  margin: 0 0 1em;
+}
+.manual-prose p:last-child {
+  margin-bottom: 0;
+}
+.manual-prose b,
+.manual-prose strong {
+  color: #fff;
+  font-weight: 600;
+}
+.manual-prose ul,
+.manual-prose ol {
+  margin: 0 0 1em;
+  padding-left: 1.25em;
+}
+.manual-prose li {
+  margin: 0.25em 0;
+}
+.manual-prose a {
+  color: #a9d0ff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(169, 208, 255, 0.35);
+}
+.manual-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+  color: #e6f1ff;
+  overflow-wrap: anywhere;
+}
+
+.manual-kbd {
+  display: inline-block;
+  min-width: 1.8em;
+  padding: 0.12em 0.5em;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom-width: 2px;
+  background: linear-gradient(180deg, #1c1f24, #14161a);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82em;
+  text-align: center;
+  color: #fff;
+  line-height: 1.6;
+}
+
+.manual-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #a9d0ff;
+  color: #0d0f11;
+  font-weight: 800;
+  font-size: 14px;
+  box-shadow: 0 0 0 5px rgba(169, 208, 255, 0.22), 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+.manual-mark--legend {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  box-shadow: none;
+  margin-top: 2px;
+}
+@media (max-width: 640px) {
+  .manual-shot .manual-mark {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    box-shadow: 0 0 0 3px rgba(169, 208, 255, 0.22);
+  }
+}
+
+.manual-card-glow {
+  background: radial-gradient(420px 220px at 100% 0%, color-mix(in srgb, var(--c) 18%, transparent), transparent 70%);
+  opacity: 0.55;
+  transition: opacity 0.3s;
+}
+.manual-card:hover .manual-card-glow {
+  opacity: 1;
+}
+
+.manual-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.manual-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0 14px 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.manual-table td {
+  vertical-align: top;
+  padding: 14px 14px 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #c8cdd2;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.manual-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 2px 10px;
+  font-size: 12px;
+  color: #c8cdd2;
+  white-space: nowrap;
+}
+
+.manual-nav-link {
+  min-height: 0 !important;
+}

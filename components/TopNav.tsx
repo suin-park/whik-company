@@ -13,6 +13,7 @@ const LINKS: NavLink[] = [
   { href: "/#products", label: { ko: "제품", en: "Products", ja: "製品", zh: "产品" } },
   { href: "/#showcase", label: { ko: "쇼케이스", en: "Showcase", ja: "ショーケース", zh: "作品展示" } },
   { href: "/#feature-videos", label: { ko: "학습", en: "Learn", ja: "学ぶ", zh: "学习" } },
+  { href: "/manual", label: { ko: "매뉴얼", en: "Manual", ja: "マニュアル", zh: "手册" } },
   { href: STUDIO_RELEASES_URL, label: { ko: "새 소식", en: "What's new", ja: "最新情報", zh: "最新动态" }, external: true },
   { href: "/business", label: { ko: "기업 지원", en: "For business", ja: "法人サポート", zh: "企业支持" } },
 ];
