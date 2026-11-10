@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { useI18n } from "@/components/I18nProvider";
 import { ContractDocument, DOC_CSS, QuoteDocument, SignaturePad, type ClientInfo, type ContractDoc, type Provider, type QuoteDoc } from "./docs";
+import { AiUsage, type AiData } from "./AiUsage";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const rise: Variants = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } } };
@@ -42,6 +43,8 @@ type Data = {
   /** Development progress written by WHIK (tab shown when present). */
   progress?: Progress | null;
   companyFiles?: CompanyFile[];
+  /** AI ticket reading top-ups and usage (tab shown when WHIK linked the client's CRM). */
+  ai?: AiData | null;
 };
 
 const T = {
@@ -1108,7 +1111,7 @@ export default function PortalPage() {
   const day = (d?: string | Date | null) => (d ? new Date(d).toLocaleDateString(t.locale, { timeZone: "Asia/Seoul" }) : "-");
   const [state, setState] = useState<"loading" | "gate" | "in">("loading");
   const [data, setData] = useState<Data | null>(null);
-  const [tab, setTab] = useState<"quotes" | "contracts" | "info" | "samples" | "progress">("quotes");
+  const [tab, setTab] = useState<"quotes" | "contracts" | "info" | "samples" | "progress" | "ai">("quotes");
   const [sel, setSel] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -1191,6 +1194,7 @@ export default function PortalPage() {
                 ["contracts", t.tabContracts, data.contracts.length, toSign],
                 ["info", t.tabInfo, null, !data.taxComplete && data.contracts.length > 0 ? 1 : 0],
                 ...(data.progress ? ([["progress", t.tabProgress, null, 0]] as const) : []),
+                ...(data.ai ? ([["ai", "AI 사용", null, 0]] as const) : []),
                 ...(data.scanSamples ? ([["samples", t.tabSamples, null, 0]] as const) : []),
               ] as const
             ).map(([k, l, n, badge]) => (
@@ -1218,7 +1222,17 @@ export default function PortalPage() {
             </div>
           )}
 
-          {tab === "progress" && data.progress ? (
+          {tab === "ai" && data.ai ? (
+            <AiUsage
+              ai={data.ai}
+              bankAccount={data.provider.bankAccount ?? ""}
+              post={post}
+              onChange={(next, message) => {
+                setData((d) => (d ? { ...d, ai: next } : d));
+                setNotice(message);
+              }}
+            />
+          ) : tab === "progress" && data.progress ? (
             <ProgressView p={data.progress} />
           ) : tab === "samples" ? (
             <SampleUpload />
