@@ -225,6 +225,15 @@ export function Render3DGuide() {
           <li>{r("g3.c1")}</li>
           <li>{r("g3.c2")}</li>
         </ul>
+        <h3 className="mt-8 mb-3 text-[17px] font-semibold text-white">{t("g3.f.t")}</h3>
+        <ul>
+          <li>{r("g3.f1")}</li>
+          <li>{r("g3.f2")}</li>
+          <li>{r("g3.f3")}</li>
+        </ul>
+        <Note>
+          <p>{r("g3.f4")}</p>
+        </Note>
       </Section>
       <Section title={t("g3.speed")}>
         <p>{r("g3.s.d")}</p>
