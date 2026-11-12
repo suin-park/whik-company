@@ -167,3 +167,75 @@ export function DayToNightGuide() {
     </div>
   );
 }
+
+export function Render3DGuide() {
+  const { t, r, lang } = useM();
+  return (
+    <div>
+      <ManualHero index="G4" label={t("g3.label")} title={t("g3.title")} hi={t("g3.hi")} lead={t("g3.lead")} />
+      <div className="mb-4 grid gap-4 md:grid-cols-2">
+        <figure className="m-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={shot(lang, "06_render3d_fast")} alt={t("g3.c.fast")} className="block w-full rounded-[16px] border border-white/10" />
+          <figcaption className="mt-2 text-[12px] tracking-[0.14em] text-white/45">{t("g3.c.fast")}</figcaption>
+        </figure>
+        <figure className="m-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={shot(lang, "07_render3d_traced")} alt={t("g3.c.traced")} className="block w-full rounded-[16px] border border-white/10" />
+          <figcaption className="mt-2 text-[12px] tracking-[0.14em] text-[#a9d0ff]">{t("g3.c.traced")}</figcaption>
+        </figure>
+      </div>
+      <Section title={t("g3.which")}>
+        <ul>
+          <li>{r("g3.w1")}</li>
+          <li>{r("g3.w2")}</li>
+          <li>{r("g3.w3")}</li>
+        </ul>
+      </Section>
+      <Section title={t("g3.steps")}>
+        <Step n={1} title={t("g3.1.t")}>
+          <p>{r("g3.1.d")}</p>
+        </Step>
+        <Step n={2} title={t("g3.2.t")}>
+          <p>{r("g3.2.d")}</p>
+        </Step>
+        <Step n={3} title={t("g3.3.t")}>
+          <p>{r("g3.3.d")}</p>
+        </Step>
+        <Step n={4} title={t("g3.4.t")}>
+          <p>{r("g3.4.d")}</p>
+        </Step>
+      </Section>
+      <Section title={t("g3.plate")}>
+        <ul>
+          <li>{r("g3.p1")}</li>
+          <li>{r("g3.p2")}</li>
+          <li>{r("g3.p3")}</li>
+        </ul>
+      </Section>
+      <Section title={t("g3.outs")}>
+        <ul>
+          <li>{r("g3.o1")}</li>
+          <li>{r("g3.o2")}</li>
+          <li>{r("g3.o3")}</li>
+        </ul>
+      </Section>
+      <Section title={t("g3.cam")}>
+        <ul>
+          <li>{r("g3.c1")}</li>
+          <li>{r("g3.c2")}</li>
+        </ul>
+      </Section>
+      <Section title={t("g3.speed")}>
+        <p>{r("g3.s.d")}</p>
+        <ul>
+          <li>{r("g3.s.fast")}</li>
+          <li>{r("g3.s.traced")}</li>
+        </ul>
+        <Note>
+          <p>{r("g3.tip")}</p>
+        </Note>
+      </Section>
+    </div>
+  );
+}

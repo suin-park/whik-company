@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const host = process.env.NEXT_PUBLIC_SITE_URL ?? "https://whik.co.kr";
   const now = new Date();
   const manual = ["/manual", "/manual/start", "/manual/screen", "/manual/shortcuts", "/manual/guides/render", "/manual/guides/ai-pack",
-    "/manual/guides/day-to-night", "/manual/nodes", ...nodes.map((n) => `/manual/nodes/${slugOf(n)}`)];
+    "/manual/guides/day-to-night", "/manual/guides/render3d", "/manual/nodes", ...nodes.map((n) => `/manual/nodes/${slugOf(n)}`)];
   const urls = ["/", "/about", "/products", "/partnership", "/contact", ...manual];
   return urls.map((path) => ({
     url: `${host}${path}`,

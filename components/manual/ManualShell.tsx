@@ -17,6 +17,7 @@ const HOWTO: { href: string; label: string }[] = [
   { href: "/manual/guides/render", label: "nav.g.render" },
   { href: "/manual/guides/ai-pack", label: "nav.g.ai" },
   { href: "/manual/guides/day-to-night", label: "nav.g.night" },
+  { href: "/manual/guides/render3d", label: "nav.g.r3d" },
 ];
 
 function NavList({ title, items, path }: { title: string; items: { href: string; label: string }[]; path: string }) {
