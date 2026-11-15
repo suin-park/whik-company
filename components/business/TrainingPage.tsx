@@ -365,16 +365,16 @@ export default function TrainingPage() {
                   <Label required hint={t.datesHint}>
                     {t.dates}
                   </Label>
-                  <div className="grid gap-2 sm:grid-cols-3">
+                  <div className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:grid-cols-3">
                     {dates.map((d, i) => (
-                      <label key={i} className="relative block">
+                      <label key={i} className="relative block min-w-0">
                         <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-[var(--acc)]">{i + 1}</span>
                         <input
                           type="date"
                           min={minDate}
                           value={d}
                           onChange={(e) => setDates((cur) => cur.map((x, j) => (j === i ? e.target.value : x)))}
-                          className={`${field} pl-8 [color-scheme:dark]`}
+                          className={`${field} block h-[49px] min-w-0 appearance-none pl-8 text-left [color-scheme:dark] [-webkit-appearance:none] [&::-webkit-date-and-time-value]:text-left`}
                           aria-label={`${t.dates} ${i + 1}`}
                         />
                       </label>
