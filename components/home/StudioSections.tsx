@@ -251,17 +251,8 @@ function FeatureFilm({ v, i, lang, onPlay }: { v: Video; i: number; lang: Lang; 
           </span>
         ) : null}
         <Play />
-        <span className="absolute inset-x-4 bottom-4 z-[3] hidden items-end gap-4 md:inset-x-6 md:bottom-6 md:flex">
-          <span aria-hidden className="film-num text-[52px] font-black italic leading-[.8] md:text-[clamp(56px,5vw,84px)]">
-            {String(i + 1).padStart(2, "0")}
-          </span>
-          <span className="min-w-0">
-            <span className="block break-keep text-[16px] font-semibold leading-snug tracking-[-0.03em] md:text-[clamp(17px,1.45vw,22px)]">{title}</span>
-            <span className="mt-1 block text-xs text-white/55 md:text-[13px]">{v.caption[lang]}</span>
-          </span>
-        </span>
       </button>
-      <div className="mt-3 flex items-start gap-3 md:hidden">
+      <div className="mt-3 flex items-start gap-3">
         <span aria-hidden className="film-num text-[40px] font-black italic leading-[.85]">{String(i + 1).padStart(2, "0")}</span>
         <span className="min-w-0">
           <span className="block break-keep text-[15px] font-semibold leading-snug tracking-[-0.03em]">{title}</span>
@@ -276,7 +267,7 @@ export function ToolsInAction({ lang, onPlay }: { lang: Lang; onPlay: (p: PlayRe
   return (
     <StudioStop id="feature-videos" index="04" accent="#c9a8ff">
       <StudioHeading id="feature-videos-title" index="04" keyName="tools" lang={lang} />
-      <div className="grid gap-4 md:mx-auto md:w-[min(100%,calc((100svh-380px)*32/9+20px))] md:grid-cols-2 md:gap-5">
+      <div className="grid gap-4 md:mx-auto md:w-[min(100%,calc((100svh-470px)*48/9+40px))] md:grid-cols-3 md:gap-5">
         {featureVideos.map((v, i) => (
           <FeatureFilm key={v.id} v={v} i={i} lang={lang} onPlay={onPlay} />
         ))}

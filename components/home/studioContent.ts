@@ -143,6 +143,7 @@ export const workspaceDetails: { title: T; nodes: string }[] = [
 ];
 
 export const videoTags: Record<string, T> = {
+  NhTp7c5cGog: { ko: "10가지 기능", en: "10 FEATURES", ja: "10の機能", zh: "10项功能" },
   CzRonjprQaE: { ko: "AI 플러그인", en: "AI PLUGIN", ja: "AIプラグイン", zh: "AI插件" },
   dpC9tPgqQ8s: { ko: "AI 지우기", en: "AI REMOVAL", ja: "AI除去", zh: "AI移除" },
 };

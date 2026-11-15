@@ -15,6 +15,14 @@ export type Video = {
 
 export const featureVideos: Video[] = [
   {
+    id: "NhTp7c5cGog",
+    title: {
+      ko: "무료 합성 툴로 여기까지? WHIK Studio의 10가지 기능",
+      en: "All this from a free compositing tool? 10 things WHIK Studio does", ja: "無料の合成ツールでここまで？ WHIK Studio の10の機能", zh: "免费合成工具也能做到这些？WHIK Studio 的10项功能",
+    },
+    caption: { ko: "10가지 기능 한눈에 보기", en: "Ten features at a glance", ja: "10の機能をひと目で", zh: "一览10项功能" },
+  },
+  {
     id: "CzRonjprQaE",
     start: 175,
     title: {
