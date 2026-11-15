@@ -48,6 +48,8 @@ export const generated = data.generated;
 
 export const nodeBySlug = (slug: string) => nodes.find((n) => n.cls.toLowerCase() === slug.toLowerCase());
 export const slugOf = (n: ManualNode) => n.cls.toLowerCase();
+// Nodes merged into another (old links still land): the old page's address -> the node it became.
+export const formerSlugs: Record<string, string> = { meshtransform: "geotransform", transformgeo: "geotransform" };
 
 /** A category's line for the reference (what its nodes are for). */
 export const categoryBlurb: Record<string, string> = {

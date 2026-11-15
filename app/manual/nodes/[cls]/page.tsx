@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import NodeView from "@/components/manual/pages/NodeView";
-import { nodeBySlug, nodes, slugOf } from "@/lib/manual/data";
+import { formerSlugs, nodeBySlug, nodes, slugOf } from "@/lib/manual/data";
 
 // (params is a promise in Next 15 and later)
 type Props = { params: Promise<{ cls: string }> };
@@ -18,7 +18,11 @@ export async function generateMetadata({ params }: Props) {
 export default async function NodePage({ params }: Props) {
   const { cls } = await params;
   const n = nodeBySlug(cls);
-  if (!n) notFound();
+  if (!n) {
+    const now = formerSlugs[cls.toLowerCase()];
+    if (now) permanentRedirect(`/manual/nodes/${now}`);  // (a node merged into another)
+    notFound();
+  }
   const same = nodes.filter((x) => x.category === n.category);
   const at = same.indexOf(n);
   const link = (x?: (typeof nodes)[number]) => (x ? { cls: x.cls, slug: slugOf(x) } : undefined);
