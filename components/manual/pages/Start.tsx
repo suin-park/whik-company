@@ -21,6 +21,9 @@ export default function Start() {
             <Rich text={t("s.i1.d", { dl: STUDIO_DOWNLOAD_URL })} />
           </p>
         </Step>
+        <Note title={t("s.linux.t")}>
+          <p>{r("s.linux.d")}</p>
+        </Note>
         <Step n={2} title={t("s.i2.t")}>
           <p>{t("s.i2.d")}</p>
           <p>{r("s.i2.d2")}</p>

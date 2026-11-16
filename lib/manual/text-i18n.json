@@ -1132,8 +1132,8 @@
   "zh": "只需约 10 分钟。"
  },
  "s.i1.d": {
-  "ja": "[ダウンロードページ]({dl})から最新版の `WHIK-Studio-version-Setup.exe` を入手します。64 ビット版 Windows 10 と 11 に対応しています。",
-  "zh": "从[下载页面]({dl})获取最新版 `WHIK-Studio-version-Setup.exe`。支持 64 位 Windows 10 和 11。"
+  "ja": "[ダウンロードページ]({dl})から最新版の `WHIK-Studio-version-Setup.exe` を入手します。64 ビット版 Windows 10 と 11 に対応しています。Linux 版もあります。",
+  "zh": "从[下载页面]({dl})获取最新版 `WHIK-Studio-version-Setup.exe`。支持 64 位 Windows 10 和 11，也有 Linux 版。"
  },
  "s.i1.t": {
   "ja": "インストーラーを入手する",
@@ -1634,5 +1634,13 @@
  "home.film.c10": {
   "ja": "3Dソフトとのリアルタイム連携",
   "zh": "与3D软件实时联动"
+ },
+ "s.linux.t": {
+  "ja": "Linux で使う",
+  "zh": "在 Linux 上使用"
+ },
+ "s.linux.d": {
+  "ja": "Linux では同じページから `WHIK-Studio-version-x86_64.AppImage` を入手します。インストールは不要で、ファイルに実行権限を付けて(`chmod +x WHIK-Studio-*.AppImage`)開くだけです。Ubuntu 22.04 以降、Rocky、AlmaLinux、RHEL 9 などの 64 ビット版ディストリビューションで動作し、アップデートも **ヘルプ > アップデートを確認** から入手できます。スマートフォンのライブ接続、3D ソフトとのリアルタイム連携、Go Live 配信は、今のところ Windows のみです。",
+  "zh": "在 Linux 上，从同一页面获取 `WHIK-Studio-version-x86_64.AppImage`。无需安装，给文件加上执行权限(`chmod +x WHIK-Studio-*.AppImage`)后打开即可。支持 Ubuntu 22.04 及以上、Rocky、AlmaLinux、RHEL 9 等 64 位发行版，更新同样可以在 **帮助 > 检查更新** 中获取。手机实时连接、与 3D 软件的实时联动和 Go Live 直播目前仅支持 Windows。"
  }
 }

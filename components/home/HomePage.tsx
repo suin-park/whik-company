@@ -123,6 +123,9 @@ export default function HomePage() {
                 <Arrow />
               </button>
             </motion.div>
+            <motion.p variants={rise} className="m-0 mt-4 text-[13px] tracking-[-0.01em] text-[#a6adb4] md:text-sm">
+              {c.platforms}
+            </motion.p>
           </motion.div>
         </div>
 

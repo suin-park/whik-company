@@ -119,8 +119,13 @@ export const TEXT = {
   "s.install": { ko: "설치하기", en: "Install" },
   "s.i1.t": { ko: "설치 파일 받기", en: "Get the installer" },
   "s.i1.d": {
-    ko: "[다운로드 페이지]({dl})에서 가장 최신 버전의 `WHIK-Studio-버전-Setup.exe`를 받아요. Windows 10, 11 (64비트)에서 동작해요.",
-    en: "Get the latest `WHIK-Studio-version-Setup.exe` from the [download page]({dl}). It runs on 64-bit Windows 10 and 11.",
+    ko: "[다운로드 페이지]({dl})에서 가장 최신 버전의 `WHIK-Studio-버전-Setup.exe`를 받아요. Windows 10, 11 (64비트)에서 동작하고, 리눅스용도 있어요.",
+    en: "Get the latest `WHIK-Studio-version-Setup.exe` from the [download page]({dl}). It runs on 64-bit Windows 10 and 11; there is a Linux version too.",
+  },
+  "s.linux.t": { ko: "리눅스에서 쓰기", en: "On Linux" },
+  "s.linux.d": {
+    ko: "리눅스는 같은 페이지의 `WHIK-Studio-버전-x86_64.AppImage`를 받아요. 설치 없이 파일에 실행 권한을 주고(`chmod +x WHIK-Studio-*.AppImage`) 열면 돼요. Ubuntu 22.04 이후, Rocky, AlmaLinux, RHEL 9 같은 64비트 배포판에서 동작하고, 업데이트도 **도움말 > 업데이트 확인**에서 받을 수 있어요. 폰 라이브 연결, 3D 프로그램 실시간 연동, Go Live 방송은 아직 Windows에서만 돼요.",
+    en: "On Linux, get `WHIK-Studio-version-x86_64.AppImage` from the same page. Nothing to install: make the file executable (`chmod +x WHIK-Studio-*.AppImage`) and open it. It runs on 64-bit distributions such as Ubuntu 22.04 and later, Rocky, AlmaLinux and RHEL 9, and updates come from **Help > Check for Updates** too. The live phone link, the live link with a 3D program and Go Live are Windows only for now.",
   },
   "s.i2.t": { ko: "설치하고 실행하기", en: "Install and open it" },
   "s.i2.d": { ko: "받은 파일을 실행하고 안내에 따라 설치를 마치면, 시작 메뉴와 바탕 화면에서 WHIK Studio를 열 수 있어요.", en: "Run the file and follow the steps; WHIK Studio is then in the Start menu and on the desktop." },
