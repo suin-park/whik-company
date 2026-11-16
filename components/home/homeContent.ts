@@ -140,7 +140,7 @@ const copy = {
     close: "닫기",
     studioDialogTitle: "생성 이후의 완성도까지.",
     studioDialogBody:
-      "Windows와 리눅스에서 쓰는 무료 노드 기반 영상 합성과 3D 프로그램입니다. 키잉, 로토, 트래킹 같은 합성 작업부터 3D 가우시안 스플랫과 사실적인 3D 렌더, 내 PC에서 돌아가는 AI 노드까지 한 노드 그래프에서 다룹니다.",
+      "Windows와 리눅스에서 쓰는 무료 노드 기반 영상 합성과 3D 프로그램입니다. 키잉, 로토, 트래킹 같은 합성 작업부터 3D 가우시안 스플랫과 사실적인 3D 렌더, 내 PC에서 돌아가는 AI 노드까지 한 노드 그래프에서 다루고, Maya와 Blender에서 작업하는 장면을 실시간으로 받아 옵니다.",
     studioFeatures: ["노드 기반 합성", "3D와 렌더", "내 PC의 AI 노드", "Windows와 Linux"],
     scrollHint: "아래로",
   },
@@ -179,7 +179,7 @@ const copy = {
     close: "Close",
     studioDialogTitle: "Take your shot further.",
     studioDialogBody:
-      "Free node-based compositing and 3D for Windows and Linux. Keying, roto and tracking, 3D Gaussian splats and realistic 3D rendering, and AI nodes that run on your own PC, all in one node graph.",
+      "Free node-based compositing and 3D for Windows and Linux. Keying, roto and tracking, 3D Gaussian splats and realistic 3D rendering, and AI nodes that run on your own PC, all in one node graph, with your Maya and Blender scenes coming in live.",
     studioFeatures: ["Node-based compositing", "3D and rendering", "AI nodes on your PC", "Windows and Linux"],
     scrollHint: "Scroll",
   },
@@ -218,7 +218,7 @@ const copy = {
     close: "閉じる",
     studioDialogTitle: "生成したその先の、仕上がりまで。",
     studioDialogBody:
-      "Windows と Linux で使える、無料のノードベース映像合成と3Dソフトです。キーイング、ロト、トラッキングといった合成作業から、3Dガウシアンスプラット、リアルな3Dレンダー、自分のPCで動くAIノードまで、ひとつのノードグラフで扱います。",
+      "Windows と Linux で使える、無料のノードベース映像合成と3Dソフトです。キーイング、ロト、トラッキングといった合成作業から、3Dガウシアンスプラット、リアルな3Dレンダー、自分のPCで動くAIノードまで、ひとつのノードグラフで扱い、Maya や Blender で作業中のシーンをリアルタイムで受け取れます。",
     studioFeatures: ["ノードベース合成", "3Dとレンダー", "自分のPCで動くAIノード", "Windows と Linux"],
     scrollHint: "スクロール",
   },
@@ -257,7 +257,7 @@ const copy = {
     close: "关闭",
     studioDialogTitle: "从生成到完成，一步到位。",
     studioDialogBody:
-      "可在 Windows 和 Linux 上使用的免费节点式视频合成与3D软件。从抠像、Roto、跟踪等合成工作，到3D高斯泼溅、逼真的3D渲染，以及在你自己电脑上运行的AI节点，都在同一张节点图中完成。",
+      "可在 Windows 和 Linux 上使用的免费节点式视频合成与3D软件。从抠像、Roto、跟踪等合成工作，到3D高斯泼溅、逼真的3D渲染，以及在你自己电脑上运行的AI节点，都在同一张节点图中完成，还能实时接收 Maya 和 Blender 中正在制作的场景。",
     studioFeatures: ["节点式合成", "3D与渲染", "本机运行的AI节点", "Windows 和 Linux"],
     scrollHint: "向下",
   },
