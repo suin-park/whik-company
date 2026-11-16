@@ -17,6 +17,7 @@ const FILM_CHAPTERS: [string, string][] = [
   ["surfacestick", "SurfaceStick"],
   ["windowreplace", "WindowReplace"],
   ["mayalive", "MayaLive"],
+  ["blenderlive", "BlenderLive"],
 ];
 
 export default function Home({ count, categories }: { count: number; categories: { id: string; count: number }[] }) {

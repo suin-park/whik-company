@@ -94,6 +94,9 @@ export default function Shortcuts() {
           </table>
         </Section>
       ))}
+      <Note title={t("k.view3d.t")}>
+        <p>{r("k.view3d.d")}</p>
+      </Note>
       <Note title={t("k.custom.t")}>
         <p>{r("k.custom.d")}</p>
       </Note>

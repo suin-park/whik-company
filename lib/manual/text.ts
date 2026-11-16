@@ -124,8 +124,8 @@ export const TEXT = {
   },
   "s.linux.t": { ko: "리눅스에서 쓰기", en: "On Linux" },
   "s.linux.d": {
-    ko: "리눅스는 같은 페이지의 `WHIK-Studio-버전-x86_64.AppImage`를 받아요. 설치 없이 파일에 실행 권한을 주고(`chmod +x WHIK-Studio-*.AppImage`) 열면 돼요. Ubuntu 22.04 이후, Rocky, AlmaLinux, RHEL 9 같은 64비트 배포판에서 동작하고, 업데이트도 **도움말 > 업데이트 확인**에서 받을 수 있어요. 폰 라이브 연결, 3D 프로그램 실시간 연동, Go Live 방송은 아직 Windows에서만 돼요.",
-    en: "On Linux, get `WHIK-Studio-version-x86_64.AppImage` from the same page. Nothing to install: make the file executable (`chmod +x WHIK-Studio-*.AppImage`) and open it. It runs on 64-bit distributions such as Ubuntu 22.04 and later, Rocky, AlmaLinux and RHEL 9, and updates come from **Help > Check for Updates** too. The live phone link, the live link with a 3D program and Go Live are Windows only for now.",
+    ko: "리눅스는 같은 페이지의 `WHIK-Studio-버전-x86_64.AppImage`를 받아요. 설치 없이 파일에 실행 권한을 주고(`chmod +x WHIK-Studio-*.AppImage`) 열면 돼요. Ubuntu 22.04 이후, Rocky, AlmaLinux, RHEL 9 같은 64비트 배포판에서 동작하고, 업데이트도 **도움말 > 업데이트 확인**에서 받을 수 있어요. 폰 라이브 연결과 Go Live 방송은 아직 Windows에서만 돼요.",
+    en: "On Linux, get `WHIK-Studio-version-x86_64.AppImage` from the same page. Nothing to install: make the file executable (`chmod +x WHIK-Studio-*.AppImage`) and open it. It runs on 64-bit distributions such as Ubuntu 22.04 and later, Rocky, AlmaLinux and RHEL 9, and updates come from **Help > Check for Updates** too. The live phone link and Go Live are Windows only for now.",
   },
   "s.i2.t": { ko: "설치하고 실행하기", en: "Install and open it" },
   "s.i2.d": { ko: "받은 파일을 실행하고 안내에 따라 설치를 마치면, 시작 메뉴와 바탕 화면에서 WHIK Studio를 열 수 있어요.", en: "Run the file and follow the steps; WHIK Studio is then in the Start menu and on the desktop." },
@@ -283,6 +283,11 @@ export const TEXT = {
   "k.space": { ko: "마우스 아래 패널을 크게 보기 (다시 누르면 돌아옴)", en: "Fill the window with the panel under the mouse (again: back)" },
   "k.tab3d": { ko: "뷰어에서 2D와 3D 화면 바꾸기", en: "Switch the viewer between 2D and 3D" },
   "k.h": { ko: "장면 그래프에서 고른 물체 숨기기, 보이기", en: "Hide or show the objects selected in the scene graph" },
+  "k.view3d.t": { ko: "3D 뷰 조작 방식 고르기", en: "Pick how the 3D view moves" },
+  "k.view3d.d": {
+    ko: "**편집 > 키보드 단축키**의 **3D 뷰 조작**에서 쓰던 3D 프로그램과 같은 방식을 고를 수 있어요. 기본 방식은 [[Alt]]+왼쪽 드래그로 돌리고 가운데 드래그로 옮기며 [[Q]] [[W]] [[E]] [[R]]로 도구를 골라요. 다른 방식은 가운데 드래그로 돌리고 [[Shift]]+가운데로 옮기고 [[Ctrl]]+가운데로 확대하며, [[G]] [[R]] [[S]]로 도구를, 숫자 패드 1, 3, 7로 앞, 오른쪽, 위 시점을, 5로 원근을, 0으로 카메라 시점을 골라요.",
+    en: "In **Edit > Keyboard Shortcuts**, **3D view keys** picks the way the 3D program you know works. The default turns with [[Alt]]+left drag, moves with a middle drag and picks tools with [[Q]] [[W]] [[E]] [[R]]. The other turns with a middle drag, moves with [[Shift]]+middle, zooms with [[Ctrl]]+middle, picks tools with [[G]] [[R]] [[S]], and views with the numpad: 1, 3, 7 front, right, top, 5 perspective, 0 the camera.",
+  },
   "k.custom.t": { ko: "내 손에 맞게 바꾸기", en: "Make them your own" },
   "k.custom.d": { ko: "**편집 > 키보드 단축키**에서 모든 메뉴와 패널의 단축키를 키보드 그림으로 보고 원하는 키로 바꿀 수 있어요.", en: "**Edit > Keyboard Shortcuts** shows every menu and panel key on a keyboard picture, and lets you change them." },
 
