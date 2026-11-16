@@ -107,7 +107,7 @@ export const workspaceScreens = [
 const copy = {
   ko: {
     tagline: "상상을 장면으로.",
-    intro: "무료 영상 합성 및 3D 제작 도구",
+    intro: "무료 노드 기반 영상 합성과 3D 프로그램",
     download: "무료 다운로드",
     platforms: "Windows와 Linux 지원",
     watchFilm: "소개 영상 보기",
@@ -140,13 +140,13 @@ const copy = {
     close: "닫기",
     studioDialogTitle: "생성 이후의 완성도까지.",
     studioDialogBody:
-      "노드 기반으로 영상을 합성하고 보정하는 무료 제작 도구입니다. 생성한 이미지와 영상, 3D 어셋을 연결해 원하는 장면으로 완성하세요.",
-    studioFeatures: ["노드 기반 합성", "3D 작업 흐름", "MCP 연결"],
+      "Windows와 리눅스에서 쓰는 무료 노드 기반 영상 합성과 3D 프로그램입니다. 키잉, 로토, 트래킹 같은 합성 작업부터 3D 가우시안 스플랫과 사실적인 3D 렌더, 내 PC에서 돌아가는 AI 노드까지 한 노드 그래프에서 다룹니다.",
+    studioFeatures: ["노드 기반 합성", "3D와 렌더", "내 PC의 AI 노드", "Windows와 Linux"],
     scrollHint: "아래로",
   },
   en: {
     tagline: "Bring your vision to life.",
-    intro: "Free tools for compositing and 3D creation",
+    intro: "Free node-based compositing and 3D",
     download: "Download for free",
     platforms: "For Windows and Linux",
     watchFilm: "Watch the film",
@@ -179,13 +179,13 @@ const copy = {
     close: "Close",
     studioDialogTitle: "Take your shot further.",
     studioDialogBody:
-      "A free, node-based tool for compositing and finishing. Bring images, video and 3D assets together to build the scene you imagine.",
-    studioFeatures: ["Node-based compositing", "3D workflow", "MCP integration"],
+      "Free node-based compositing and 3D for Windows and Linux. Keying, roto and tracking, 3D Gaussian splats and realistic 3D rendering, and AI nodes that run on your own PC, all in one node graph.",
+    studioFeatures: ["Node-based compositing", "3D and rendering", "AI nodes on your PC", "Windows and Linux"],
     scrollHint: "Scroll",
   },
   ja: {
     tagline: "想像を、シーンに。",
-    intro: "無料の映像合成と3D制作ツール",
+    intro: "無料のノードベース映像合成と3Dソフト",
     download: "無料ダウンロード",
     platforms: "Windows と Linux に対応",
     watchFilm: "紹介映像を見る",
@@ -218,13 +218,13 @@ const copy = {
     close: "閉じる",
     studioDialogTitle: "生成したその先の、仕上がりまで。",
     studioDialogBody:
-      "ノードベースで映像を合成し、仕上げる無料の制作ツールです。生成した画像や映像、3Dアセットをつないで、思い描くシーンに仕上げましょう。",
-    studioFeatures: ["ノードベース合成", "3Dワークフロー", "MCP連携"],
+      "Windows と Linux で使える、無料のノードベース映像合成と3Dソフトです。キーイング、ロト、トラッキングといった合成作業から、3Dガウシアンスプラット、リアルな3Dレンダー、自分のPCで動くAIノードまで、ひとつのノードグラフで扱います。",
+    studioFeatures: ["ノードベース合成", "3Dとレンダー", "自分のPCで動くAIノード", "Windows と Linux"],
     scrollHint: "スクロール",
   },
   zh: {
     tagline: "把想象变成画面。",
-    intro: "免费的视频合成与3D制作工具",
+    intro: "免费的节点式视频合成与3D软件",
     download: "免费下载",
     platforms: "支持 Windows 和 Linux",
     watchFilm: "观看介绍视频",
@@ -257,8 +257,8 @@ const copy = {
     close: "关闭",
     studioDialogTitle: "从生成到完成，一步到位。",
     studioDialogBody:
-      "一款基于节点的免费视频合成与后期工具。把生成的图片、视频和3D资产连接起来，完成你想要的画面。",
-    studioFeatures: ["节点式合成", "3D工作流", "MCP连接"],
+      "可在 Windows 和 Linux 上使用的免费节点式视频合成与3D软件。从抠像、Roto、跟踪等合成工作，到3D高斯泼溅、逼真的3D渲染，以及在你自己电脑上运行的AI节点，都在同一张节点图中完成。",
+    studioFeatures: ["节点式合成", "3D与渲染", "本机运行的AI节点", "Windows 和 Linux"],
     scrollHint: "向下",
   },
 } as const;

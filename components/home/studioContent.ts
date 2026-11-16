@@ -46,12 +46,18 @@ export const headings: Record<string, { label: string; title: Record<Lang, [stri
 /** Ticker under the main film. */
 export const capabilities: T[] = [
   { ko: "3DGS 공간 합성", en: "3DGS compositing", ja: "3DGS空間合成", zh: "3DGS空间合成" },
+  { ko: "키잉", en: "Keying", ja: "キーイング", zh: "抠像" },
   { ko: "카메라 트래킹", en: "Camera tracking", ja: "カメラトラッキング", zh: "摄像机跟踪" },
+  { ko: "렌즈 왜곡 분석", en: "Lens analysis", ja: "レンズ歪み解析", zh: "镜头畸变分析" },
+  { ko: "필름 그레인", en: "Film grain", ja: "フィルムグレイン", zh: "胶片颗粒" },
   { ko: "AI 지우기", en: "AI removal", ja: "AI除去", zh: "AI移除" },
   { ko: "AI 매트", en: "AI mattes", ja: "AIマット", zh: "AI遮罩" },
   { ko: "AI 업스케일", en: "AI upscale", ja: "AIアップスケール", zh: "AI超分辨率" },
   { ko: "중간 프레임 생성", en: "Frame interpolation", ja: "中間フレーム生成", zh: "插帧" },
   { ko: "깊이 초점", en: "Depth defocus", ja: "深度フォーカス", zh: "景深虚化" },
+  { ko: "브러시 조명", en: "Painted light", ja: "ブラシで描くライティング", zh: "笔刷布光" },
+  { ko: "레이 트레이싱 렌더", en: "Ray traced rendering", ja: "レイトレーシングレンダー", zh: "光线追踪渲染" },
+  { ko: "3D 프로그램 실시간 연결", en: "Live link with 3D programs", ja: "3Dソフトとリアルタイム連携", zh: "与3D软件实时联动" },
   { ko: "OCIO / ACES", en: "OCIO / ACES", ja: "OCIO / ACES", zh: "OCIO / ACES" },
   { ko: "EXR / Deep", en: "EXR / Deep", ja: "EXR / Deep", zh: "EXR / Deep" },
   { ko: "Cryptomatte", en: "Cryptomatte", ja: "Cryptomatte", zh: "Cryptomatte" },
@@ -59,6 +65,7 @@ export const capabilities: T[] = [
   { ko: "OFX 플러그인", en: "OFX plugins", ja: "OFXプラグイン", zh: "OFX插件" },
   { ko: "MCP 연결", en: "MCP integration", ja: "MCP連携", zh: "MCP连接" },
   { ko: "백그라운드 렌더", en: "Background renders", ja: "バックグラウンドレンダー", zh: "后台渲染" },
+  { ko: "Windows와 Linux", en: "Windows and Linux", ja: "Windows と Linux", zh: "Windows 和 Linux" },
 ];
 
 export const stats: { value: string | T; label: T }[] = [
@@ -93,16 +100,16 @@ export const keyFeatures: KeyFeature[] = [
   {
     icon: "matte",
     accent: "#9cf2c4",
-    title: { ko: "AI 매트", en: "AI mattes", ja: "AIマット", zh: "AI遮罩" },
-    desc: { ko: "몇 번의 클릭으로 사람과 사물을 영상에서 분리합니다.", en: "Isolate people and objects in a few clicks.", ja: "数回のクリックで人物や物体を映像から切り出します。", zh: "点几下就能把人物和物体从画面中分离出来。" },
-    nodes: "Segment  Cryptomatte",
+    title: { ko: "키잉과 AI 매트", en: "Keying and AI mattes", ja: "キーイングとAIマット", zh: "抠像与AI遮罩" },
+    desc: { ko: "머리카락까지 살려 키를 뽑고, 몇 번의 클릭으로 사람과 사물을 분리합니다.", en: "Pull keys down to fine hair, and isolate people and objects in a few clicks.", ja: "髪の毛まで残してキーを抜き、数回のクリックで人物や物体を切り出します。", zh: "连发丝都能保留地抠像，点几下就能分离人物和物体。" },
+    nodes: "ChromaKey  HairKey  Segment",
   },
   {
     icon: "track",
     accent: "#ffd36e",
     title: { ko: "카메라 트래킹", en: "Camera tracking", ja: "カメラトラッキング", zh: "摄像机跟踪" },
-    desc: { ko: "촬영한 카메라의 움직임을 3D로 되살리고 평면을 따라갑니다.", en: "Solve the shot's camera in 3D and follow planes.", ja: "撮影したカメラの動きを3Dで再現し、平面を追従します。", zh: "以3D还原拍摄时的摄像机运动，并跟踪平面。" },
-    nodes: "CameraTracker  PlanarTracker",
+    desc: { ko: "촬영한 카메라의 움직임과 렌즈를 3D로 되살리고 평면을 따라갑니다.", en: "Solve the shot's camera and lens in 3D, and follow planes.", ja: "撮影したカメラの動きとレンズを3Dで再現し、平面を追従します。", zh: "以3D还原拍摄时的摄像机运动与镜头，并跟踪平面。" },
+    nodes: "CameraTracker  PlanarTracker  LensDistortion",
   },
   {
     icon: "sparkle",
@@ -115,15 +122,15 @@ export const keyFeatures: KeyFeature[] = [
     icon: "light",
     accent: "#ffb86b",
     title: { ko: "빛과 깊이", en: "Light and depth", ja: "光と深度", zh: "光照与景深" },
-    desc: { ko: "깊이로 초점을 옮기고, 빛을 더하고, 그림자를 만듭니다.", en: "Rack focus with depth, add light, cast shadows.", ja: "深度でピントを移し、光を加え、影を作ります。", zh: "用深度移动焦点、添加光照、生成阴影。" },
-    nodes: "DepthDefocus  LightSpill  ShadowMaker",
+    desc: { ko: "낮을 밤으로 바꾸고, 브러시로 빛을 칠하고, 깊이로 초점을 옮기고, 그림자를 만듭니다.", en: "Turn day to night, paint light with a brush, rack focus with depth, cast shadows.", ja: "昼を夜に変え、ブラシで光を描き、深度でピントを移し、影を作ります。", zh: "把白天变成夜晚，用笔刷绘制光照，用深度移动焦点，生成阴影。" },
+    nodes: "DayToNight  LightPaint  ShadowMaker",
   },
   {
     icon: "shapes",
     accent: "#7fd8ff",
     title: { ko: "3D 제작", en: "3D creation", ja: "3D制作", zh: "3D制作" },
-    desc: { ko: "모델링, 재질과 텍스처, UV 편집, GPU 렌더까지 앱 안에서.", en: "Modeling, materials, UV editing and GPU rendering inside the app.", ja: "モデリング、マテリアルとテクスチャ、UV編集、GPUレンダーまでアプリの中で。", zh: "建模、材质与贴图、UV编辑、GPU渲染，全部在应用内完成。" },
-    nodes: "ModelingTools  UVEdit  Render3D",
+    desc: { ko: "모델링, 재질과 UV 편집, 레이 트레이싱 렌더, 3D 프로그램과 실시간 연결까지.", en: "Modeling, materials and UV editing, ray traced rendering, and a live link with 3D programs.", ja: "モデリング、マテリアルとUV編集、レイトレーシングレンダー、3Dソフトとのリアルタイム連携まで。", zh: "建模、材质与UV编辑、光线追踪渲染，以及与3D软件的实时联动。" },
+    nodes: "ModelingTools  Render3D  Live link",
   },
   {
     icon: "bot",
