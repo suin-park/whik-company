@@ -110,15 +110,14 @@ export function Card({ href, eyebrow, title, children, accent = "#a9d0ff" }: { h
     <Link
       href={href}
       style={{ "--c": accent } as React.CSSProperties}
-      className="manual-card group relative flex min-h-[200px] flex-col justify-between overflow-hidden rounded-[20px] border border-white/10 bg-[#121417] p-6 no-underline transition-colors hover:border-[var(--c)] md:p-7"
+      className="manual-card group relative flex min-h-[184px] flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#121417] p-6 no-underline transition-colors hover:border-[var(--c)] md:p-7"
     >
       <span aria-hidden className="manual-card-glow pointer-events-none absolute inset-0" />
+      {/* (from the top: every card's title on one line with the others, the arrow at the bottom) */}
       <span className="relative text-[11px] font-semibold tracking-[0.2em] text-[var(--c)]">{eyebrow}</span>
-      <span className="relative">
-        <span className="block break-keep text-[22px] font-semibold tracking-[-0.03em] text-white md:text-[24px]">{title}</span>
-        <span className="mt-2 block break-keep text-[14px] leading-[1.7] text-[#a6adb4]">{children}</span>
-        <span aria-hidden className="mt-4 inline-block text-[var(--c)] transition-transform duration-200 group-hover:translate-x-1">→</span>
-      </span>
+      <span className="relative mt-3 block break-keep text-[22px] font-semibold tracking-[-0.03em] text-white md:text-[24px]">{title}</span>
+      <span className="relative mt-2 block break-keep text-[14px] leading-[1.7] text-[#a6adb4]">{children}</span>
+      <span aria-hidden className="relative mt-auto inline-block pt-4 text-[var(--c)] transition-transform duration-200 group-hover:translate-x-1">→</span>
     </Link>
   );
 }
