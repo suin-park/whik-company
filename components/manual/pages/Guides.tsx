@@ -34,6 +34,8 @@ export function ViewerGuide() {
           <li>{r("v.q1")}</li>
           <li>{r("v.q2")}</li>
           <li>{r("v.q3")}</li>
+          <li>{r("v.q4")}</li>
+          <li>{r("v.q5")}</li>
         </ul>
         <Note>
           <p>{r("v.tip")}</p>
