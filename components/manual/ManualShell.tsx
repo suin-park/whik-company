@@ -14,6 +14,7 @@ const GUIDE: { href: string; label: string }[] = [
   { href: "/manual/shortcuts", label: "nav.keys" },
 ];
 const HOWTO: { href: string; label: string }[] = [
+  { href: "/manual/guides/viewer", label: "nav.g.view" },
   { href: "/manual/guides/render", label: "nav.g.render" },
   { href: "/manual/guides/ai-pack", label: "nav.g.ai" },
   { href: "/manual/guides/day-to-night", label: "nav.g.night" },

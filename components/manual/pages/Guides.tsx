@@ -3,6 +3,46 @@
 import { ManualHero, Note, Section, Shot, Step } from "../ui";
 import { shot, useM } from "../useM";
 
+export function ViewerGuide() {
+  const { t, r } = useM();
+  return (
+    <div>
+      <ManualHero index="G0" label={t("v.label")} title={t("v.title")} hi={t("v.hi")} lead={t("v.lead")} />
+      <Section title={t("v.s1")}>
+        <Step n={1} title={t("v.1.t")}>
+          <p>{r("v.1.d")}</p>
+        </Step>
+        <Step n={2} title={t("v.2.t")}>
+          <p>{r("v.2.d")}</p>
+        </Step>
+        <Step n={3} title={t("v.3.t")}>
+          <p>{r("v.3.d")}</p>
+        </Step>
+        <Note>
+          <p>{r("v.arrange")}</p>
+        </Note>
+      </Section>
+      <Section title={t("v.s2")}>
+        <ul>
+          <li>{r("v.c1")}</li>
+          <li>{r("v.c2")}</li>
+          <li>{r("v.c3")}</li>
+        </ul>
+      </Section>
+      <Section title={t("v.s3")}>
+        <ul>
+          <li>{r("v.q1")}</li>
+          <li>{r("v.q2")}</li>
+          <li>{r("v.q3")}</li>
+        </ul>
+        <Note>
+          <p>{r("v.tip")}</p>
+        </Note>
+      </Section>
+    </div>
+  );
+}
+
 export function RenderGuide() {
   const { t, r, lang } = useM();
   return (

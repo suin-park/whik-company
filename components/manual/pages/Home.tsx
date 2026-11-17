@@ -22,6 +22,7 @@ const FILM_CHAPTERS: [string, string][] = [
 
 // The guides as a small node graph, in the order of a job: get ready, make (2D, 3D), save.
 const GUIDES = [
+  { href: "/manual/guides/viewer", key: "g5", step: "s0", accent: "#e6e6a0" },
   { href: "/manual/guides/ai-pack", key: "g2", step: "s1", accent: "#c7a6ff" },
   { href: "/manual/guides/day-to-night", key: "g3", step: "s2", accent: "#ffb27a" },
   { href: "/manual/guides/render3d", key: "g4", step: "s2", accent: "#7ee0c3" },
@@ -125,7 +126,7 @@ export default function Home({ count, categories }: { count: number; categories:
               <Link
                 href={g.href}
                 style={{ "--c": g.accent } as React.CSSProperties}
-                className="group relative block shrink-0 rounded-[12px] border border-white/15 bg-[#121417] no-underline transition-colors hover:border-[var(--c)] md:w-[22%]"
+                className="group relative block shrink-0 rounded-[12px] border border-white/15 bg-[#121417] no-underline transition-colors hover:border-[var(--c)] md:w-[18%]"
               >
                 {/* a node: its colour strip, step and name; its input and output on the sides */}
                 <span aria-hidden className="block h-[3px] rounded-t-[12px] bg-[var(--c)]" />
