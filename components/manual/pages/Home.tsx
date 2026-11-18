@@ -27,6 +27,7 @@ const GUIDES = [
   { href: "/manual/guides/day-to-night", key: "g3", step: "s2", accent: "#ffb27a" },
   { href: "/manual/guides/render3d", key: "g4", step: "s2", accent: "#7ee0c3" },
   { href: "/manual/guides/render", key: "g1", step: "s3", accent: "#a9d0ff" },
+  { href: "/manual/guides/edit", key: "g6", step: "s4", accent: "#ff8fb1" },
 ];
 
 const SECTION = "mt-16 border-t border-white/10 pt-14 md:mt-20 md:pt-16";
@@ -126,7 +127,7 @@ export default function Home({ count, categories }: { count: number; categories:
               <Link
                 href={g.href}
                 style={{ "--c": g.accent } as React.CSSProperties}
-                className="group relative block shrink-0 rounded-[12px] border border-white/15 bg-[#121417] no-underline transition-colors hover:border-[var(--c)] md:w-[18%]"
+                className="group relative block shrink-0 rounded-[12px] border border-white/15 bg-[#121417] no-underline transition-colors hover:border-[var(--c)] md:w-[14%]"
               >
                 {/* a node: its colour strip, step and name; its input and output on the sides */}
                 <span aria-hidden className="block h-[3px] rounded-t-[12px] bg-[var(--c)]" />

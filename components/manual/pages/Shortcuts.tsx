@@ -47,6 +47,25 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     ],
   },
   {
+    title: "k.g.cut",
+    rows: [
+      [[["V"], ["B"], ["N"], ["C"]], "k.e.tools"],
+      [[["Y"], ["U"], ["R"], ["P"], ["T"]], "k.e.tools2"],
+      [[[","], ["."]], "k.e.insert"],
+      [[["Ctrl", "K"]], "k.e.cut"],
+      [[["Delete"], ["Shift", "Delete"]], "k.e.del"],
+      [[["Alt"]], "k.e.alt"],
+      [[["Ctrl", "D"], ["Ctrl", "Shift", "D"]], "k.e.trans"],
+      [[["I"], ["O"]], "k.e.io"],
+      [[["M"]], "k.e.m"],
+      [[["↑"], ["↓"]], "k.e.edits"],
+      [[["Ctrl", "R"]], "k.e.speed"],
+      [[["Shift", "S"]], "k.e.snap"],
+      [[["Enter"]], "k.e.enter"],
+      [[["Ctrl", "M"]], "k.e.export"],
+    ],
+  },
+  {
     title: "k.g.view",
     rows: [
       [[["Space"]], "k.space"],
