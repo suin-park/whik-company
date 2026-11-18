@@ -55,6 +55,8 @@ const GROUPS: { title: string; rows: Row[] }[] = [
       [[["Ctrl", "K"]], "k.e.cut"],
       [[["Delete"], ["Shift", "Delete"]], "k.e.del"],
       [[["Alt"]], "k.e.alt"],
+      [[["Ctrl", "Click"]], "k.e.key"],
+      [[["Ctrl", "Click"]], "k.e.track"],
       [[["Ctrl", "D"], ["Ctrl", "Shift", "D"]], "k.e.trans"],
       [[["I"], ["O"]], "k.e.io"],
       [[["M"]], "k.e.m"],

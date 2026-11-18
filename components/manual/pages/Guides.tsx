@@ -56,8 +56,8 @@ export function EditGuide() {
         marks={[
             { n: 1, x: 6, y: 21, label: t("e.m1"), text: t("e.m1.d") },
             { n: 2, x: 45, y: 30, label: t("e.m2"), text: t("e.m2.d") },
-            { n: 3, x: 30, y: 55, label: t("e.m3"), text: t("e.m3.d") },
-            { n: 4, x: 13.7, y: 74, label: t("e.m4"), text: t("e.m4.d") },
+            { n: 3, x: 17, y: 57, label: t("e.m3"), text: t("e.m3.d") },
+            { n: 4, x: 15, y: 80, label: t("e.m4"), text: t("e.m4.d") },
             { n: 5, x: 45, y: 84, label: t("e.m5"), text: t("e.m5.d") },
             { n: 6, x: 88, y: 22, label: t("e.m6"), text: t("e.m6.d") },
             { n: 7, x: 85, y: 72, label: t("e.m7"), text: t("e.m7.d") }
@@ -91,6 +91,9 @@ export function EditGuide() {
           <li>{r("e.t4")}</li>
           <li>{r("e.t5")}</li>
           <li>{r("e.t6")}</li>
+          <li>{r("e.t7")}</li>
+          <li>{r("e.t8")}</li>
+          <li>{r("e.t9")}</li>
         </ul>
       </Section>
       <Section title={t("e.s3")}>
@@ -117,12 +120,20 @@ export function EditGuide() {
           <li>{r("e.v2")}</li>
           <li>{r("e.v3")}</li>
           <li>{r("e.v4")}</li>
+          <li>{r("e.v5")}</li>
         </ul>
       </Section>
       <Section title={t("e.s6")}>
         <ul>
           <li>{r("e.a1")}</li>
           <li>{r("e.a2")}</li>
+        </ul>
+      </Section>
+      <Section title={t("e.s8")}>
+        <ul>
+          <li>{r("e.l1")}</li>
+          <li>{r("e.l2")}</li>
+          <li>{r("e.l3")}</li>
         </ul>
       </Section>
       <Section title={t("e.s7")}>
