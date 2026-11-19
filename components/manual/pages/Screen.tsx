@@ -46,6 +46,7 @@ export default function Screen() {
           <li>{r("w.layout.1")}</li>
           <li>{r("w.layout.2")}</li>
           <li>{r("w.layout.3")}</li>
+          <li>{r("w.layout.4")}</li>
         </ul>
         <Note>
           <p>{r("w.layout.tip")}</p>

@@ -79,11 +79,13 @@ export function EditGuide() {
         </Step>
         <Step n={3} title={t("e.3.t")}>
           <p>{r("e.3.d")}</p>
+          <p>{r("e.3.g")}</p>
           <Shot src={shot("en", "e_bin")} alt={t("e.m1")} caption={t("e.cap.bin")} maxWidth={360} />
         </Step>
         <Note>
           <p>{r("e.layered")}</p>
         </Note>
+        <Shot src={shot("en", "e_psd")} alt="PSD" caption={t("e.cap.psd")} maxWidth={420} />
       </Section>
       <Section title={t("e.s2")}>
         <Shot
@@ -112,6 +114,12 @@ export function EditGuide() {
           <li>{r("e.t11")}</li>
           <li>{r("e.t12")}</li>
         </ul>
+        <Shot src={shot("en", "e_keys")} alt={t("e.cap.keys")} caption={t("e.cap.keys")} />
+        <ul>
+          <li>{r("e.t13")}</li>
+          <li>{r("e.t14")}</li>
+          <li>{r("e.t15")}</li>
+        </ul>
         <Shot src={shot("en", "e_props")} alt={t("e.m6")} caption={t("e.cap.props")} maxWidth={400} />
       </Section>
       <Section title={t("e.s3")}>
@@ -135,6 +143,7 @@ export function EditGuide() {
         </Step>
         <Note>
           <p>{r("e.shots")}</p>
+          <p>{r("e.notes")}</p>
         </Note>
       </Section>
       <Section title={t("e.s5")}>
@@ -162,6 +171,7 @@ export function EditGuide() {
           <li>{r("e.l1")}</li>
           <li>{r("e.l2")}</li>
           <li>{r("e.l3")}</li>
+          <li>{r("e.l4")}</li>
         </ul>
       </Section>
       <Section title={t("e.s7")}>

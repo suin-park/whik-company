@@ -88,7 +88,7 @@ export const keyFeatures: KeyFeature[] = [
     accent: "#a9d0ff",
     title: { ko: "3DGS 공간 합성", en: "3DGS compositing", ja: "3DGS空間合成", zh: "3DGS空间合成" },
     desc: { ko: "가우시안 스플랫 공간을 불러와 카메라로 찍고 영상에 합성합니다.", en: "Load Gaussian splat spaces, shoot them with a camera, comp them in.", ja: "ガウシアンスプラットの空間を読み込み、カメラで撮って映像に合成します。", zh: "导入高斯泼溅空间，用摄像机拍摄并合成进视频。" },
-    nodes: "GeoImport  SplatRender",
+    nodes: "SceneRead  SplatRender",
   },
   {
     icon: "erase",
@@ -143,7 +143,7 @@ export const keyFeatures: KeyFeature[] = [
 
 /** Workspace explorer: extra lines for each screen (same order as workspaceScreens). */
 export const workspaceDetails: { title: T; nodes: string }[] = [
-  { title: { ko: "3D 공간을 장면 속으로", en: "Bring 3D spaces into the shot", ja: "3D空間をシーンの中へ", zh: "把3D空间放进画面" }, nodes: "GeoImport  GeoScene  SplatRender  Grade" },
+  { title: { ko: "3D 공간을 장면 속으로", en: "Bring 3D spaces into the shot", ja: "3D空間をシーンの中へ", zh: "把3D空间放进画面" }, nodes: "SceneRead  SceneLayers  SplatRender  Grade" },
   { title: { ko: "움직임을 그대로 따라가기", en: "Follow every move", ja: "動きをそのまま追いかける", zh: "精准跟随每一个动作" }, nodes: "Tracker  CameraTracker  PlanarTracker" },
   { title: { ko: "카메라로 영상을 투사하기", en: "Project footage through cameras", ja: "カメラで映像を投影する", zh: "通过摄像机投射画面" }, nodes: "Camera  Projection  Render3D" },
   { title: { ko: "필요한 영역만 골라내기", en: "Pull out just what you need", ja: "必要な領域だけを切り出す", zh: "只取出需要的部分" }, nodes: "Segment  Roto  Cryptomatte" },

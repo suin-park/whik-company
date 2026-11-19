@@ -49,7 +49,8 @@ export const generated = data.generated;
 export const nodeBySlug = (slug: string) => nodes.find((n) => n.cls.toLowerCase() === slug.toLowerCase());
 export const slugOf = (n: ManualNode) => n.cls.toLowerCase();
 // Nodes merged into another (old links still land): the old page's address -> the node it became.
-export const formerSlugs: Record<string, string> = { meshtransform: "geotransform", transformgeo: "geotransform" };
+// (nodes merged into others or renamed: their old pages lead to the new ones)
+export const formerSlugs: Record<string, string> = { meshtransform: "scenetransform", transformgeo: "scenetransform", geoimport: "sceneread", geoexport: "scenewrite", geotransform: "scenetransform", geomerge: "scenemerge", geoscene: "scenelayers", geovisibility: "sceneshowhide", geobreaklayer: "scenedetach", geosequencer: "scenesequence", geograde: "pointgrade", geodeletepoints: "pointremove", geodisklight: "disklight", geodistantlight: "sunlight", geospherelight: "spherelight", fieldshape: "zoneshape", fieldconstant: "zoneconstant", fieldcrop: "zonecrop", fieldimage: "zoneimage", fieldinvert: "zoneinvert", fieldmath: "zonemath", fieldmerge: "zonemerge", fieldmix: "zonemix", fieldposition: "zoneposition", fieldramp: "zoneramp", fieldshapemodify: "zonereshape", fieldshapetodensity: "zonefill", fieldtransform: "zonetransform" };
 
 /** A category's line for the reference (what its nodes are for). */
 export const categoryBlurb: Record<string, string> = {
@@ -65,7 +66,7 @@ export const categoryBlurb: Record<string, string> = {
   Deep: "깊이 정보를 가진 딥 이미지 합성",
   "3D": "3D 모델, 카메라, 장면, 렌더",
   Light: "3D 장면의 조명",
-  Field: "3D 공간의 영역을 골라 편집하기",
+  Field: "3D 공간의 영역을 골라 점을 지우거나 고치기",
   Render: "3D 스캔 공간(가우시안 스플랫) 렌더",
   WHIK: "WHIK 3D Scanner 데이터 정리",
   Other: "그룹, 입출력, 정리용 노드",
