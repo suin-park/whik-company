@@ -74,9 +74,9 @@ export function Note({ kind = "tip", title, children }: { kind?: "tip" | "warn";
 
 /** A screenshot with numbered marks on it and their legend below. */
 export type Mark = { n: number; x: number; y: number; label: string; text?: string };
-export function Shot({ src, alt, marks = [], caption }: { src: string; alt: string; marks?: Mark[]; caption?: string }) {
+export function Shot({ src, alt, marks = [], caption, maxWidth }: { src: string; alt: string; marks?: Mark[]; caption?: string; maxWidth?: number }) {
   return (
-    <figure className="my-8">
+    <figure className="my-8" style={maxWidth ? { maxWidth } : undefined}>
       <div className="manual-shot relative overflow-hidden rounded-[18px] border border-white/10 bg-black shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={alt} className="block h-auto w-full" loading="lazy" />

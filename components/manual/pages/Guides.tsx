@@ -51,16 +51,16 @@ export function EditGuide() {
     <div>
       <ManualHero index="G6" label={t("e.label")} title={t("e.title")} hi={t("e.hi")} lead={t("e.lead")} />
       <Shot
-        src={shot(lang, "08_edit")}
+        src={shot("en", "e_overview")}
         alt={t("nav.g.edit")}
         marks={[
-            { n: 1, x: 6, y: 21, label: t("e.m1"), text: t("e.m1.d") },
-            { n: 2, x: 45, y: 30, label: t("e.m2"), text: t("e.m2.d") },
-            { n: 3, x: 17, y: 57, label: t("e.m3"), text: t("e.m3.d") },
-            { n: 4, x: 15, y: 80, label: t("e.m4"), text: t("e.m4.d") },
-            { n: 5, x: 45, y: 84, label: t("e.m5"), text: t("e.m5.d") },
-            { n: 6, x: 88, y: 22, label: t("e.m6"), text: t("e.m6.d") },
-            { n: 7, x: 85, y: 72, label: t("e.m7"), text: t("e.m7.d") }
+            { n: 1, x: 10, y: 22, label: t("e.m1"), text: t("e.m1.d") },
+            { n: 2, x: 48, y: 25, label: t("e.m2"), text: t("e.m2.d") },
+            { n: 3, x: 30, y: 46.5, label: t("e.m3"), text: t("e.m3.d") },
+            { n: 4, x: 22.9, y: 68, label: t("e.m4"), text: t("e.m4.d") },
+            { n: 5, x: 62, y: 76, label: t("e.m5"), text: t("e.m5.d") },
+            { n: 6, x: 88, y: 26, label: t("e.m6"), text: t("e.m6.d") },
+            { n: 7, x: 88, y: 72, label: t("e.m7"), text: t("e.m7.d") }
         ]}
       />
       <Section title={t("e.s1")}>
@@ -79,12 +79,25 @@ export function EditGuide() {
         </Step>
         <Step n={3} title={t("e.3.t")}>
           <p>{r("e.3.d")}</p>
+          <Shot src={shot("en", "e_bin")} alt={t("e.m1")} caption={t("e.cap.bin")} maxWidth={360} />
         </Step>
         <Note>
           <p>{r("e.layered")}</p>
         </Note>
       </Section>
       <Section title={t("e.s2")}>
+        <Shot
+          src={shot("en", "e_timeline")}
+          alt={t("e.m5")}
+          marks={[
+              { n: 1, x: 2.3, y: 33, label: t("e.tl.1") },
+              { n: 2, x: 20, y: 6.5, label: t("e.tl.2") },
+              { n: 3, x: 47.5, y: 44, label: t("e.tl.3") },
+              { n: 4, x: 28.7, y: 72, label: t("e.tl.4") },
+              { n: 5, x: 59, y: 6, label: t("e.tl.5") },
+              { n: 6, x: 19.5, y: 49, label: t("e.tl.6") }
+          ]}
+        />
         <ul>
           <li>{r("e.t1")}</li>
           <li>{r("e.t2")}</li>
@@ -97,14 +110,18 @@ export function EditGuide() {
           <li>{r("e.t9")}</li>
           <li>{r("e.t10")}</li>
           <li>{r("e.t11")}</li>
+          <li>{r("e.t12")}</li>
         </ul>
+        <Shot src={shot("en", "e_props")} alt={t("e.m6")} caption={t("e.cap.props")} maxWidth={400} />
       </Section>
       <Section title={t("e.s3")}>
+        <Shot src={shot("en", "e_title")} alt={t("e.s3")} caption={t("e.cap.title")} />
         <ul>
           <li>{r("e.x1")}</li>
           <li>{r("e.x2")}</li>
           <li>{r("e.x3")}</li>
         </ul>
+        <Shot src={shot("en", "e_captions")} alt={t("e.s3")} caption={t("e.cap.captions")} maxWidth={400} />
       </Section>
       <Section title={t("e.s4")}>
         <Step n={1} title={t("e.4.t")}>
@@ -129,13 +146,16 @@ export function EditGuide() {
           <li>{r("e.v5")}</li>
           <li>{r("e.v6")}</li>
           <li>{r("e.v7")}</li>
+          <li>{r("e.v8")}</li>
         </ul>
+        <Shot src={shot("en", "e_workspace")} alt={t("e.v7")} caption={t("e.cap.workspace")} maxWidth={300} />
       </Section>
       <Section title={t("e.s6")}>
         <ul>
           <li>{r("e.a1")}</li>
           <li>{r("e.a2")}</li>
         </ul>
+        <Shot src={shot("en", "e_mixer")} alt={t("e.s6")} caption={t("e.cap.mixer")} maxWidth={400} />
       </Section>
       <Section title={t("e.s8")}>
         <ul>
@@ -145,6 +165,7 @@ export function EditGuide() {
         </ul>
       </Section>
       <Section title={t("e.s7")}>
+        <Shot src={shot("en", "e_export")} alt={t("e.s7")} caption={t("e.cap.export")} />
         <ul>
           <li>{r("e.o1")}</li>
           <li>{r("e.o2")}</li>
