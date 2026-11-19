@@ -1,6 +1,7 @@
 "use client";
 
-import { ManualHero, Note, Section, Shot, Step } from "../ui";
+import type React from "react";
+import { Glance, ManualHero, Note, Section, Shot, Step, Topic } from "../ui";
 import { shot, useM } from "../useM";
 
 export function ViewerGuide() {
@@ -46,147 +47,95 @@ export function ViewerGuide() {
 }
 
 export function EditGuide() {
-  const { t, r, lang } = useM();
-  return (
-    <div>
-      <ManualHero index="G6" label={t("e.label")} title={t("e.title")} hi={t("e.hi")} lead={t("e.lead")} />
-      <Shot
-        src={shot("en", "e_overview")}
-        alt={t("nav.g.edit")}
-        marks={[
-            { n: 1, x: 10, y: 22, label: t("e.m1"), text: t("e.m1.d") },
-            { n: 2, x: 48, y: 25, label: t("e.m2"), text: t("e.m2.d") },
-            { n: 3, x: 30, y: 46.5, label: t("e.m3"), text: t("e.m3.d") },
-            { n: 4, x: 22.9, y: 68, label: t("e.m4"), text: t("e.m4.d") },
-            { n: 5, x: 62, y: 76, label: t("e.m5"), text: t("e.m5.d") },
-            { n: 6, x: 88, y: 26, label: t("e.m6"), text: t("e.m6.d") },
-            { n: 7, x: 88, y: 72, label: t("e.m7"), text: t("e.m7.d") }
-        ]}
-      />
-      <Section title={t("e.s1")}>
-        <Step n={1} title={t("e.1.t")}>
-          <p>{r("e.1.d")}</p>
-          <p>{r("e.1.close")}</p>
-        </Step>
-        <Step n={2} title={t("e.2.t")}>
-          <p>{r("e.2.d")}</p>
-          <p className="mb-1 mt-4 font-semibold">{t("e.folders")}</p>
-          <ul>
-            <li>{r("e.f1")}</li>
-            <li>{r("e.f2")}</li>
-            <li>{r("e.f3")}</li>
-          </ul>
-        </Step>
-        <Step n={3} title={t("e.3.t")}>
-          <p>{r("e.3.d")}</p>
-          <p>{r("e.3.g")}</p>
-          <Shot src={shot("en", "e_bin")} alt={t("e.m1")} caption={t("e.cap.bin")} maxWidth={360} />
-        </Step>
-        <Note>
-          <p>{r("e.layered")}</p>
-        </Note>
+  const { t, r } = useM();
+  // each section: its topics (a title, the one line that matters, short details) and its pictures after them
+  const sections: { id: string; topics: number }[] = [
+    { id: "start", topics: 5 }, { id: "timeline", topics: 7 }, { id: "keys", topics: 5 }, { id: "text", topics: 4 }, { id: "shots", topics: 4 }, { id: "viewer", topics: 5 }, { id: "sound", topics: 5 }, { id: "library", topics: 3 }, { id: "export", topics: 5 }
+  ];
+  const shots: Record<string, React.ReactNode> = {
+    start: (
+      <>
+        <Shot src={shot("en", "e_bin")} alt={t("e.m1")} caption={t("e.cap.bin")} maxWidth={360} />
         <Shot src={shot("en", "e_psd")} alt="PSD" caption={t("e.cap.psd")} maxWidth={420} />
-      </Section>
-      <Section title={t("e.s2")}>
+      </>
+    ),
+    timeline: (
+      <>
         <Shot
           src={shot("en", "e_timeline")}
           alt={t("e.m5")}
           marks={[
-              { n: 1, x: 2.3, y: 33, label: t("e.tl.1") },
-              { n: 2, x: 20, y: 6.5, label: t("e.tl.2") },
-              { n: 3, x: 47.5, y: 44, label: t("e.tl.3") },
-              { n: 4, x: 28.7, y: 72, label: t("e.tl.4") },
-              { n: 5, x: 59, y: 6, label: t("e.tl.5") },
-              { n: 6, x: 19.5, y: 49, label: t("e.tl.6") }
+            { n: 1, x: 2.3, y: 33, label: t("e.tl.1") },
+            { n: 2, x: 20, y: 6.5, label: t("e.tl.2") },
+            { n: 3, x: 47.5, y: 44, label: t("e.tl.3") },
+            { n: 4, x: 28.7, y: 72, label: t("e.tl.4") },
+            { n: 5, x: 59, y: 6, label: t("e.tl.5") },
+            { n: 6, x: 19.5, y: 49, label: t("e.tl.6") }
           ]}
         />
-        <ul>
-          <li>{r("e.t1")}</li>
-          <li>{r("e.t2")}</li>
-          <li>{r("e.t3")}</li>
-          <li>{r("e.t4")}</li>
-          <li>{r("e.t5")}</li>
-          <li>{r("e.t6")}</li>
-          <li>{r("e.t7")}</li>
-          <li>{r("e.t8")}</li>
-          <li>{r("e.t9")}</li>
-          <li>{r("e.t10")}</li>
-          <li>{r("e.t11")}</li>
-          <li>{r("e.t12")}</li>
-        </ul>
-        <Shot src={shot("en", "e_keys")} alt={t("e.cap.keys")} caption={t("e.cap.keys")} />
-        <ul>
-          <li>{r("e.t13")}</li>
-          <li>{r("e.t14")}</li>
-          <li>{r("e.t15")}</li>
-        </ul>
+      </>
+    ),
+    keys: (
+      <>
         <Shot src={shot("en", "e_props")} alt={t("e.m6")} caption={t("e.cap.props")} maxWidth={400} />
-      </Section>
-      <Section title={t("e.s3")}>
-        <Shot src={shot("en", "e_title")} alt={t("e.s3")} caption={t("e.cap.title")} />
-        <ul>
-          <li>{r("e.x1")}</li>
-          <li>{r("e.x2")}</li>
-          <li>{r("e.x3")}</li>
-        </ul>
-        <Shot src={shot("en", "e_captions")} alt={t("e.s3")} caption={t("e.cap.captions")} maxWidth={400} />
-      </Section>
-      <Section title={t("e.s4")}>
-        <Step n={1} title={t("e.4.t")}>
-          <p>{r("e.4.d")}</p>
-        </Step>
-        <Step n={2} title={t("e.5.t")}>
-          <p>{r("e.5.d")}</p>
-        </Step>
-        <Step n={3} title={t("e.6.t")}>
-          <p>{r("e.6.d")}</p>
-        </Step>
-        <Note>
-          <p>{r("e.shots")}</p>
-          <p>{r("e.notes")}</p>
-        </Note>
-      </Section>
-      <Section title={t("e.s5")}>
-        <ul>
-          <li>{r("e.v1")}</li>
-          <li>{r("e.v2")}</li>
-          <li>{r("e.v3")}</li>
-          <li>{r("e.v4")}</li>
-          <li>{r("e.v5")}</li>
-          <li>{r("e.v6")}</li>
-          <li>{r("e.v7")}</li>
-          <li>{r("e.v8")}</li>
-        </ul>
-        <Shot src={shot("en", "e_workspace")} alt={t("e.v7")} caption={t("e.cap.workspace")} maxWidth={300} />
-      </Section>
-      <Section title={t("e.s6")}>
-        <ul>
-          <li>{r("e.a1")}</li>
-          <li>{r("e.a2")}</li>
-        </ul>
-        <Shot src={shot("en", "e_mixer")} alt={t("e.s6")} caption={t("e.cap.mixer")} maxWidth={400} />
-      </Section>
-      <Section title={t("e.s8")}>
-        <ul>
-          <li>{r("e.l1")}</li>
-          <li>{r("e.l2")}</li>
-          <li>{r("e.l3")}</li>
-          <li>{r("e.l4")}</li>
-        </ul>
-      </Section>
-      <Section title={t("e.s7")}>
-        <Shot src={shot("en", "e_export")} alt={t("e.s7")} caption={t("e.cap.export")} />
-        <ul>
-          <li>{r("e.o1")}</li>
-          <li>{r("e.o2")}</li>
-          <li>{r("e.o3")}</li>
-          <li>{r("e.o4")}</li>
-          <li>{r("e.o5")}</li>
-        </ul>
-        <Note>
-          <p>{r("e.tip")}</p>
-        </Note>
-      </Section>
+        <Shot src={shot("en", "e_keys")} alt={t("e.cap.keys")} caption={t("e.cap.keys")} />
+      </>
+    ),
+    text: (
+      <>
+        <Shot src={shot("en", "e_title")} alt={t("e2.text")} caption={t("e.cap.title")} />
+        <Shot src={shot("en", "e_captions")} alt={t("e2.text")} caption={t("e.cap.captions")} maxWidth={400} />
+      </>
+    ),
+    viewer: (
+      <>
+        <Shot src={shot("en", "e_workspace")} alt={t("e2.viewer")} caption={t("e.cap.workspace")} maxWidth={300} />
+      </>
+    ),
+    sound: (
+      <>
+        <Shot src={shot("en", "e_mixer")} alt={t("e2.sound")} caption={t("e.cap.mixer")} maxWidth={400} />
+      </>
+    ),
+    export: (
+      <>
+        <Shot src={shot("en", "e_export")} alt={t("e2.export")} caption={t("e.cap.export")} />
+      </>
+    ),
+  };
+  return (
+    <div>
+      <ManualHero index="G6" label={t("e.label")} title={t("e.title")} hi={t("e.hi")} lead={t("e.lead")} />
+      <Glance title={t("e2.glance")} items={sections.map((s) => ({ id: s.id, title: t(`e2.${s.id}`), lead: t(`e2.${s.id}.lead`) }))} />
+      <Shot
+        src={shot("en", "e_overview")}
+        alt={t("nav.g.edit")}
+        marks={[
+          { n: 1, x: 10, y: 22, label: t("e.m1"), text: t("e.m1.d") },
+          { n: 2, x: 48, y: 25, label: t("e.m2"), text: t("e.m2.d") },
+          { n: 3, x: 30, y: 46.5, label: t("e.m3"), text: t("e.m3.d") },
+          { n: 4, x: 22.9, y: 68, label: t("e.m4"), text: t("e.m4.d") },
+          { n: 5, x: 62, y: 76, label: t("e.m5"), text: t("e.m5.d") },
+          { n: 6, x: 88, y: 26, label: t("e.m6"), text: t("e.m6.d") },
+          { n: 7, x: 88, y: 72, label: t("e.m7"), text: t("e.m7.d") }
+        ]}
+      />
+      {sections.map((s, i) => (
+        <Section key={s.id} id={s.id} kicker={String(i + 1).padStart(2, "0")} title={t(`e2.${s.id}`)}>
+          <p className="mt-0 text-[#a6adb4]">{t(`e2.${s.id}.lead`)}</p>
+          <div className="mt-2">
+            {Array.from({ length: s.topics }, (_, k) => (
+              <Topic key={k} n={k + 1} title={t(`e2.${s.id}.${k + 1}.t`)} core={t(`e2.${s.id}.${k + 1}.c`)} details={t(`e2.${s.id}.${k + 1}.d`)} />
+            ))}
+          </div>
+          {shots[s.id]}
+          {s.id === "export" ? (
+            <Note>
+              <p>{r("e2.shortcuts")}</p>
+            </Note>
+          ) : null}
+        </Section>
+      ))}
     </div>
   );
 }

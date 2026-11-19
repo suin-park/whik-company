@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useM } from "./useM";
+import { Rich, useM } from "./useM";
 
 /** A page's top: a small numbered label, a big title with a highlighted end, a lead. */
 export function ManualHero({ index, label, title, hi, lead }: { index: string; label: string; title: string; hi?: string; lead?: ReactNode }) {
@@ -119,5 +119,50 @@ export function Card({ href, eyebrow, title, children, accent = "#a9d0ff" }: { h
       <span className="relative mt-2 block break-keep text-[14px] leading-[1.7] text-[#a6adb4]">{children}</span>
       <span aria-hidden className="relative mt-auto inline-block pt-4 text-[var(--c)] transition-transform duration-200 group-hover:translate-x-1">→</span>
     </Link>
+  );
+}
+
+/** A topic of a guide: its number, a short title, the one line that matters, then short details (one a line). */
+export function Topic({ n, title, core, details }: { n: number; title: string; core: string; details?: string }) {
+  const items = (details ?? "").split("\n").map((x) => x.trim()).filter(Boolean);
+  return (
+    <div className="grid grid-cols-[40px_1fr] gap-3 border-t border-white/[0.07] py-5 first:border-t-0 md:grid-cols-[56px_1fr] md:gap-5">
+      <span className="select-none pt-[3px] text-[13px] font-semibold tabular-nums tracking-[0.08em] text-[#a9d0ff]">{String(n).padStart(2, "0")}</span>
+      <div className="min-w-0">
+        <h3 className="m-0 break-keep text-[17px] font-semibold tracking-[-0.02em] md:text-[18px]">{title}</h3>
+        <p className="mb-0 mt-1.5 break-keep text-[15px] leading-[1.7] text-white/90">
+          <Rich text={core} />
+        </p>
+        {items.length > 0 ? (
+          <ul className="mb-0 mt-3 list-disc space-y-1 pl-5 text-[14px] leading-[1.65] text-[#a6adb4] marker:text-white/25">
+            {items.map((x, i) => (
+              <li key={i} className="break-keep">
+                <Rich text={x} />
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/** A page's sections at a glance: number, name and what it is for, each a link to it. */
+export function Glance({ title, items }: { title: string; items: { id: string; title: string; lead: string }[] }) {
+  return (
+    <nav className="mb-4 rounded-2xl border border-white/10 bg-white/[0.02] px-5 py-5 md:px-7">
+      <p className="m-0 text-[12px] font-semibold tracking-[0.14em] text-[#a9d0ff]">{title}</p>
+      <ol className="m-0 mt-4 grid list-none gap-x-8 gap-y-3 p-0 md:grid-cols-2">
+        {items.map((it, i) => (
+          <li key={it.id} className="grid grid-cols-[28px_1fr] gap-2">
+            <span className="pt-[2px] text-[12px] font-semibold tabular-nums text-white/40">{String(i + 1).padStart(2, "0")}</span>
+            <a href={`#${it.id}`} className="block no-underline">
+              <span className="block text-[15px] font-semibold text-white">{it.title}</span>
+              <span className="block break-keep text-[13px] leading-[1.6] text-[#a6adb4]">{it.lead}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }
