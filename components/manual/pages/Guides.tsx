@@ -1,47 +1,70 @@
 "use client";
 
 import type React from "react";
-import { Glance, ManualHero, Note, Section, Shot, Step, Topic } from "../ui";
+import { Glance, ManualHero, Note, Section, Shot, Topic } from "../ui";
 import { shot, useM } from "../useM";
+
+/** A guide's sections of numbered topics: `${p}.${id}` is a section's name, `.lead` its line, `.${n}.t/.c/.d` its topics. */
+function TopicSections({ p, sections, after }: { p: string; sections: { id: string; topics: number }[]; after?: Record<string, React.ReactNode> }) {
+  const { t } = useM();
+  return (
+    <>
+      {sections.map((s, i) => (
+        <Section key={s.id} id={s.id} kicker={String(i + 1).padStart(2, "0")} title={t(`${p}.${s.id}`)}>
+          <p className="mt-0 text-[#a6adb4]">{t(`${p}.${s.id}.lead`)}</p>
+          {s.topics > 0 ? (
+            <div className="mt-2">
+              {Array.from({ length: s.topics }, (_, k) => (
+                <Topic key={k} n={k + 1} title={t(`${p}.${s.id}.${k + 1}.t`)} core={t(`${p}.${s.id}.${k + 1}.c`)} details={t(`${p}.${s.id}.${k + 1}.d`)} />
+              ))}
+            </div>
+          ) : null}
+          {after?.[s.id]}
+        </Section>
+      ))}
+    </>
+  );
+}
+
+/** The sections at a glance, linking to them. */
+function GuideGlance({ p, sections }: { p: string; sections: { id: string }[] }) {
+  const { t } = useM();
+  return <Glance title={t("e2.glance")} items={sections.map((s) => ({ id: s.id, title: t(`${p}.${s.id}`), lead: t(`${p}.${s.id}.lead`) }))} />;
+}
+
+/** Two pictures side by side, the second the result. */
+function Pair({ a, b }: { a: { src: string; label: string }; b: { src: string; label: string } }) {
+  return (
+    <div className="mb-4 grid gap-4 md:grid-cols-2">
+      {[a, b].map((x, i) => (
+        <figure key={i} className="m-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={x.src} alt={x.label} className="block w-full rounded-[16px] border border-white/10" />
+          <figcaption className={`mt-2 text-[12px] tracking-[0.14em] ${i ? "text-[#a9d0ff]" : "text-white/45"}`}>{x.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
 
 export function ViewerGuide() {
   const { t, r } = useM();
+  const S = [{ id: "show", topics: 4 }, { id: "display", topics: 3 }, { id: "sequence", topics: 5 }];
   return (
     <div>
       <ManualHero index="G0" label={t("v.label")} title={t("v.title")} hi={t("v.hi")} lead={t("v.lead")} />
-      <Section title={t("v.s1")}>
-        <Step n={1} title={t("v.1.t")}>
-          <p>{r("v.1.d")}</p>
-        </Step>
-        <Step n={2} title={t("v.2.t")}>
-          <p>{r("v.2.d")}</p>
-        </Step>
-        <Step n={3} title={t("v.3.t")}>
-          <p>{r("v.3.d")}</p>
-        </Step>
-        <Note>
-          <p>{r("v.arrange")}</p>
-        </Note>
-      </Section>
-      <Section title={t("v.s2")}>
-        <ul>
-          <li>{r("v.c1")}</li>
-          <li>{r("v.c2")}</li>
-          <li>{r("v.c3")}</li>
-        </ul>
-      </Section>
-      <Section title={t("v.s3")}>
-        <ul>
-          <li>{r("v.q1")}</li>
-          <li>{r("v.q2")}</li>
-          <li>{r("v.q3")}</li>
-          <li>{r("v.q4")}</li>
-          <li>{r("v.q5")}</li>
-        </ul>
-        <Note>
-          <p>{r("v.tip")}</p>
-        </Note>
-      </Section>
+      <GuideGlance p="gx.v" sections={S} />
+      <TopicSections
+        p="gx.v"
+        sections={S}
+        after={{
+          sequence: (
+            <Note>
+              <p>{r("v.tip")}</p>
+            </Note>
+          ),
+        }}
+      />
     </div>
   );
 }
@@ -142,96 +165,54 @@ export function EditGuide() {
 
 export function RenderGuide() {
   const { t, r, lang } = useM();
+  const S = [{ id: "basic", topics: 3 }, { id: "window", topics: 5 }, { id: "missing", topics: 3 }];
   return (
     <div>
       <ManualHero index="G1" label={t("r.label")} title={t("r.title")} hi={t("r.hi")} lead={t("r.lead")} />
-      <Section title={t("r.basic")}>
-        <Step n={1} title={t("r.1.t")}>
-          <p>{r("r.1.d")}</p>
-        </Step>
-        <Step n={2} title={t("r.2.t")}>
-          <p>{r("r.2.d")}</p>
-          <ul>
-            <li>{r("r.2.a")}</li>
-            <li>{r("r.2.b")}</li>
-            <li>{r("r.2.c")}</li>
-          </ul>
-          <p>{r("r.2.e")}</p>
-        </Step>
-        <Step n={3} title={t("r.3.t")}>
-          <p>{r("r.3.d")}</p>
-        </Step>
-        <Shot
-          src={shot(lang, "03_write")}
-          alt="Write"
-          marks={[
-            { n: 1, x: 80, y: 23, label: t("m.file") },
-            { n: 2, x: 75, y: 63, label: t("m.render") },
-          ]}
-        />
-      </Section>
-      <Section title={t("r.opts")}>
-        <ul>
-          <li>{r("r.o1")}</li>
-          <li>{r("r.o2")}</li>
-          <li>{r("r.o3")}</li>
-          <li>{r("r.o4")}</li>
-        </ul>
-        <p>{r("r.queue")}</p>
-      </Section>
-      <Section title={t("r.miss")}>
-        <ul>
-          <li>{r("r.m1")}</li>
-          <li>{r("r.m2")}</li>
-          <li>{r("r.m3")}</li>
-        </ul>
-        <Note>
-          <p>{r("r.tip")}</p>
-        </Note>
-      </Section>
+      <GuideGlance p="gx.r" sections={S} />
+      <TopicSections
+        p="gx.r"
+        sections={S}
+        after={{
+          basic: (
+            <Shot
+              src={shot(lang, "03_write")}
+              alt="Write"
+              marks={[
+                { n: 1, x: 80, y: 23, label: t("m.file") },
+                { n: 2, x: 75, y: 63, label: t("m.render") },
+              ]}
+            />
+          ),
+          missing: (
+            <Note>
+              <p>{r("r.tip")}</p>
+            </Note>
+          ),
+        }}
+      />
     </div>
   );
 }
 
 export function AiPackGuide() {
   const { t, r } = useM();
-  const parts = ["a.p1", "a.p2", "a.p3", "a.p4"];
+  const S = [{ id: "need", topics: 3 }, { id: "install", topics: 3 }, { id: "use", topics: 3 }];
   return (
     <div>
       <ManualHero index="G2" label={t("a.label")} title={t("a.title")} hi={t("a.hi")} lead={t("a.lead")} />
-      <Section title={t("a.need")}>
-        <ul>
-          <li>{r("a.n1")}</li>
-          <li>{r("a.n2")}</li>
-          <li>{r("a.n3")}</li>
-        </ul>
-      </Section>
-      <Section title={t("a.install")}>
-        <Step n={1} title={t("a.1.t")}>
-          <p>{r("a.1.d")}</p>
-        </Step>
-        <Step n={2} title={t("a.2.t")}>
-          <p>{t("a.2.d")}</p>
-          <div className="my-5 grid gap-3 sm:grid-cols-2">
-            {parts.map((p) => (
-              <div key={p} className="rounded-2xl border border-white/10 bg-[#121417] p-4">
-                <span className="block text-[15px] font-semibold text-white">{t(`${p}.t`)}</span>
-                <span className="mt-1 block text-[13px] leading-[1.7] text-[#a6adb4]">{t(`${p}.d`)}</span>
-              </div>
-            ))}
-          </div>
-        </Step>
-        <Step n={3} title={t("a.3.t")}>
-          <p>{t("a.3.d")}</p>
-        </Step>
-      </Section>
-      <Section title={t("a.use")}>
-        <p>{r("a.use.d")}</p>
-        <Note kind="warn" title={t("a.changed.t")}>
-          <p>{t("a.changed.d")}</p>
-        </Note>
-        <p>{r("a.example")}</p>
-      </Section>
+      <GuideGlance p="gx.a" sections={S} />
+      <TopicSections
+        p="gx.a"
+        sections={S}
+        after={{
+          use: (
+            <Note>
+              <p>{r("a.example")}</p>
+            </Note>
+          ),
+        }}
+      />
     </div>
   );
 }
@@ -239,149 +220,68 @@ export function AiPackGuide() {
 export function DayToNightGuide() {
   const { t, r, lang } = useM();
   const knobs = ["d.k1", "d.k2", "d.k3", "d.k4", "d.k5", "d.k6", "d.k7", "d.k8", "d.k9"];
+  const S = [{ id: "follow", topics: 4 }, { id: "knobs", topics: 0 }, { id: "more", topics: 4 }];
   return (
     <div>
       <ManualHero index="G3" label={t("d.label")} title={t("d.title")} hi={t("d.hi")} lead={t("d.lead")} />
-      <div className="mb-4 grid gap-4 md:grid-cols-2">
-        <figure className="m-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={shot(lang, "04_daynight_before")} alt={t("c.before")} className="block w-full rounded-[16px] border border-white/10" />
-          <figcaption className="mt-2 text-[12px] tracking-[0.14em] text-white/45">BEFORE  {t("c.before")}</figcaption>
-        </figure>
-        <figure className="m-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={shot(lang, "05_daynight_after")} alt={t("c.after")} className="block w-full rounded-[16px] border border-white/10" />
-          <figcaption className="mt-2 text-[12px] tracking-[0.14em] text-[#a9d0ff]">AFTER  {t("c.after")}</figcaption>
-        </figure>
-      </div>
-      <Section title={t("d.follow")}>
-        <Step n={1} title={t("d.1.t")}>
-          <p>{r("d.1.d")}</p>
-        </Step>
-        <Step n={2} title={t("d.2.t")}>
-          <p>{r("d.2.d")}</p>
-        </Step>
-        <Step n={3} title={t("d.3.t")}>
-          <p>{r("d.3.d")}</p>
-        </Step>
-        <Step n={4} title={t("d.4.t")}>
-          <p>{t("d.4.d")}</p>
-        </Step>
-        <Shot
-          src={shot(lang, "05_daynight_after")}
-          alt="DayToNight"
-          marks={[
-            { n: 1, x: 79.7, y: 26.7, label: t("d.m1"), text: t("d.m1.d") },
-            { n: 2, x: 75, y: 50.7, label: t("d.m2"), text: t("d.m2.d") },
-            { n: 3, x: 75, y: 72, label: t("d.m3"), text: t("d.m3.d") },
-            { n: 4, x: 75, y: 89.5, label: t("d.m4"), text: t("d.m4.d") },
-          ]}
-        />
-      </Section>
-      <Section title={t("d.knobs")}>
-        <table className="manual-table">
-          <tbody>
-            {knobs.map((k) => (
-              <tr key={k}>
-                <td className="w-[34%] font-semibold text-white">{t(k)}</td>
-                <td>{t(`${k}.d`)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="mt-6">{r("d.all")}</p>
-      </Section>
-      <Section title={t("d.more")}>
-        <ul>
-          <li>{r("d.mo1")}</li>
-          <li>{r("d.mo2")}</li>
-          <li>{t("d.mo3")}</li>
-        </ul>
-        <Note kind="warn">
-          <p>{r("d.again")}</p>
-        </Note>
-      </Section>
+      <Pair a={{ src: shot(lang, "04_daynight_before"), label: `BEFORE  ${t("c.before")}` }} b={{ src: shot(lang, "05_daynight_after"), label: `AFTER  ${t("c.after")}` }} />
+      <GuideGlance p="gx.d" sections={S} />
+      <TopicSections
+        p="gx.d"
+        sections={S}
+        after={{
+          follow: (
+            <Shot
+              src={shot(lang, "05_daynight_after")}
+              alt="DayToNight"
+              marks={[
+                { n: 1, x: 79.7, y: 26.7, label: t("d.m1"), text: t("d.m1.d") },
+                { n: 2, x: 75, y: 50.7, label: t("d.m2"), text: t("d.m2.d") },
+                { n: 3, x: 75, y: 72, label: t("d.m3"), text: t("d.m3.d") },
+                { n: 4, x: 75, y: 89.5, label: t("d.m4"), text: t("d.m4.d") },
+              ]}
+            />
+          ),
+          knobs: (
+            <>
+              <table className="manual-table">
+                <tbody>
+                  {knobs.map((k, i) => (
+                    <tr key={k}>
+                      <td className="w-[34%] font-semibold text-white">
+                        <span className="mr-2 text-[12px] tabular-nums text-[#a9d0ff]">{String(i + 1).padStart(2, "0")}</span>
+                        {t(k)}
+                      </td>
+                      <td>{t(`${k}.d`)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="mt-6">{r("d.all")}</p>
+            </>
+          ),
+        }}
+      />
     </div>
   );
 }
 
 export function Render3DGuide() {
-  const { t, r, lang } = useM();
+  const { t, lang } = useM();
+  const S = [
+    { id: "which", topics: 3 },
+    { id: "steps", topics: 4 },
+    { id: "plate", topics: 3 },
+    { id: "outputs", topics: 3 },
+    { id: "camera", topics: 5 },
+    { id: "speed", topics: 3 },
+  ];
   return (
     <div>
       <ManualHero index="G4" label={t("g3.label")} title={t("g3.title")} hi={t("g3.hi")} lead={t("g3.lead")} />
-      <div className="mb-4 grid gap-4 md:grid-cols-2">
-        <figure className="m-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={shot(lang, "06_render3d_fast")} alt={t("g3.c.fast")} className="block w-full rounded-[16px] border border-white/10" />
-          <figcaption className="mt-2 text-[12px] tracking-[0.14em] text-white/45">{t("g3.c.fast")}</figcaption>
-        </figure>
-        <figure className="m-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={shot(lang, "07_render3d_traced")} alt={t("g3.c.traced")} className="block w-full rounded-[16px] border border-white/10" />
-          <figcaption className="mt-2 text-[12px] tracking-[0.14em] text-[#a9d0ff]">{t("g3.c.traced")}</figcaption>
-        </figure>
-      </div>
-      <Section title={t("g3.which")}>
-        <ul>
-          <li>{r("g3.w1")}</li>
-          <li>{r("g3.w2")}</li>
-          <li>{r("g3.w3")}</li>
-        </ul>
-      </Section>
-      <Section title={t("g3.steps")}>
-        <Step n={1} title={t("g3.1.t")}>
-          <p>{r("g3.1.d")}</p>
-        </Step>
-        <Step n={2} title={t("g3.2.t")}>
-          <p>{r("g3.2.d")}</p>
-        </Step>
-        <Step n={3} title={t("g3.3.t")}>
-          <p>{r("g3.3.d")}</p>
-        </Step>
-        <Step n={4} title={t("g3.4.t")}>
-          <p>{r("g3.4.d")}</p>
-        </Step>
-      </Section>
-      <Section title={t("g3.plate")}>
-        <ul>
-          <li>{r("g3.p1")}</li>
-          <li>{r("g3.p2")}</li>
-          <li>{r("g3.p3")}</li>
-        </ul>
-      </Section>
-      <Section title={t("g3.outs")}>
-        <ul>
-          <li>{r("g3.o1")}</li>
-          <li>{r("g3.o2")}</li>
-          <li>{r("g3.o3")}</li>
-        </ul>
-      </Section>
-      <Section title={t("g3.cam")}>
-        <ul>
-          <li>{r("g3.c1")}</li>
-          <li>{r("g3.c2")}</li>
-        </ul>
-        <h3 className="mt-8 mb-3 text-[17px] font-semibold text-white">{t("g3.f.t")}</h3>
-        <ul>
-          <li>{r("g3.f1")}</li>
-          <li>{r("g3.f2")}</li>
-          <li>{r("g3.f3")}</li>
-        </ul>
-        <Note>
-          <p>{r("g3.f4")}</p>
-        </Note>
-      </Section>
-      <Section title={t("g3.speed")}>
-        <p>{r("g3.s.d")}</p>
-        <ul>
-          <li>{r("g3.s.fast")}</li>
-          <li>{r("g3.s.traced")}</li>
-        </ul>
-        <Note>
-          <p>{r("g3.tip")}</p>
-        </Note>
-      </Section>
+      <Pair a={{ src: shot(lang, "06_render3d_fast"), label: t("g3.c.fast") }} b={{ src: shot(lang, "07_render3d_traced"), label: t("g3.c.traced") }} />
+      <GuideGlance p="gx.3" sections={S} />
+      <TopicSections p="gx.3" sections={S} />
     </div>
   );
 }
