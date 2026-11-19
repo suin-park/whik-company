@@ -94,6 +94,8 @@ export function EditGuide() {
           <li>{r("e.t7")}</li>
           <li>{r("e.t8")}</li>
           <li>{r("e.t9")}</li>
+          <li>{r("e.t10")}</li>
+          <li>{r("e.t11")}</li>
         </ul>
       </Section>
       <Section title={t("e.s3")}>
@@ -110,6 +112,9 @@ export function EditGuide() {
         <Step n={2} title={t("e.5.t")}>
           <p>{r("e.5.d")}</p>
         </Step>
+        <Step n={3} title={t("e.6.t")}>
+          <p>{r("e.6.d")}</p>
+        </Step>
         <Note>
           <p>{r("e.shots")}</p>
         </Note>
@@ -121,6 +126,7 @@ export function EditGuide() {
           <li>{r("e.v3")}</li>
           <li>{r("e.v4")}</li>
           <li>{r("e.v5")}</li>
+          <li>{r("e.v6")}</li>
         </ul>
       </Section>
       <Section title={t("e.s6")}>
@@ -142,6 +148,7 @@ export function EditGuide() {
           <li>{r("e.o2")}</li>
           <li>{r("e.o3")}</li>
           <li>{r("e.o4")}</li>
+          <li>{r("e.o5")}</li>
         </ul>
         <Note>
           <p>{r("e.tip")}</p>
