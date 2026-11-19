@@ -60,6 +60,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
       [[["D"]], "k.e.off"],
       [[["Ctrl", "Click"]], "k.e.one"],
       [[["F2"]], "k.e.rename"],
+      [[["`"]], "k.e.max"],
       [[["Ctrl", "D"], ["Ctrl", "Shift", "D"]], "k.e.trans"],
       [[["I"], ["O"]], "k.e.io"],
       [[["M"]], "k.e.m"],

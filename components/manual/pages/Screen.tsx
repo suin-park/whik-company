@@ -6,7 +6,7 @@ import { shot, useM } from "../useM";
 const PANELS: { name: string; where: string; what: string; tips: string[] }[] = [
   { name: "m.viewer", where: "w.top", what: "w.viewer.d", tips: ["w.viewer.1", "w.viewer.2", "w.viewer.3"] },
   { name: "m.timeline", where: "w.underviewer", what: "w.timeline.d", tips: ["w.timeline.1", "w.timeline.2"] },
-  { name: "m.graph", where: "w.bottom", what: "w.graph.d", tips: ["w.graph.1", "w.graph.2", "w.graph.3"] },
+  { name: "m.graph", where: "w.bottom", what: "w.graph.d", tips: ["w.graph.1", "w.graph.2", "w.graph.3", "w.graph.4", "w.graph.5"] },
   { name: "m.props", where: "w.right", what: "w.props.d", tips: ["w.props.1", "w.props.2", "w.props.3"] },
   { name: "m.side", where: "w.righttabs", what: "w.side.d", tips: ["w.side.1", "w.side.2"] },
   { name: "m.tools", where: "w.left", what: "w.tools.d", tips: [] },

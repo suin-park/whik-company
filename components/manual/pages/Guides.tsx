@@ -66,6 +66,7 @@ export function EditGuide() {
       <Section title={t("e.s1")}>
         <Step n={1} title={t("e.1.t")}>
           <p>{r("e.1.d")}</p>
+          <p>{r("e.1.close")}</p>
         </Step>
         <Step n={2} title={t("e.2.t")}>
           <p>{r("e.2.d")}</p>
@@ -127,6 +128,7 @@ export function EditGuide() {
           <li>{r("e.v4")}</li>
           <li>{r("e.v5")}</li>
           <li>{r("e.v6")}</li>
+          <li>{r("e.v7")}</li>
         </ul>
       </Section>
       <Section title={t("e.s6")}>
