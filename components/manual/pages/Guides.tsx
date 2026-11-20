@@ -73,7 +73,7 @@ export function EditGuide() {
   const { t, r } = useM();
   // each section: its topics (a title, the one line that matters, short details) and its pictures after them
   const sections: { id: string; topics: number }[] = [
-    { id: "start", topics: 6 }, { id: "timeline", topics: 8 }, { id: "keys", topics: 5 }, { id: "text", topics: 4 }, { id: "shots", topics: 4 }, { id: "viewer", topics: 5 }, { id: "sound", topics: 5 }, { id: "library", topics: 3 }, { id: "export", topics: 5 }
+    { id: "start", topics: 6 }, { id: "timeline", topics: 9 }, { id: "keys", topics: 5 }, { id: "text", topics: 4 }, { id: "shots", topics: 4 }, { id: "viewer", topics: 5 }, { id: "sound", topics: 5 }, { id: "library", topics: 3 }, { id: "export", topics: 5 }
   ];
   const shots: Record<string, React.ReactNode> = {
     start: (
@@ -275,6 +275,7 @@ export function Render3DGuide() {
     { id: "outputs", topics: 3 },
     { id: "camera", topics: 5 },
     { id: "speed", topics: 3 },
+    { id: "live", topics: 3 },
   ];
   return (
     <div>
