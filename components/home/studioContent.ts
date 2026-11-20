@@ -8,16 +8,16 @@ export const headings: Record<string, { label: string; title: Record<Lang, [stri
     label: "INSIDE WHIK STUDIO",
     title: { ko: ["장면을 만드는", "새로운 흐름."], en: ["A new way", "to build your scene."], ja: ["シーンをつくる", "新しい流れ。"], zh: ["打造画面的", "全新流程。"] },
     body: {
-      ko: "촬영 소스, 3D 공간, AI 노드를 한 그래프에 연결해 최종 장면까지 완성합니다.",
-      en: "Footage, 3D spaces and AI nodes in one graph, all the way to the final frame.", ja: "撮影素材、3D空間、AIノードをひとつのグラフでつなぎ、最終カットまで仕上げます。", zh: "将拍摄素材、3D空间与AI节点连接在同一张图中，一路完成到最终画面。",
+      ko: "타임라인 편집에서 노드 합성, 3D, AI까지 오가며 최종 장면을 완성합니다.",
+      en: "From the edit timeline to node compositing, 3D and AI, all the way to the final frame.", ja: "タイムライン編集からノード合成、3D、AIまで行き来して、最終カットまで仕上げます。", zh: "从时间线剪辑到节点合成、3D与AI，一路完成到最终画面。",
     },
   },
   features: {
     label: "WHAT'S INSIDE",
     title: { ko: ["하나의 그래프로,", "끝까지."], en: ["One graph.", "All the way."], ja: ["ひとつのグラフで、", "最後まで。"], zh: ["一张节点图，", "一路到底。"] },
     body: {
-      ko: "합성, 트래킹, 3D, AI까지. 필요한 도구가 노드 하나로 준비되어 있습니다.",
-      en: "Compositing, tracking, 3D and AI, each one a node away.", ja: "合成、トラッキング、3D、AIまで。必要なツールがノードひとつで揃います。", zh: "合成、跟踪、3D与AI，所需工具都只差一个节点。",
+      ko: "편집, 자막, 합성, 트래킹, 3D, AI까지. 필요한 도구가 한 프로그램에 준비되어 있습니다.",
+      en: "Editing, captions, compositing, tracking, 3D and AI, all in one program.", ja: "編集、字幕、合成、トラッキング、3D、AIまで。必要なツールがひとつのソフトに揃います。", zh: "剪辑、字幕、合成、跟踪、3D与AI，所需工具都在一个软件里。",
     },
   },
   tools: {
@@ -37,14 +37,18 @@ export const headings: Record<string, { label: string; title: Record<Lang, [stri
     label: "YOUR WORKSPACE",
     title: { ko: ["익숙한 작업,", "더 넓은 가능성."], en: ["Familiar workflows.", "New possibilities."], ja: ["慣れた作業で、", "もっと広い可能性を。"], zh: ["熟悉的工作方式，", "更广的可能。"] },
     body: {
-      ko: "영상과 3D를 하나의 노드 그래프에서 다룹니다.",
-      en: "Bring footage and 3D together in one node graph.", ja: "映像と3Dを、ひとつのノードグラフで扱います。", zh: "在同一个节点图中处理视频与3D。",
+      ko: "편집 타임라인과 노드 합성, 3D를 한 프로그램에서 오갑니다.",
+      en: "The edit timeline, node compositing and 3D in one program.", ja: "編集タイムライン、ノード合成、3Dをひとつのソフトで行き来します。", zh: "剪辑时间线、节点合成与3D，在一个软件中自由切换。",
     },
   },
 };
 
 /** Ticker under the main film. */
 export const capabilities: T[] = [
+  { ko: "타임라인 편집", en: "Timeline editing", ja: "タイムライン編集", zh: "时间线剪辑" },
+  { ko: "자동 자막", en: "Auto captions", ja: "自動字幕", zh: "自动字幕" },
+  { ko: "자동 편집", en: "Auto Edit", ja: "自動編集", zh: "自动剪辑" },
+  { ko: "AI 더빙", en: "AI dubbing", ja: "AIダビング", zh: "AI配音" },
   { ko: "3DGS 공간 합성", en: "3DGS compositing", ja: "3DGS空間合成", zh: "3DGS空间合成" },
   { ko: "키잉", en: "Keying", ja: "キーイング", zh: "抠像" },
   { ko: "카메라 트래킹", en: "Camera tracking", ja: "カメラトラッキング", zh: "摄像机跟踪" },
