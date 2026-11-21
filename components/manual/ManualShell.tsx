@@ -49,6 +49,36 @@ function NavList({ title, items, path }: { title: string; items: { href: string;
   );
 }
 
+// Back to the top of a long page: shows once the page is scrolled well down, in the corner; a smooth scroll (at once
+// for those who ask for less motion).
+function BackToTop() {
+  const { t } = useM();
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShown(window.scrollY > 700);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  const toTop = () => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+  };
+  return (
+    <button
+      type="button"
+      onClick={toTop}
+      aria-label={t("nav.top")}
+      tabIndex={shown ? 0 : -1}
+      className={`fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-lg border border-white/15 bg-[#0d0f11]/90 px-4 py-[9px] text-[13px] text-white/80 backdrop-blur transition-opacity duration-200 hover:border-white/30 hover:text-white md:bottom-8 md:right-8 ${
+        shown ? "opacity-100" : "pointer-events-none opacity-0"
+      }`}
+    >
+      <span aria-hidden>↑</span> {t("nav.top")}
+    </button>
+  );
+}
+
 export default function ManualShell({ categories, children }: { categories: NavCategory[]; children: ReactNode }) {
   const path = usePathname() ?? "/manual";
   const [open, setOpen] = useState(false);
@@ -104,6 +134,7 @@ export default function ManualShell({ categories, children }: { categories: NavC
           {children}
         </div>
       </div>
+      <BackToTop />
       {open ? (
         <div className="fixed inset-0 z-[60] lg:hidden" role="dialog" aria-label={t("nav.toc")}>
           <button type="button" aria-label={t("nav.close")} onClick={() => setOpen(false)} className="absolute inset-0 bg-black/60" />

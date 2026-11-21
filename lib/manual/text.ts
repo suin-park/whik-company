@@ -16,6 +16,7 @@ export const TEXT = {
   "nav.close": { ko: "닫기", en: "Close" },
   "nav.start": { ko: "시작", en: "Start" },
   "nav.home": { ko: "매뉴얼 홈", en: "Manual home" },
+  "nav.top": { ko: "맨 위로", en: "Back to top" },
   "nav.first": { ko: "처음 시작하기", en: "Getting started" },
   "nav.screen": { ko: "화면 구성", en: "The workspace" },
   "nav.keys": { ko: "단축키", en: "Shortcuts" },
