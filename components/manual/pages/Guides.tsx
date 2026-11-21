@@ -96,12 +96,20 @@ export function EditGuide() {
             { n: 6, x: 19.5, y: 49, label: t("e.tl.6") }
           ]}
         />
+        <Shot src={shot("en", "e_effects")} alt={t("e2.timeline")} caption={t("e.cap.effects")} maxWidth={360} />
       </>
     ),
     keys: (
       <>
         <Shot src={shot("en", "e_props")} alt={t("e.m6")} caption={t("e.cap.props")} maxWidth={400} />
         <Shot src={shot("en", "e_keys")} alt={t("e.cap.keys")} caption={t("e.cap.keys")} />
+      </>
+    ),
+    color: (
+      <>
+        <Shot src={shot("en", "e_color_ws")} alt={t("e2.color")} caption={t("e.cap.color_ws")} />
+        <Shot src={shot("en", "e_color_panel")} alt={t("e2.color")} caption={t("e.cap.color_panel")} maxWidth={380} />
+        <Shot src={shot("en", "e_clipgrid")} alt={t("e2.color")} caption={t("e.cap.clipgrid")} maxWidth={340} />
       </>
     ),
     text: (
@@ -118,11 +126,13 @@ export function EditGuide() {
     sound: (
       <>
         <Shot src={shot("en", "e_mixer")} alt={t("e2.sound")} caption={t("e.cap.mixer")} maxWidth={400} />
+        <Shot src={shot("en", "e_ducking")} alt={t("e2.sound")} caption={t("e.cap.ducking")} maxWidth={400} />
       </>
     ),
     export: (
       <>
         <Shot src={shot("en", "e_export")} alt={t("e2.export")} caption={t("e.cap.export")} />
+        <Shot src={shot("en", "e_seqindex")} alt={t("e2.export")} caption={t("e.cap.seqindex")} maxWidth={640} />
       </>
     ),
   };

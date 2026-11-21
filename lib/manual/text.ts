@@ -431,6 +431,12 @@ export const TEXT = {
   "e.cap.captions": { ko: "자막 패널: 시작, 끝, 길이를 두 번 클릭해 고치고, 줄을 나누거나 합쳐요.", en: "The Captions panel: double-click a start, end or length to change it; split and join lines." },
   "e.cap.mixer": { ko: "믹서: 트랙마다 볼륨과 팬, 음소거(M)와 솔로(S). 아래에서 전체 라우드니스를 재고 목표에 맞춰요.", en: "The Mixer: each track's volume, pan, mute (M) and solo (S); below, measure the loudness and match a target." },
   "e.cap.export": { ko: "내보내기 창: 왼쪽에서 미리 보고, 오른쪽에서 프리셋, 출력(비디오, 오디오, 자막), 형식, 해상도, 품질을 정해요. 아래에 예상 크기가 나와요.", en: "The Export window: preview on the left; on the right, the preset, outputs (video, audio, captions), format, resolution and quality. The expected size is shown below." },
+  "e.cap.color_ws": { ko: "색 작업 공간: 왼쪽에 색 패널, 가운데 화면, 오른쪽에 측정 화면", en: "The Colour workspace: the Color panel left, the picture in the middle, the scopes right" },
+  "e.cap.color_panel": { ko: "색 패널: 밝기 패드와 화이트밸런스 패드, 아래로 색 휠, 스타일, LUT", en: "The Color panel: the Light and White Balance pads, then wheels, styles and LUTs below" },
+  "e.cap.clipgrid": { ko: "클립 격자: 클립마다 그림, 방향키로 넘겨요", en: "The Clip Grid: a picture for each clip, the arrow keys to go through them" },
+  "e.cap.effects": { ko: "글자가 틀려도 찾고(blurr), 아래에 미리보기", en: "Found though misspelt (blurr), with a preview below" },
+  "e.cap.ducking": { ko: "속성의 소리 역할과 더킹: 음악이 대화 아래에서 15 dB 줄어요", en: "Properties' Sound Role and Ducking: the music 15 dB down under the dialogue" },
+  "e.cap.seqindex": { ko: "시퀀스 점검: 모든 클립을 시간 순서로, 속도를 바꾼 클립은 메모에", en: "The Sequence Index: every clip in time order, a changed speed in its note" },
   "e.cap.workspace": { ko: "작업 공간 메뉴: 작업에 맞는 배치를 고르고, 지금 배치를 저장하거나 기본으로 되돌려요.", en: "The Workspace menu: a layout for the work at hand, your own saved, or back to the default." },
   // ---- edit guide (topics)
   "e2.start": { ko: "시작하기", en: "Getting started" },
